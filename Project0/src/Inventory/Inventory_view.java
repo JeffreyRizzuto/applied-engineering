@@ -16,7 +16,7 @@ public class Inventory_view extends JFrame {
 	private static final long serialVersionUID = 293596607766330824L;
 
 	private Inventory_model model;
-	private Inventory_panel invPanel;
+	private Inventory_ScrollPane invPanel;
 	private JLabel statusBar;
 	private JMenu invMenu;
 	private JPopupMenu popupMenu;
@@ -27,6 +27,7 @@ public class Inventory_view extends JFrame {
 	public Inventory_view(Inventory_model model) {
 		super("Inventory");
 		this.model = model;
+		
 		
 		// create the menu
 		JMenuBar MenuBar = new JMenuBar();
@@ -44,11 +45,14 @@ public class Inventory_view extends JFrame {
 		/*
 		 * Panel that the inventory is in
 		 */
-		invPanel = new Inventory_panel(model,this);
+		invPanel = new Inventory_ScrollPane(model,this);
 		add(invPanel, BorderLayout.CENTER);
-		invPanel.setBackground(Color.WHITE);
-		Dimension size = invPanel.getSize();
 		
+		/*
+		 * Panel that the add/delete button are in
+		 */
+		//JPanel buttonPane = new JPanel();
+		//add(buttonPane, BorderLayout.PAGE_END);
 		
 		setTitle("Inventory");
 		setSize(600,300);
