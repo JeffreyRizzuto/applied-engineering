@@ -9,9 +9,13 @@ import javax.swing.Scrollable;
 public class Inventory_panel extends JPanel implements Scrollable{
 
 	private static final long serialVersionUID = 6246152661885910554L;
+	
+	private Inventory_model model;
+	private Inventory_view view;
 
-	public Inventory_panel(Inventory_model model, Inventory_view inventory_view) {
-		// TODO Auto-generated constructor stub	
+	public Inventory_panel(Inventory_model model, Inventory_view view) {
+		this.model = model;
+		this.view = view;
 	}
 
 	public Dimension getSize() {
