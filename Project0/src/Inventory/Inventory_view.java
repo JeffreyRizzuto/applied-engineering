@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -28,8 +29,13 @@ public class Inventory_view extends JFrame {
 		this.model = model;
 		
 		// create the menu
+		JMenuBar MenuBar = new JMenuBar();
+		setJMenuBar(MenuBar);
+		
 		invMenu = new JMenu("Menu");
 		invMenu.setMnemonic('M');
+		MenuBar.add(invMenu);
+		
 		//menu items
 		JMenuItem exitItem = new JMenuItem("Exit");
 		exitItem.setMnemonic('E');
