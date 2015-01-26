@@ -65,10 +65,9 @@ public class Inventory_view extends JFrame {
 		/*
 		 * Make Panel than the add/delete buttons
 		 */
-		//make pane
+		//make pane (with a boxlayout)
 		JPanel buttonPane = new JPanel();
-		buttonPane.setLayout(new BoxLayout(buttonPane,
-                                           BoxLayout.LINE_AXIS));
+		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
 		//make buttons
 		JButton addButton = new JButton(addString);
 		JButton removeButton = new JButton(removeString);
