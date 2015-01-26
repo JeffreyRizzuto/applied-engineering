@@ -1,47 +1,61 @@
 package Inventory;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
-import javax.swing.text.Position;
-
 public class Inventory_model{
 
 	private Map<String, Item> items;
-	private JList list;
-	private DefaultListModel Inventory_model;
+	private JList<String> list;
 	
 	public Inventory_model(){
-
-		items = new HashMap();
-		list = new JList();
-		Inventory_model = new DefaultListModel();
-		list.setModel(Inventory_model);
+		
+		items = new HashMap<String, Item>();
+		list = new JList<String>();
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		
+		/* this is where we would add saved items if we used persistent data*/
+		//update();
+
 	}
 	
 	public void addElement(Item item){
-		if(items.get(item.getPartName()) == null){
+		if(items.get(item.getPartName()) != null){
 			//throw error back to item_controller
 		} else {
+			System.out.println("adding: "+ item.getPartName());
 			items.put(item.getPartName(),item);
+			update();//update the JList to reflect changes
 		}
 	}
 	
-	public void removeElement(Item item){
-		if(items.get(item.getPartName()) == null){
+	public void removeElement(String item){
+		if(items.get(item) == null){
 			//throw error back to item_controller
 		} else {
-			items.put(item.getPartName(),item);
+			items.remove(item);
+			update();//update the JList to reflect changes
 		}
 	}
+	
+	public boolean checkElement(String item){
+		if(items.get(item) == null){
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public JList<String> getItemList(){
+		return list;
+	}
+	
+	private void update(){
+		list.setListData(new Vector<String>(items.keySet()));
+	}
+
 }

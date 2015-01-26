@@ -23,7 +23,7 @@ public class Inventory_scrollPane extends JPanel{
 		setLayout(new BorderLayout());
 		
 		/* add that list from model to a scroll pane in the main window */
-		ScrollPane = new JScrollPane(model);
+		ScrollPane = new JScrollPane(model.getItemList());
 		add(ScrollPane);
 		
 		this.setFocusable(true);

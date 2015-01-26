@@ -2,6 +2,7 @@ package Inventory;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,10 +21,14 @@ public class Item_popup extends JFrame{
 	private Inventory_model model;
 	
 	private final static String[] labels = {"Part Number: ", "Part Name: ", "Vendor: ", "Quantity: "};
+
 	private int labelsLength = labels.length;
 	private JPanel form;
 	private Item_controller itemController;
-	private JTextField[] textField;
+	private JTextField partName;
+	private JTextField partNumber;
+	private JTextField vendor;
+	private JTextField quantity;
 	
 	public Item_popup(Inventory_model model) {
 
@@ -36,20 +41,45 @@ public class Item_popup extends JFrame{
 		JPanel form = new JPanel(new SpringLayout());
 		itemController = new Item_controller(model,this);
 		
-		for (int i = 0; i < labelsLength; i++) {
-			JLabel l = new JLabel(labels[i], JLabel.TRAILING);
-			form.add(l);
-			textField[i] = new JTextField(255);
-			l.setLabelFor(textField[i]);
-			textField[i].addActionListener(itemController);
-			form.add(textField[i]);
-		}
+		//here are the text fields for the form
 		
+		partName = new JTextField(10);
+		partNumber = new JTextField(255);
+		vendor = new JTextField(255);
+		quantity = new JTextField(255);
+		
+		
+		//add some labels to the fields (this is probably very ugly
+		JLabel l;
+		
+		l = new JLabel("Part Number: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(partNumber);
+		form.add(partNumber);
+		
+		l = new JLabel("Part Name: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(partName);
+		form.add(partName);
+		
+		l = new JLabel("Vendor: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(vendor);
+		form.add(vendor);
+		
+		l = new JLabel("Quantity: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(quantity);
+		form.add(quantity);
+		
+		
+		
+
 		//set the layout for form with springUtilities (provided by oracle :P)
-		 SpringUtilities.makeCompactGrid(form,
-                 labelsLength, 2, //rows, columns
-                 6, 6,        //initX, initY
-                 6, 6);       //xPad, yPad
+		SpringUtilities.makeCompactGrid(form,
+                4, 2, //rows, cols
+                6, 6,        //initX, initY
+                6, 6);       //xPad, yPad
 		 
 		 //make some buttons also
 		 JPanel buttons = new JPanel(new SpringLayout());
@@ -59,8 +89,6 @@ public class Item_popup extends JFrame{
 		 //add controllers
 		 Submit.addActionListener(itemController);
 		 Cancel.addActionListener(itemController);
-		 
-		 
 		 
 		 //add buttons to form
 		 buttons.add(new JSeparator(SwingConstants.VERTICAL));
@@ -79,13 +107,24 @@ public class Item_popup extends JFrame{
 	
 	}
 	
-	public final static String[] getLabels(){
-		return labels;
+	public void closeWindow(){
+		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));//close the window
+	}
 		
+	public String getPartNumber(){
+		return partNumber.getText();	
 	}
 	
-	public JTextField[] getTextField(){
-		return textField;
-		
+	public String getPartName(){
+		return partName.getText();	
+	}
+	
+	public String getVendor(){
+		return vendor.getText();	
+	}
+	
+	public int getQuantity(){
+		String value = quantity.getText();
+		return !value.isEmpty() ? Integer.parseUnsignedInt(value) : 0;		
 	}
 }

@@ -2,6 +2,7 @@ package Inventory;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JTextField;
 
@@ -12,47 +13,67 @@ public class Item_controller implements ActionListener{
 	
 	private static final String submitString = "Submit";
 	private static final String cancelString = "Cancel";
-	private String[] Input;
-
+	private String partName;
+	private String partNumber;
+	private String vendor;
+	private int quantity;
+	
 	public Item_controller(Inventory_model model, Item_popup item_popup) {
 		this.model = model;
-		this.itemP = item_popup;
-		
+		this.itemP = item_popup;		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if(command.equals(cancelString)){
+			itemP.closeWindow();//close the window
 			return;
 		} else if(command.equals(submitString)){
-			JTextField[] textFields = itemP.getTextField();
-			for(int i=0;i<textFields.length;i++){
-				Input[i] = textFields[i].getText();
-			}
-			//this item already exists
-			if(model.elementExists(Input[1])){
-				return;
-			}
-			
-			Item item = new Item();
-			if( Input[0].length() < 20 || !Input[0].isEmpty() ){
-				item.setPartNumber(Input[0]);
-			}
-			if( Input[1].length() < 255 || !Input[1].isEmpty() ){
-				item.setPartName(Input[1]);
-			}
-			if( Input[2].length() < 255 || Input[1].isEmpty() ){
-				item.setVendor(Input[2]);
-			}
-			if( Integer.parseInt(Input[3]) > 0){
-				item.setQuantity(Integer.parseInt(Input[3]));
-			}
-			model.addElement(item);
-			
-						
+			partNumber = itemP.getPartNumber();
+			partName = itemP.getPartName();
+			vendor = itemP.getVendor();
+			quantity = itemP.getQuantity();
+			submit();					
 		}
 		
+	}
+
+	private void submit(){
+		//kind of want to fix this cause it looks weird
+		if( partName.length() < 20 && !partName.isEmpty() ){
+			if(model.checkElement(partName)){//if it already exists
+				return;//really need to re ask for itemP here
+			}
+		}
+		
+		Item item = new Item();
+		/* set part name */
+		item.setPartName(partName);//already did the checks
+		
+		/* set part number */
+		if( partNumber.length() < 255 && !partNumber.isEmpty() ){
+			item.setPartNumber(partNumber);
+		} else {
+			return;//needs to be throw
+		}
+		
+		/* set vendor */
+		if( vendor.length() < 255 || vendor.isEmpty() ){
+			item.setVendor(vendor);
+		} else { 
+			return;//needs to be throw
+		}
+		
+		/* set quantity */
+		if( quantity > 0){
+			item.setQuantity(quantity);
+		} else {
+			return;//needs to be throw
+		}
+		
+		model.addElement(item);
+		itemP.closeWindow();
 	}
 
 }

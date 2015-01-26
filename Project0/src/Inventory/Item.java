@@ -12,28 +12,28 @@ public class Item {
 	}
 	
 	public void setPartNumber(String partNumber){
-		if(partNumber.length() < 20 || !partName.isEmpty()){
+		if(partNumber.length() < 20 && !partNumber.isEmpty()){
 			this.partNumber = partNumber;
 		}
 		
 	}
 	
 	public void setPartName(String partName){
-		if(partName.length() < 255 || !partName.isEmpty() ){
+		if(partName.length() < 255 && !partName.isEmpty() ){
 			this.partName = partName;
 		}	
 		
 	}
 	
 	public void setVendor(String vendor){
-		if( vendor.length() < 255 || partName.isEmpty() ){
+		if( vendor.length() < 255 ||vendor.isEmpty()){
 			this.vendor = vendor;
 		}
 		
 	}
 	
 	public void setQuantity(int quantity){
-		if(quantity > 1) {
+		if(quantity > 0) {
 			this.quantity = quantity;
 		}
 	
