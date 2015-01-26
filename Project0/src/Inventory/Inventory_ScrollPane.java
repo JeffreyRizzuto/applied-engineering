@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-public class Inventory_ScrollPane extends JPanel{
+public class Inventory_scrollPane extends JPanel{
 
 	private static final long serialVersionUID = 6246152661885910554L;
 	
@@ -15,7 +15,7 @@ public class Inventory_ScrollPane extends JPanel{
 	private Inventory_view view;
 	private JScrollPane ScrollPane;
 
-	public Inventory_ScrollPane(Inventory_model model, Inventory_view view) {
+	public Inventory_scrollPane(Inventory_model model, Inventory_view view) {
 		this.model = model;
 		this.view = view;
 		
