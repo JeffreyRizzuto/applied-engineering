@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 public class Inventory_manager{
 
 	public static void main(String args[]) {
-		Inventory_model model = new Inventory_model();
-		Inventory_view view = new Inventory_view(model);
+		InventoryModel model = new InventoryModel();
+		InventoryView view = new InventoryView(model);
 		//add controllers
 		
 		
