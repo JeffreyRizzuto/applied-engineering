@@ -24,7 +24,7 @@ public class AddPopupController implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if(command.equals(cancelString)){
-			itemP.closeWindow();//close the window
+			itemP.dispose();
 			return;
 		} else if(command.equals(submitString)){
 			partNumber = itemP.getPartNumber();
@@ -38,24 +38,29 @@ public class AddPopupController implements ActionListener{
 
 	private void submit(){
 		itemP.resetErrors();
+		boolean error = false;
+		Item item = new Item();
 		//kind of want to fix this cause it looks weird
 		if( partName.length() < 20 && !partName.isEmpty() ){
 			if(model.checkElement(partName)){//if it already exists
 				itemP.formatError(1);
-				return;
+				error = true;
 			}
 		}
 		
-		Item item = new Item();
 		/* set part name */
-		item.setPartName(partName);//already did the checks
+		if( partName.length() < 20 && !partName.isEmpty() ){
+			item.setPartName(partName);//already did the checks
+		} else {
+			itemP.formatError(1);
+		}
 		
 		/* set part number */
 		if( partNumber.length() < 255 && !partNumber.isEmpty() ){
 			item.setPartNumber(partNumber);
 		} else {
 			itemP.formatError(2);
-			return;
+			error = true;
 		}
 		
 		/* set vendor */
@@ -63,7 +68,7 @@ public class AddPopupController implements ActionListener{
 			item.setVendor(vendor);
 		} else { 
 			itemP.formatError(3);
-			return;
+			error = true;
 		}
 		
 		/* set quantity */
@@ -71,11 +76,15 @@ public class AddPopupController implements ActionListener{
 			item.setQuantity(quantity);
 		} else {
 			itemP.formatError(4);
-			return;
+			error = true;
 		}
 		
-		model.addElement(item);
-		itemP.closeWindow();
+		if(!error){
+			model.addElement(item);
+			itemP.closeWindow();
+		}
+		
+		return;
 	}
 
 }

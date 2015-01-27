@@ -24,8 +24,7 @@ public class EditPopupController implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if(command.equals(cancelString)){
-			itemP.closeWindow();//close the window
-			return;
+			itemP.dispose();
 		} else if(command.equals(submitString)){
 			partNumber = itemP.getPartNumber();
 			partName = itemP.getPartName();

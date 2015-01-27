@@ -1,13 +1,12 @@
 package Inventory;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Component;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class InventoryView extends JFrame implements ListSelectionListener{
+public class InventoryView extends JFrame{
 
 	private static final long serialVersionUID = 293596607766330824L;
 
@@ -16,7 +15,7 @@ public class InventoryView extends JFrame implements ListSelectionListener{
 	private JLabel statusBar;
 	private JMenu invMenu;
 	private JPopupMenu popupMenu;
-	private InventoryController controller;
+	private JPanel buttonPane;
 	
 	private static final String editString = "edit";
 	private static final String addString = "add";
@@ -34,6 +33,12 @@ public class InventoryView extends JFrame implements ListSelectionListener{
 		setSize(600,300);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		/* make componenets we need */
+		//inventory scroll pane
+		invPanel = new InventoryScrollPane(model,this);
+		//button pane
+		buttonPane = new JPanel();
+		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
 		
 		// create the menu
 		JMenuBar MenuBar = new JMenuBar();
@@ -51,30 +56,21 @@ public class InventoryView extends JFrame implements ListSelectionListener{
 		/*
 		 * Panel that the inventory is in
 		 */
-		invPanel = new InventoryScrollPane(model,this);
 		add(invPanel, BorderLayout.CENTER);
 		
 		/*
-		 * Make Panel than the add/delete buttons
+		 *  add/delete buttons
 		 */
-		
-		//make pane (with a boxlayout)
-		JPanel buttonPane = new JPanel();
-		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
 		
 		//make buttons
 		JButton addButton = new JButton(addString);
 		JButton removeButton = new JButton(removeString);
 		JButton editButton = new JButton(editString);
 		
-		//add listeners to buttons
-		controller = new InventoryController(model, this);//listener for buttons
+		//add commands to buttons
 		editButton.setActionCommand(editString);
-		editButton.addActionListener(controller);
-		addButton.addActionListener(controller);
 		addButton.setActionCommand(addString);
 		removeButton.setActionCommand(removeString);
-		removeButton.addActionListener(controller);
 		
 		//add buttons to pane
 		buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
@@ -87,14 +83,21 @@ public class InventoryView extends JFrame implements ListSelectionListener{
 		
 	}
 	
-	public void display_items() {
+	public void registerListeners(MenuController Mcontrol, InventoryController Icontrol) { 
+		Component[] components = invMenu.getMenuComponents();
+		for (Component component : components) {
+			if (component instanceof AbstractButton) {
+				AbstractButton button = (AbstractButton) component;
+				button.addActionListener(Mcontrol);
+			}
+		}
 		
-		
-	}
-
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		// TODO Auto-generated method stub
-		
+		components = buttonPane.getComponents();
+		for (Component component : components) {
+			if (component instanceof AbstractButton) {
+				AbstractButton button = (AbstractButton) component;
+				button.addActionListener(Icontrol);
+			}
+		}
 	}
 }
