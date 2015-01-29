@@ -8,27 +8,42 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import Inventory.Item;
+
 public class EditTests {
+	/*Editing a part involves just resetting the parts (Item) values. So we only
+	 * need to check that a new set clears old values.
+	 */
+	
+	Item part;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
 
 	@Before
 	public void setUp() throws Exception {
+		part = new Item();
+		//Set everything to good values
+		part.setPartName("oldPart");
+		part.setPartNumber("oldItem");
+		part.setQuantity(4);
+		part.setVendor("oldVendor");
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testEditPartName() {
+		part.setPartName("newPart");
+		assertEquals("newPart", part.getPartName());
 	}
+	@Test
+	public void testEditPartNumber() {
+		part.setPartNumber("5");
+		assertEquals("5", part.getPartNumber());
+	}
+	@Test
+	public void testEditPartQuantity() {
+		part.setQuantity(15);
+		assertEquals(15, part.getQuantity());
+	}
+
 
 }
