@@ -33,7 +33,7 @@ public class Item {
 	}
 	
 	public void setQuantity(int quantity){
-		if(quantity > 0) {
+		if(quantity >= 0) {
 			this.quantity = quantity;
 		}
 	

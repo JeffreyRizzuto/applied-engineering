@@ -130,15 +130,17 @@ public class EditPopup extends JFrame{
 		return vendor.getText();	
 	}
 	
-	public int getQuantity(){
-		String value = quantity.getText();
-		return !value.isEmpty() ? Integer.parseUnsignedInt(value) : 0;		
+	public String getQuantity(){
+		//String value = quantity.getText();
+		//return !value.isEmpty() ? Integer.parseUnsignedInt(value) : 0;
+		return quantity.getText();
 	}
 	
 	public Item getSelectedItem(){
 		return selectedItem;
 	}
 	
+	/* if time, i want to remove this function and replace it with throw/catches */
 	public void formatError(int errorCode){
 		switch(errorCode){
 		case 1:	errorCode=1;
