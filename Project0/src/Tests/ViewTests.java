@@ -14,7 +14,9 @@ import Inventory.Item;
 public class ViewTests {
 	
 	private InventoryModel model;
-	Item goodItem = new Item();
+	Item expected;
+	Item returned;
+	
 
 
 	@BeforeClass
@@ -27,6 +29,8 @@ public class ViewTests {
 
 	@Before
 	public void setUp() throws Exception {
+		 expected = new Item();
+		 returned = new Item();
 		 model = new InventoryModel();
 	}
 
@@ -36,8 +40,14 @@ public class ViewTests {
 
 	@Test
 	public void testGoodAdd() {
+		expected.setPartName("hinge");
+		expected.setQuantity(4);
+		expected.setVendor("aVendor");
+		model.addElement(expected);
+		returned = model.getElement("hinge");
 		
-		model.addElement(goodItem);
+		assertEquals(expected, returned);
 	}
+	
 
 }
