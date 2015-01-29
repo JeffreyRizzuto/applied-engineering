@@ -2,11 +2,13 @@ package Inventory;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JList;
 
-public class InventoryController implements ActionListener {
+public class InventoryController implements ActionListener, MouseListener {
 	
 	private InventoryModel model;
 	private InventoryView view;
@@ -18,11 +20,13 @@ public class InventoryController implements ActionListener {
 	private static final String addString = "add";
     private static final String removeString = "remove";
     private JList list;
+    private int clicksCount;
 	
 	public InventoryController(InventoryModel model, InventoryView view){
 		this.model = model;
 		this.view = view;
 		this.list = model.getItemList();
+		clicksCount=0;
 	}
 
 	//based on the command, will either open a add item, or remove item
@@ -56,4 +60,41 @@ public class InventoryController implements ActionListener {
 		}
 		
     }
+
+	@Override
+	public void mouseClicked(MouseEvent click) {
+		clicksCount++;
+		System.out.println("IN MOUSE EVENT");
+        if (clicksCount%2==0) {
+            int index = list.locationToIndex(click.getPoint());
+            if (index >= 0) {
+                EditPopup edit = new EditPopup(model,model.getElement((String) list.getModel().getElementAt(index)));
+            }
+        }
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }

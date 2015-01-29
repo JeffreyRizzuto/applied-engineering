@@ -11,7 +11,8 @@ public class InventoryView extends JFrame{
 	private static final long serialVersionUID = 293596607766330824L;
 
 	private InventoryModel model;
-	private InventoryScrollPane invPanel;
+	private JPanel invPanel;
+	private JScrollPane scrollPane;
 	private JLabel statusBar;
 	private JMenu invMenu;
 	private JPopupMenu popupMenu;
@@ -34,8 +35,13 @@ public class InventoryView extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		/* make componenets we need */
+		
 		//inventory scroll pane
-		invPanel = new InventoryScrollPane(model,this);
+		invPanel = new JPanel();
+		invPanel.setLayout(new BorderLayout());
+		scrollPane = new JScrollPane(model.getItemList());
+		invPanel.add(scrollPane);
+		
 		//button pane
 		buttonPane = new JPanel();
 		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
@@ -99,5 +105,10 @@ public class InventoryView extends JFrame{
 				button.addActionListener(Icontrol);
 			}
 		}
+		
+		//add mouse listener for the list
+		scrollPane.addMouseListener(Icontrol);
+		
+		
 	}
 }

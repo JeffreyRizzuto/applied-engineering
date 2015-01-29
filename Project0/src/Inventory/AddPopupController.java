@@ -13,7 +13,8 @@ public class AddPopupController implements ActionListener{
 	private String partName;
 	private String partNumber;
 	private String vendor;
-	private int quantity;
+	private String quantity;
+	private int UIquantity;
 	
 	public AddPopupController(InventoryModel model, AddPopup item_popup) {
 		this.model = model;
@@ -72,8 +73,19 @@ public class AddPopupController implements ActionListener{
 		}
 		
 		/* set quantity */
-		if( quantity > 0){
-			item.setQuantity(quantity);
+		if(quantity.isEmpty()){//first check if empty
+			itemP.formatError(4);
+			error = true;
+		}
+		//try to parse the field to an int, if error, throw a format error
+		try{
+			UIquantity = Integer.parseUnsignedInt(quantity);
+		} catch(Exception NumberFormatException) {
+			itemP.formatError(4);
+			error = true;
+		}
+		if( UIquantity > 0){
+			item.setQuantity(UIquantity);
 		} else {
 			itemP.formatError(4);
 			error = true;

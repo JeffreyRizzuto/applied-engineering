@@ -124,9 +124,10 @@ public class AddPopup extends JFrame{
 		return vendor.getText();	
 	}
 	
-	public int getQuantity(){
-		String value = quantity.getText();
-		return !value.isEmpty() ? Integer.parseUnsignedInt(value) : 0;		
+	public String getQuantity(){
+		//String value = quantity.getText();
+		//return !value.isEmpty() ? Integer.parseUnsignedInt(value) : 0;
+		return quantity.getText();
 	}
 	
 	public void formatError(int errorCode){

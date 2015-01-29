@@ -13,7 +13,8 @@ public class EditPopupController implements ActionListener{
 	private String partName;
 	private String partNumber;
 	private String vendor;
-	private int quantity;
+	private String quantity;
+	private int UIquantity;
 	
 	public EditPopupController(InventoryModel model, EditPopup edit_popup) {
 		this.model = model;
@@ -67,13 +68,24 @@ public class EditPopupController implements ActionListener{
 		}
 		
 		/* set quantity */
-		if( quantity > 0){
-			item.setQuantity(quantity);
-		} else {
+		if(quantity.isEmpty()){//first check if empty
+			itemP.formatError(4);
+			error = true;
+		}
+		//try to parse the field to an int, if error, throw a format error
+		try{
+			UIquantity = Integer.parseUnsignedInt(quantity);
+		} catch(Exception NumberFormatException) {
+			itemP.formatError(4);
+			error = true;
+		}
+		if( UIquantity >= 0){
+			item.setQuantity(UIquantity);
+		} else {//shouldn't happen since using unsigned
 			itemP.formatError(4);//needs to be throw
 			error = true;
 		}
-		/* if no error occured, lets add it to the map */
+		/* if no error occurred, lets add it to the map */
 		if(!error){
 			/* to edit it we remove the old one and add a new item with the new info */
 			model.removeElement( (itemP.getSelectedItem()).getPartName() );//remove old item
