@@ -57,10 +57,9 @@ public class AddTests {
 		//expected.setPartName("hinge");
 		expected.setQuantity(4);
 		expected.setVendor("aVendor");
-		model.addElement(expected);
 		
 		try{
-		returned = model.getElement("hinge");
+			model.addElement(expected);
 		} catch(IllegalArgumentException e) {
 			thrown = true;
 		}
@@ -70,29 +69,28 @@ public class AddTests {
 	@Test
 	public void testMissingPartNumber() {
 		boolean thrown = false;
-		expected.setPartNumber("dfjdkfkd");
-		//expected.setPartName("hinge");
+		//expected.setPartNumber("dfjdkfkd");
+		expected.setPartName("hinge");
 		expected.setQuantity(4);
 		expected.setVendor("aVendor");
-		model.addElement(expected);
 		
 		try{
-		returned = model.getElement("hinge");
+			model.addElement(expected);
 		} catch(IllegalArgumentException e) {
 			thrown = true;
 		}
 		assertTrue(thrown);
+	}
 	@Test
 	public void testMissingQuantity() {
 		boolean thrown = false;
 		expected.setPartNumber("dfjdkfkd");
-		//expected.setPartName("hinge");
-		expected.setQuantity(4);
+		expected.setPartName("hinge");
+		//expected.setQuantity(4);
 		expected.setVendor("aVendor");
-		model.addElement(expected);
 		
 		try{
-		returned = model.getElement("hinge");
+			model.addElement(expected);
 		} catch(IllegalArgumentException e) {
 			thrown = true;
 		}

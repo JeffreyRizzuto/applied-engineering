@@ -5,7 +5,7 @@ public class Item {
 	private String partNumber;
 	private String partName;
 	private String vendor;
-	private int quantity;//java doesn't have a way to do unsigned right?
+	private int quantity = -1000;//java doesn't have a way to do unsigned right?
 	
 	public Item() {
 		

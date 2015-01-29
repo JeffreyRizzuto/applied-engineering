@@ -25,12 +25,12 @@ public class InventoryModel{
 	}
 	
 	public void addElement(Item item){
-		if(items.get(item.getPartName()) != null){
+		if(item.getPartName()==null || item.getPartNumber()==null || item.getQuantity()<0){
 			throw new IllegalArgumentException();
-		} else {
+		}
 			items.put(item.getPartName(),item);
 			update();//update the JList to reflect changes
-		}
+		
 	}
 	
 	public void removeElement(String item){
