@@ -26,7 +26,7 @@ public class InventoryModel{
 	
 	public void addElement(Item item){
 		if(items.get(item.getPartName()) != null){
-			//throw error back to item_controller
+			throw new IllegalArgumentException();
 		} else {
 			items.put(item.getPartName(),item);
 			update();//update the JList to reflect changes
