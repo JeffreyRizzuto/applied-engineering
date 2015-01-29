@@ -45,11 +45,10 @@ public class InventoryModel{
 	
 	public Item getElement(String item){
 		if(items.get(item) == null){
-			//throw error back to item_controller
+			return null;
 		} else {
 			return items.get(item);
 		}
-		return null;
 	}
 	
 	public boolean checkElement(String item){
