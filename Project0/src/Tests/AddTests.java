@@ -11,6 +11,7 @@ import org.junit.Test;
 import Inventory.InventoryModel;
 import Inventory.Item;
 
+/* Class runs test on the InventoryModel class to check for add portion as required by assignment*/
 public class AddTests {
 	
 	private InventoryModel model;
@@ -88,6 +89,66 @@ public class AddTests {
 		expected.setPartName("hinge");
 		//expected.setQuantity(4);
 		expected.setVendor("aVendor");
+		
+		try{
+			model.addElement(expected);
+		} catch(IllegalArgumentException e) {
+			thrown = true;
+		}
+		assertTrue(thrown);
+	}
+	@Test
+	public void testSameName() {
+		boolean thrown = false;
+		expected.setPartNumber("dfjdkfkd");
+		expected.setPartName("hinge");
+		expected.setQuantity(4);
+		expected.setVendor("aVendor");
+		
+		Item samepart = new Item();
+		
+		samepart.setPartNumber("dfjdkfkd");
+		samepart.setPartName("hinge");
+		samepart.setQuantity(4);
+		samepart.setVendor("aVendor");
+		
+		model.addElement(expected);
+		
+		try{
+			model.addElement(samepart);
+		} catch(IllegalArgumentException e) {
+			thrown = true;
+		}
+		assertTrue(thrown);
+	}
+	@Test
+	public void testLongPartName() {
+		boolean thrown = false;
+		expected.setPartNumber("dfjdkfkd");
+		expected.setPartName("12345678901234567890123456789012345678901234567890"
+				+ "123456789012345678901234567890123456789012345678901234567890"
+				+ "123456789012345678901234567890123456789012345678901234567890"
+				+ "123456789012345678901234567890123456789012345678901234567890"
+				+ "123456789012345678901234567890123456789012345678901234567890");
+		expected.setQuantity(4);
+		expected.setVendor("aVendor");
+		
+		
+		try{
+			model.addElement(expected);
+		} catch(IllegalArgumentException e) {
+			thrown = true;
+		}
+		assertTrue(thrown);
+	}
+	@Test
+	public void testLongPartNumber() {
+		boolean thrown = false;
+		expected.setPartNumber("123456789012345678901");
+		expected.setPartName("hinge");
+		expected.setQuantity(4);
+		expected.setVendor("aVendor");
+		
 		
 		try{
 			model.addElement(expected);

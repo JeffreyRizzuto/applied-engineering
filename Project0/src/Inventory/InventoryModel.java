@@ -25,7 +25,8 @@ public class InventoryModel{
 	}
 	
 	public void addElement(Item item){
-		if(item.getPartName()==null || item.getPartNumber()==null || item.getQuantity()<0){
+		if(item.getPartName()==null || item.getPartNumber()==null || item.getQuantity()<0 || checkElement(item.getPartName())
+				|| item.getPartName().length()>255 || item.getPartNumber().length()>20){
 			throw new IllegalArgumentException();
 		}
 			items.put(item.getPartName(),item);
