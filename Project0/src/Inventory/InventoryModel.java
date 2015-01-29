@@ -35,8 +35,8 @@ public class InventoryModel{
 	}
 	
 	public void removeElement(String item){
-		if(items.get(item) == null){
-			//throw error back to item_controller
+		if(item == null || items.get(item) == null){
+			throw new IllegalArgumentException();
 		} else {
 			items.remove(item);
 			update();//update the JList to reflect changes
