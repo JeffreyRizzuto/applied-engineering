@@ -1,6 +1,16 @@
+/*
+ * Possible future improvement of using a map instead
+ * of a list to store item id's as maps have to have unique
+ * elements, instead of forcing unique elements with a list.
+ * 
+ * Didn't think of that at the time of implementation :(
+ * 
+ */
+
+
 package Inventory;
 
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Vector;
@@ -11,16 +21,19 @@ public class InventoryModel{
 
 	private SortedMap<String, Item> items;
 	private JList<String> list;
+	private int currentOpenId;
+	private ArrayList<Integer> idList;
 	
-	public InventoryModel(){
-		
+	public InventoryModel(){		
 		items = new TreeMap<String, Item>();
 		list = new JList<String>();
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
-		
+		idList = new ArrayList<Integer>();
 		/* this is where we would add saved items if we used persistent data*/
 		//update();
+		
+		this.currentOpenId = 0;
 
 	}
 	
@@ -30,6 +43,7 @@ public class InventoryModel{
 			throw new IllegalArgumentException();
 		}
 			items.put(item.getPartName(),item);
+			addId(item.getId());//add item id to id list
 			update();//update the JList to reflect changes
 		
 	}
@@ -38,6 +52,7 @@ public class InventoryModel{
 		if(item == null || items.get(item) == null){
 			throw new IllegalArgumentException();
 		} else {
+			removeId(items.get(item).getId());//remove the id from the list
 			items.remove(item);
 			update();//update the JList to reflect changes
 		}
@@ -57,6 +72,24 @@ public class InventoryModel{
 		} else {
 			return true;
 		}
+	}
+	
+	public int getCurrentOpenId(){
+		currentOpenId++;
+		return currentOpenId-1;
+	}
+	
+	private void addId(int id){
+		idList.add(id);
+	}
+	
+	private void removeId(int id){
+		idList.remove(id);
+	}
+	
+	public boolean checkIdExists(int id){
+		return(idList.contains(id));//returns true if id is taken
+		
 	}
 
 	public JList<String> getItemList(){

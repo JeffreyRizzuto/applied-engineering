@@ -34,6 +34,8 @@ public class AddPopup extends JFrame{
 	private JComboBox unitType;
 	
 	private String[] unitTypes = {"Unknown", "Linear Feet", "Pieces"};
+	private JTextField partId;
+
 	
 	public AddPopup(InventoryModel model) {
 
@@ -48,6 +50,7 @@ public class AddPopup extends JFrame{
 		
 		//here are the text fields for the form
 		
+		partId = new JTextField(10);
 		partName = new JTextField(10);
 		partNumber = new JTextField(255);
 		vendor = new JTextField(255);
@@ -66,6 +69,11 @@ public class AddPopup extends JFrame{
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
+		
+		l = new JLabel("Item ID: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(partId);
+		form.add(partId);
 		
 		l = new JLabel("Part Number: ", JLabel.TRAILING);
 		form.add(l);
@@ -87,15 +95,19 @@ public class AddPopup extends JFrame{
 		l.setLabelFor(quantity);
 		form.add(quantity);
 		
-		l = new JLabel("Quantity: ", JLabel.TRAILING);
+		l = new JLabel("Unit Type: ", JLabel.TRAILING);
 		form.add(l);
 		l.setLabelFor(unitType);
 		form.add(unitType);
+		//set default id for the id
+		String openId = Integer.toString(model.getCurrentOpenId());
+		partId.setText(openId);
+		
 		
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                5, 2, //rows, cols
+                6, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 
@@ -133,6 +145,10 @@ public class AddPopup extends JFrame{
 	public String getUnityType(){
 		return (String) unitType.getSelectedItem();
 	}
+	
+	public String getPartId(){
+		return partId.getText();
+	}
 		
 	public String getPartNumber(){
 		return partNumber.getText();	
@@ -156,6 +172,9 @@ public class AddPopup extends JFrame{
 	}
 	public void formatError(int errorCode){
 		switch(errorCode){
+		case 0:	errorCode=0;
+			partId.setBackground(Color.red);
+			break;
 		case 1:	errorCode=1;
 			partName.setBackground(Color.red);
 			break;

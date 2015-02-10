@@ -10,10 +10,12 @@ public class AddPopupController implements ActionListener{
 	
 	private static final String submitString = "Submit";
 	private static final String cancelString = "Cancel";
+	private String partId;
 	private String partName;
 	private String partNumber;
 	private String vendor;
 	private String quantity;
+	private int UIid;
 	private int UIquantity;
 	private String unitQuantity;
 	
@@ -29,6 +31,7 @@ public class AddPopupController implements ActionListener{
 			itemP.dispose();
 			return;
 		} else if(command.equals(submitString)){
+			partId = itemP.getPartId();
 			partNumber = itemP.getPartNumber();
 			partName = itemP.getPartName();
 			vendor = itemP.getVendor();
@@ -49,6 +52,25 @@ public class AddPopupController implements ActionListener{
 				itemP.formatError(1);
 				error = true;
 			}
+		}
+		
+		/* set part id */
+		if(!partId.isEmpty() ){
+			//first try to parse to int
+			try{
+				UIid = Integer.parseInt(partId);
+			} catch(Exception NumberFormatException) {
+				itemP.formatError(0);
+				error = true;
+			}
+			if(model.checkIdExists(UIid)){
+				itemP.formatError(0);
+				error = true;
+			} else {
+				item.setId(UIid);
+			}
+		} else {
+			itemP.formatError(0);
 		}
 		
 		/* set part name */

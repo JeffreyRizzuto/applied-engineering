@@ -5,6 +5,7 @@ public class Item {
 	private String partNumber;
 	private String partName;
 	private String vendor;
+	private int id;
 	private int quantity = -1000;//java doesn't have a way to do unsigned right?
 	private String unitType;
 	
@@ -24,6 +25,10 @@ public class Item {
 			this.partNumber = partNumber;
 		}
 		
+	}
+	
+	public void setId(int itemId){
+		this.id = itemId;		
 	}
 	
 	public void setPartName(String partName){
@@ -48,6 +53,11 @@ public class Item {
 	}
 	public String getUnitType(){
 		return this.unitType;
+	}
+	
+	public int getId() {
+		return this.id;
+
 	}
 
 	public String getPartNumber() {
