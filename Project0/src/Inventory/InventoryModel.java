@@ -80,11 +80,11 @@ public class InventoryModel{
 	}
 	
 	private void addId(int id){
-		idList.add(id);
+		idList.add(new Integer(id));
 	}
 	
 	private void removeId(int id){
-		idList.remove(id);
+		idList.remove(new Integer(id));
 	}
 	
 	public boolean checkIdExists(int id){

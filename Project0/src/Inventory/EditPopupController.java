@@ -32,7 +32,7 @@ public class EditPopupController implements ActionListener{
 			partName = itemP.getPartName();
 			vendor = itemP.getVendor();
 			quantity = itemP.getQuantity();
-			unitType = itemP.getUnitQuantity();
+			unitType = itemP.getUnitType();
 			submit();					
 		}
 		

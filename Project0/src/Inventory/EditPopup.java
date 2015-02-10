@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,9 +31,11 @@ public class EditPopup extends JFrame{
 	private JTextField partNumber;
 	private JTextField vendor;
 	private JTextField quantity;
-	private JTextField unitQuantity;
+	private JComboBox unitType;
 	private	Item selectedItem;
 	private JTextField partId;
+	
+	private String[] unitTypes = {"Linear Feet", "Pieces"};
 	
 	public EditPopup(InventoryModel model, Item item) {
 
@@ -52,7 +55,11 @@ public class EditPopup extends JFrame{
 		vendor = new JTextField(255);
 		quantity = new JTextField(255);
 		partId = new JTextField(255);
-		unitQuantity = new JTextField(255);
+		unitType = new JComboBox();
+		
+		for(int i = 0; i < 2; i++){
+			unitType.addItem(unitTypes[i]);
+		}
 		
 		//fill the textfields with the items info
 		//set default id for the id
@@ -61,7 +68,7 @@ public class EditPopup extends JFrame{
 		partName.setText(selectedItem.getPartName());
 		vendor.setText(selectedItem.getVendor());
 		quantity.setText( Integer.toString(selectedItem.getQuantity()) );
-		unitQuantity.setText(selectedItem.getUnitType());
+		unitType.setSelectedItem(selectedItem.getUnitType());
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
@@ -95,8 +102,8 @@ public class EditPopup extends JFrame{
 		
 		l = new JLabel("Unit Type: ", JLabel.TRAILING);
 		form.add(l);
-		l.setLabelFor(unitQuantity);
-		form.add(unitQuantity);
+		l.setLabelFor(unitType);
+		form.add(unitType);
 		
 		
 
@@ -154,8 +161,8 @@ public class EditPopup extends JFrame{
 		return quantity.getText();
 	}
 	
-	public String getUnitQuantity(){
-		return unitQuantity.getText();
+	public String getUnitType(){
+		return (String) unitType.getSelectedItem();
 	}
 	
 	public Item getSelectedItem(){
