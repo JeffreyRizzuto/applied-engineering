@@ -29,6 +29,7 @@ public class EditPopup extends JFrame{
 	private EditPopupController editController;
 	private JTextField partName;
 	private JTextField partNumber;
+	private JTextField externalPartNumber;
 	private JTextField vendor;
 	private JTextField quantity;
 	private JComboBox unitType;
@@ -42,7 +43,7 @@ public class EditPopup extends JFrame{
 		super("Add New Item");
 		this.model = model;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(400, 300);
+		setSize(400, 400);
 		setVisible(true);
 
 		this.selectedItem = item;
@@ -51,6 +52,7 @@ public class EditPopup extends JFrame{
 		
 		//here are the text fields for the form
 		partNumber = new JTextField(20);
+		externalPartNumber = new JTextField(255);
 		partName = new JTextField(255);
 		vendor = new JTextField(255);
 		quantity = new JTextField(255);
@@ -69,6 +71,7 @@ public class EditPopup extends JFrame{
 		vendor.setText(selectedItem.getVendor());
 		quantity.setText( Integer.toString(selectedItem.getQuantity()) );
 		unitType.setSelectedItem(selectedItem.getUnitType());
+		externalPartNumber.setText(selectedItem.getExternalPartNumber());
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
@@ -84,6 +87,11 @@ public class EditPopup extends JFrame{
 		form.add(l);
 		l.setLabelFor(partNumber);
 		form.add(partNumber);
+		
+		l = new JLabel("EXT Part Number: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(externalPartNumber);
+		form.add(externalPartNumber);
 		
 		l = new JLabel("Part Name: ", JLabel.TRAILING);
 		form.add(l);
@@ -109,7 +117,7 @@ public class EditPopup extends JFrame{
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                6, 2, //rows, cols
+                7, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 
@@ -145,6 +153,10 @@ public class EditPopup extends JFrame{
 		
 	public String getPartNumber(){
 		return partNumber.getText();	
+	}
+	
+	public String getExternalPartNumber(){
+		return externalPartNumber.getText();
 	}
 	
 	public String getPartName(){

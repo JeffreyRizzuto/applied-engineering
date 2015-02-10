@@ -12,6 +12,7 @@ public class EditPopupController implements ActionListener{
 	private static final String cancelString = "Cancel";
 	private String partName;
 	private String partNumber;
+	private String externalPartNumber;
 	private String vendor;
 	private String quantity;
 	private int UIquantity;
@@ -33,6 +34,7 @@ public class EditPopupController implements ActionListener{
 			vendor = itemP.getVendor();
 			quantity = itemP.getQuantity();
 			unitType = itemP.getUnitType();
+			externalPartNumber = itemP.getExternalPartNumber();
 			submit();					
 		}
 		
@@ -56,6 +58,14 @@ public class EditPopupController implements ActionListener{
 		/* set part number */
 		if( partNumber.length() < 20 && !partNumber.isEmpty() ){
 			item.setPartNumber(partNumber);
+		} else {
+			itemP.formatError(2);
+			error = true;
+		}
+		
+		/* set part number */
+		if( externalPartNumber.length() < 20 && !externalPartNumber.isEmpty() ){
+			item.setPartNumber(externalPartNumber);
 		} else {
 			itemP.formatError(2);
 			error = true;

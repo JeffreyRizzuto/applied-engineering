@@ -8,9 +8,14 @@ public class Item {
 	private int id;
 	private int quantity = -1000;//java doesn't have a way to do unsigned right?
 	private String unitType;
+	private String externalPartNumber;
 	
 	public Item() {
 		
+	}
+	
+	public void setExternalPartNumber(String partNumber){
+		this.externalPartNumber = partNumber;
 	}
 	
 	public void setUnitType(String unit){
@@ -60,6 +65,10 @@ public class Item {
 
 	}
 
+	public String getExternalPartNumber(){
+		return externalPartNumber;
+	}
+	
 	public String getPartNumber() {
 		return this.partNumber;
 		

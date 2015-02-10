@@ -32,6 +32,7 @@ public class AddPopup extends JFrame{
 	private JTextField vendor;
 	private JTextField quantity;
 	private JComboBox unitType;
+	private JTextField externalPartNumber;
 	
 	private String[] unitTypes = {"Unknown", "Linear Feet", "Pieces"};
 	private JTextField partId;
@@ -56,6 +57,7 @@ public class AddPopup extends JFrame{
 		vendor = new JTextField(255);
 		quantity = new JTextField(255);
 		unitType = new JComboBox();
+		externalPartNumber = new JTextField(255);
 		
 		/*
 		//Initialize our combo box
@@ -79,6 +81,11 @@ public class AddPopup extends JFrame{
 		form.add(l);
 		l.setLabelFor(partNumber);
 		form.add(partNumber);
+		
+		l = new JLabel("EXT Part Number: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(externalPartNumber);
+		form.add(externalPartNumber);
 		
 		l = new JLabel("Part Name: ", JLabel.TRAILING);
 		form.add(l);
@@ -107,7 +114,7 @@ public class AddPopup extends JFrame{
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                6, 2, //rows, cols
+                7, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 
@@ -152,6 +159,10 @@ public class AddPopup extends JFrame{
 		
 	public String getPartNumber(){
 		return partNumber.getText();	
+	}
+	
+	public String getExternalPartNumber(){
+		return externalPartNumber.getText();
 	}
 	
 	public String getPartName(){

@@ -18,6 +18,7 @@ public class AddPopupController implements ActionListener{
 	private int UIid;
 	private int UIquantity;
 	private String unitQuantity;
+	private String externalPartNumber;
 	
 	public AddPopupController(InventoryModel model, AddPopup item_popup) {
 		this.model = model;
@@ -37,6 +38,7 @@ public class AddPopupController implements ActionListener{
 			vendor = itemP.getVendor();
 			quantity = itemP.getQuantity();
 			unitQuantity = itemP.getUnitQuantity();
+			externalPartNumber = itemP.getExternalPartNumber();
 			submit();					
 		}
 		
@@ -83,6 +85,14 @@ public class AddPopupController implements ActionListener{
 		/* set part number */
 		if( partNumber.length() < 255 && !partNumber.isEmpty() ){
 			item.setPartNumber(partNumber);
+		} else {
+			itemP.formatError(2);
+			error = true;
+		}
+		
+		/* set external part number */
+		if( externalPartNumber.length() < 255 && !externalPartNumber.isEmpty() ){
+			item.setExternalPartNumber(externalPartNumber);
 		} else {
 			itemP.formatError(2);
 			error = true;
