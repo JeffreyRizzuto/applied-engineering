@@ -33,7 +33,7 @@ public class InventoryModel{
 		/* this is where we would add saved items if we used persistent data*/
 		//update();
 		
-		this.currentOpenId = 0;
+		this.currentOpenId = 1;
 
 	}
 	

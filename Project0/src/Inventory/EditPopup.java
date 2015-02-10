@@ -31,6 +31,7 @@ public class EditPopup extends JFrame{
 	private JTextField vendor;
 	private JTextField quantity;
 	private	Item selectedItem;
+	private JTextField partId;
 	
 	public EditPopup(InventoryModel model, Item item) {
 
@@ -49,8 +50,11 @@ public class EditPopup extends JFrame{
 		partName = new JTextField(255);
 		vendor = new JTextField(255);
 		quantity = new JTextField(255);
+		partId = new JTextField(255);
 		
 		//fill the textfields with the items info
+		//set default id for the id
+		partId.setText( Integer.toString(selectedItem.getId()) );
 		partNumber.setText(selectedItem.getPartNumber());
 		partName.setText(selectedItem.getPartName());
 		vendor.setText(selectedItem.getVendor());
@@ -58,6 +62,13 @@ public class EditPopup extends JFrame{
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
+		
+		l = new JLabel("Item ID: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(partId);
+		partId.setEditable(false);
+		form.add(partId);
+		
 		
 		l = new JLabel("Part Number: ", JLabel.TRAILING);
 		form.add(l);
@@ -84,7 +95,7 @@ public class EditPopup extends JFrame{
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                4, 2, //rows, cols
+                5, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 
