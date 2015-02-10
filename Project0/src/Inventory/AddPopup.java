@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,14 +31,18 @@ public class AddPopup extends JFrame{
 	private JTextField partNumber;
 	private JTextField vendor;
 	private JTextField quantity;
+	private JComboBox unitType;
+	
+	private String[] unitTypes = {"Unknown", "Linear Feet", "Pieces"};
 	private JTextField partId;
+
 	
 	public AddPopup(InventoryModel model) {
 
 		super("Add New Item");
 		this.model = model;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(400, 300);
+		setSize(400, 400);
 		setVisible(true);
 
 		JPanel form = new JPanel(new SpringLayout());
@@ -50,7 +55,17 @@ public class AddPopup extends JFrame{
 		partNumber = new JTextField(255);
 		vendor = new JTextField(255);
 		quantity = new JTextField(255);
+		unitType = new JComboBox();
 		
+		/*
+		//Initialize our combo box
+		for (int i = 0; i < 3; i++){
+		      unitType.addItem(unitTypes.ge);
+		      }
+		*/
+		for(int i = 0; i < 3; i++){
+			unitType.addItem(unitTypes[i]);
+		}
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
@@ -80,16 +95,19 @@ public class AddPopup extends JFrame{
 		l.setLabelFor(quantity);
 		form.add(quantity);
 		
+		l = new JLabel("Unit Type: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(unitType);
+		form.add(unitType);
 		//set default id for the id
 		String openId = Integer.toString(model.getCurrentOpenId());
 		partId.setText(openId);
 		
 		
-		
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                5, 2, //rows, cols
+                6, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 
@@ -119,8 +137,13 @@ public class AddPopup extends JFrame{
 	
 	}
 	
+	
 	public void closeWindow(){
 		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));//close the window
+	}
+	
+	public String getUnityType(){
+		return (String) unitType.getSelectedItem();
 	}
 	
 	public String getPartId(){
@@ -144,7 +167,9 @@ public class AddPopup extends JFrame{
 		//return !value.isEmpty() ? Integer.parseUnsignedInt(value) : 0;
 		return quantity.getText();
 	}
-	
+	public String getUnitQuantity(){
+		return (String) unitType.getSelectedItem();
+	}
 	public void formatError(int errorCode){
 		switch(errorCode){
 		case 0:	errorCode=0;

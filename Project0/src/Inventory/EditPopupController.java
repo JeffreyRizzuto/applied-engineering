@@ -15,6 +15,7 @@ public class EditPopupController implements ActionListener{
 	private String vendor;
 	private String quantity;
 	private int UIquantity;
+	private String unitType;
 	
 	public EditPopupController(InventoryModel model, EditPopup edit_popup) {
 		this.model = model;
@@ -31,6 +32,7 @@ public class EditPopupController implements ActionListener{
 			partName = itemP.getPartName();
 			vendor = itemP.getVendor();
 			quantity = itemP.getQuantity();
+			unitType = itemP.getUnitQuantity();
 			submit();					
 		}
 		
@@ -72,9 +74,17 @@ public class EditPopupController implements ActionListener{
 			itemP.formatError(4);
 			error = true;
 		}
+		
+		/* set item type */
+		if(unitType.equals("Unknown")){
+			throw new IllegalArgumentException();
+		} else {
+			item.setUnitType(unitType);
+		}
+		
 		//try to parse the field to an int, if error, throw a format error
 		try{
-			UIquantity = Integer.parseUnsignedInt(quantity);
+			UIquantity = Integer.parseInt(quantity);
 		} catch(Exception NumberFormatException) {
 			itemP.formatError(4);
 			error = true;

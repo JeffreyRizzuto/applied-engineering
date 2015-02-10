@@ -51,8 +51,11 @@ public class EditPopup extends JFrame{
 		partName = new JTextField(255);
 		vendor = new JTextField(255);
 		quantity = new JTextField(255);
+<<<<<<< HEAD
 		partId = new JTextField(255);
+=======
 		unitQuantity = new JTextField(255);
+>>>>>>> origin/master
 		
 		//fill the textfields with the items info
 		//set default id for the id

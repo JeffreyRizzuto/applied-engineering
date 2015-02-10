@@ -17,6 +17,7 @@ public class AddPopupController implements ActionListener{
 	private String quantity;
 	private int UIid;
 	private int UIquantity;
+	private String unitQuantity;
 	
 	public AddPopupController(InventoryModel model, AddPopup item_popup) {
 		this.model = model;
@@ -35,6 +36,7 @@ public class AddPopupController implements ActionListener{
 			partName = itemP.getPartName();
 			vendor = itemP.getVendor();
 			quantity = itemP.getQuantity();
+			unitQuantity = itemP.getUnitQuantity();
 			submit();					
 		}
 		
@@ -56,7 +58,7 @@ public class AddPopupController implements ActionListener{
 		if(!partId.isEmpty() ){
 			//first try to parse to int
 			try{
-				UIid = Integer.parseUnsignedInt(partId);
+				UIid = Integer.parseInt(partId);
 			} catch(Exception NumberFormatException) {
 				itemP.formatError(0);
 				error = true;
@@ -99,9 +101,15 @@ public class AddPopupController implements ActionListener{
 			itemP.formatError(4);
 			error = true;
 		}
+		/* set unit quantity */
+		if(unitQuantity.equals("Unknown")){
+			//throw error
+		} else{
+			item.setUnitType(unitQuantity);
+		}
 		//try to parse the field to an int, if error, throw a format error
 		try{
-			UIquantity = Integer.parseUnsignedInt(quantity);
+			UIquantity = Integer.parseInt(quantity);
 		} catch(Exception NumberFormatException) {
 			itemP.formatError(4);
 			error = true;
