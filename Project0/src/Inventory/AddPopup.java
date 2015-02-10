@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,6 +31,9 @@ public class AddPopup extends JFrame{
 	private JTextField partNumber;
 	private JTextField vendor;
 	private JTextField quantity;
+	private JComboBox unitType;
+	
+	private String[] unitTypes = {"linear Feet", "Pieces", "Unknown"};
 	
 	public AddPopup(InventoryModel model) {
 
@@ -49,6 +53,13 @@ public class AddPopup extends JFrame{
 		vendor = new JTextField(255);
 		quantity = new JTextField(255);
 		
+		/*
+		//Initialize our combo box
+		for (int i = 0; i < 3; i++){
+		      unitType.addItem(unitTypes.ge);
+		      }
+		*/
+		unitType.addItem("test");
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
@@ -107,6 +118,11 @@ public class AddPopup extends JFrame{
 	    add(buttons, BorderLayout.PAGE_END);
 	
 	}
+	
+	private Object makeObj(final String item)  {
+	  return new Object() { public String toString() { return item; } };
+	}
+
 	
 	public void closeWindow(){
 		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));//close the window
