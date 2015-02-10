@@ -33,14 +33,14 @@ public class AddPopup extends JFrame{
 	private JTextField quantity;
 	private JComboBox unitType;
 	
-	private String[] unitTypes = {"linear Feet", "Pieces", "Unknown"};
+	private String[] unitTypes = {"Unknown", "Linear Feet", "Pieces"};
 	
 	public AddPopup(InventoryModel model) {
 
 		super("Add New Item");
 		this.model = model;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(400, 300);
+		setSize(400, 400);
 		setVisible(true);
 
 		JPanel form = new JPanel(new SpringLayout());
@@ -52,6 +52,7 @@ public class AddPopup extends JFrame{
 		partNumber = new JTextField(255);
 		vendor = new JTextField(255);
 		quantity = new JTextField(255);
+		unitType = new JComboBox();
 		
 		/*
 		//Initialize our combo box
@@ -59,7 +60,9 @@ public class AddPopup extends JFrame{
 		      unitType.addItem(unitTypes.ge);
 		      }
 		*/
-		unitType.addItem("test");
+		for(int i = 0; i < 3; i++){
+			unitType.addItem(unitTypes[i]);
+		}
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
@@ -84,12 +87,15 @@ public class AddPopup extends JFrame{
 		l.setLabelFor(quantity);
 		form.add(quantity);
 		
-		
+		l = new JLabel("Quantity: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(unitType);
+		form.add(unitType);
 		
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                4, 2, //rows, cols
+                5, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 
@@ -119,13 +125,13 @@ public class AddPopup extends JFrame{
 	
 	}
 	
-	private Object makeObj(final String item)  {
-	  return new Object() { public String toString() { return item; } };
-	}
-
 	
 	public void closeWindow(){
 		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));//close the window
+	}
+	
+	public String getUnityType(){
+		return (String) unitType.getSelectedItem();
 	}
 		
 	public String getPartNumber(){
@@ -145,7 +151,9 @@ public class AddPopup extends JFrame{
 		//return !value.isEmpty() ? Integer.parseUnsignedInt(value) : 0;
 		return quantity.getText();
 	}
-	
+	public String getUnitQuantity(){
+		return (String) unitType.getSelectedItem();
+	}
 	public void formatError(int errorCode){
 		switch(errorCode){
 		case 1:	errorCode=1;

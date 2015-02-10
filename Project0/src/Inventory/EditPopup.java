@@ -30,6 +30,7 @@ public class EditPopup extends JFrame{
 	private JTextField partNumber;
 	private JTextField vendor;
 	private JTextField quantity;
+	private JTextField unitQuantity;
 	private	Item selectedItem;
 	
 	public EditPopup(InventoryModel model, Item item) {
@@ -49,12 +50,14 @@ public class EditPopup extends JFrame{
 		partName = new JTextField(255);
 		vendor = new JTextField(255);
 		quantity = new JTextField(255);
+		unitQuantity = new JTextField(255);
 		
 		//fill the textfields with the items info
 		partNumber.setText(selectedItem.getPartNumber());
 		partName.setText(selectedItem.getPartName());
 		vendor.setText(selectedItem.getVendor());
 		quantity.setText( Integer.toString(selectedItem.getQuantity()) );
+		unitQuantity.setText(selectedItem.getUnitType());
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
@@ -79,12 +82,16 @@ public class EditPopup extends JFrame{
 		l.setLabelFor(quantity);
 		form.add(quantity);
 		
+		l = new JLabel("Unit Type: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(unitQuantity);
+		form.add(unitQuantity);
 		
 		
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                4, 2, //rows, cols
+                5, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 
@@ -134,6 +141,10 @@ public class EditPopup extends JFrame{
 		//String value = quantity.getText();
 		//return !value.isEmpty() ? Integer.parseUnsignedInt(value) : 0;
 		return quantity.getText();
+	}
+	
+	public String getUnitQuantity(){
+		return unitQuantity.getText();
 	}
 	
 	public Item getSelectedItem(){

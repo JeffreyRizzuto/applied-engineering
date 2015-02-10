@@ -46,7 +46,7 @@ public class Item {
 		}
 	
 	}
-	public String getUnitType(String unit){
+	public String getUnitType(){
 		return this.unitType;
 	}
 
