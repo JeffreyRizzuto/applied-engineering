@@ -32,9 +32,10 @@ public class EditPopup extends JFrame{
 	private JTextField vendor;
 	private JTextField quantity;
 	private JComboBox unitType;
+	private JComboBox unitLocation;
 	private	Item selectedItem;
 	private JTextField partId;
-	
+	private String[] locations = {"Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2"};
 	private String[] unitTypes = {"Linear Feet", "Pieces"};
 	
 	public EditPopup(InventoryModel model, Item item) {
@@ -56,9 +57,13 @@ public class EditPopup extends JFrame{
 		quantity = new JTextField(255);
 		partId = new JTextField(255);
 		unitType = new JComboBox();
+		unitLocation = new JComboBox();
 		
 		for(int i = 0; i < 2; i++){
 			unitType.addItem(unitTypes[i]);
+		}
+		for(int i = 0; i < 3; i++){
+			unitLocation.addItem(locations[i]);
 		}
 		
 		//fill the textfields with the items info
@@ -69,6 +74,7 @@ public class EditPopup extends JFrame{
 		vendor.setText(selectedItem.getVendor());
 		quantity.setText( Integer.toString(selectedItem.getQuantity()) );
 		unitType.setSelectedItem(selectedItem.getUnitType());
+		unitLocation.setSelectedItem(selectedItem.getUnitLocation());
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
@@ -105,11 +111,16 @@ public class EditPopup extends JFrame{
 		l.setLabelFor(unitType);
 		form.add(unitType);
 		
+		l = new JLabel("Location: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(unitLocation);
+		form.add(unitLocation);
+		
 		
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                6, 2, //rows, cols
+                7, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 
@@ -169,6 +180,10 @@ public class EditPopup extends JFrame{
 		return selectedItem;
 	}
 	
+	public String getUnitLocation(){
+		return (String) unitLocation.getSelectedItem();
+	}
+	
 	/* if time, i want to remove this function and replace it with throw/catches */
 	public void formatError(int errorCode){
 		switch(errorCode){
@@ -183,6 +198,8 @@ public class EditPopup extends JFrame{
 			break;
 		case 4:	errorCode=4;
 			quantity.setBackground(Color.red);
+			break;
+		case 6:	errorCode=6;
 			break;
 		}
 	}

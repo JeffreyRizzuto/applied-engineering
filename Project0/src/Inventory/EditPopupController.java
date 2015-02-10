@@ -16,6 +16,7 @@ public class EditPopupController implements ActionListener{
 	private String quantity;
 	private int UIquantity;
 	private String unitType;
+	private String unitLocation;
 	
 	public EditPopupController(InventoryModel model, EditPopup edit_popup) {
 		this.model = model;
@@ -33,6 +34,7 @@ public class EditPopupController implements ActionListener{
 			vendor = itemP.getVendor();
 			quantity = itemP.getQuantity();
 			unitType = itemP.getUnitType();
+			unitLocation = itemP.getUnitLocation();
 			submit();					
 		}
 		
@@ -73,15 +75,7 @@ public class EditPopupController implements ActionListener{
 		if(quantity.isEmpty()){//first check if empty
 			itemP.formatError(4);
 			error = true;
-		}
-		
-		/* set item type */
-		if(unitType.equals("Unknown")){
-			throw new IllegalArgumentException();
-		} else {
-			item.setUnitType(unitType);
-		}
-		
+		}		
 		//try to parse the field to an int, if error, throw a format error
 		try{
 			UIquantity = Integer.parseInt(quantity);
@@ -101,6 +95,20 @@ public class EditPopupController implements ActionListener{
 			model.removeElement( (itemP.getSelectedItem()).getPartName() );//remove old item
 			model.addElement(item);//add the new one
 			itemP.closeWindow();
+		}
+		
+		if(unitType.equals("Unknown")){
+			itemP.formatError(5);
+			error = true;
+		} else{
+			item.setUnitType(unitType);
+		}
+		
+		if(unitLocation.equals("Unknown")){
+			itemP.formatError(6);
+			error = true;
+		} else{
+			item.setUnitLocation(unitLocation);
 		}
 		
 		return;
