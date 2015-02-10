@@ -74,7 +74,7 @@ public class EditPopupController implements ActionListener{
 		}
 		//try to parse the field to an int, if error, throw a format error
 		try{
-			UIquantity = Integer.parseUnsignedInt(quantity);
+			UIquantity = Integer.parseInt(quantity);
 		} catch(Exception NumberFormatException) {
 			itemP.formatError(4);
 			error = true;
