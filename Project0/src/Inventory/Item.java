@@ -6,9 +6,17 @@ public class Item {
 	private String partName;
 	private String vendor;
 	private int quantity = -1000;//java doesn't have a way to do unsigned right?
+	private String unitType;
 	
 	public Item() {
 		
+	}
+	
+	public void setUnitType(String unit){
+		if(unit.equals("Unknown")){
+			//Error may need to be thrown here
+		}
+		this.unitType = unit;
 	}
 	
 	public void setPartNumber(String partNumber){
@@ -37,6 +45,9 @@ public class Item {
 			this.quantity = quantity;
 		}
 	
+	}
+	public String getUnitType(String unit){
+		return this.unitType;
 	}
 
 	public String getPartNumber() {
