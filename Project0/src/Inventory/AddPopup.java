@@ -33,9 +33,12 @@ public class AddPopup extends JFrame{
 	private JTextField quantity;
 	private JComboBox unitType;
 	private JTextField externalPartNumber;
-	
+	private JComboBox location;
 	private String[] unitTypes = {"Unknown", "Linear Feet", "Pieces"};
+	private String[] locations = {"Unknown", "Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2"};
 	private JTextField partId;
+	
+	
 
 	
 	public AddPopup(InventoryModel model) {
@@ -58,15 +61,13 @@ public class AddPopup extends JFrame{
 		quantity = new JTextField(255);
 		unitType = new JComboBox();
 		externalPartNumber = new JTextField(255);
+		location = new JComboBox();
 		
-		/*
-		//Initialize our combo box
-		for (int i = 0; i < 3; i++){
-		      unitType.addItem(unitTypes.ge);
-		      }
-		*/
 		for(int i = 0; i < 3; i++){
 			unitType.addItem(unitTypes[i]);
+		}
+		for(int i = 0; i < 4; i++){
+			location.addItem(locations[i]);
 		}
 		
 		//add some labels to the fields (this is probably very ugly
@@ -109,6 +110,12 @@ public class AddPopup extends JFrame{
 		//set default id for the id
 		String openId = Integer.toString(model.getCurrentOpenId());
 		partId.setText(openId);
+		
+		l = new JLabel("Location: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(location);
+		form.add(location);
+		
 		
 		
 
@@ -181,6 +188,10 @@ public class AddPopup extends JFrame{
 	public String getUnitQuantity(){
 		return (String) unitType.getSelectedItem();
 	}
+	public String getUnitLocation(){
+		return (String) location.getSelectedItem();
+	}
+	
 	public void formatError(int errorCode){
 		switch(errorCode){
 		case 0:	errorCode=0;
@@ -197,6 +208,12 @@ public class AddPopup extends JFrame{
 			break;
 		case 4:	errorCode=4;
 			quantity.setBackground(Color.red);
+			break;
+		case 5:	errorCode=5;
+			//wish i could set background to combo box easy
+			break;
+		case 6:	errorCode=6;
+			//wish i could set background to combo box easy
 			break;
 		}
 	}

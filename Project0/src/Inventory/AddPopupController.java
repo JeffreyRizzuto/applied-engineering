@@ -19,6 +19,7 @@ public class AddPopupController implements ActionListener{
 	private int UIquantity;
 	private String unitQuantity;
 	private String externalPartNumber;
+	private String unitLocation;
 	
 	public AddPopupController(InventoryModel model, AddPopup item_popup) {
 		this.model = model;
@@ -39,6 +40,7 @@ public class AddPopupController implements ActionListener{
 			quantity = itemP.getQuantity();
 			unitQuantity = itemP.getUnitQuantity();
 			externalPartNumber = itemP.getExternalPartNumber();
+			unitLocation = itemP.getUnitLocation();
 			submit();					
 		}
 		
@@ -111,12 +113,6 @@ public class AddPopupController implements ActionListener{
 			itemP.formatError(4);
 			error = true;
 		}
-		/* set unit quantity */
-		if(unitQuantity.equals("Unknown")){
-			//throw error
-		} else{
-			item.setUnitType(unitQuantity);
-		}
 		//try to parse the field to an int, if error, throw a format error
 		try{
 			UIquantity = Integer.parseInt(quantity);
@@ -130,6 +126,22 @@ public class AddPopupController implements ActionListener{
 			itemP.formatError(4);
 			error = true;
 		}
+		
+		/* set unit quantity */
+		if(unitQuantity.equals("Unknown")){
+			itemP.formatError(5);
+			error = true;
+		} else{
+			item.setUnitType(unitQuantity);
+		}
+		
+		if(unitLocation.equals("Unknown")){
+			itemP.formatError(6);
+			error = true;
+		} else{
+			item.setUnitLocation(unitLocation);
+		}
+		
 		
 		if(!error){
 			model.addElement(item);

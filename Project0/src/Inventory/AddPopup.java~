@@ -16,7 +16,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 
-public class EditPopup extends JFrame{
+public class AddPopup extends JFrame{
 	
 	private static final long serialVersionUID = -8616906922402009596L;
 	
@@ -26,20 +26,26 @@ public class EditPopup extends JFrame{
 
 	private int labelsLength = labels.length;
 	private JPanel form;
-	private EditPopupController editController;
+	private AddPopupController itemController;
 	private JTextField partName;
 	private JTextField partNumber;
-	private JTextField externalPartNumber;
 	private JTextField vendor;
 	private JTextField quantity;
 	private JComboBox unitType;
-	private JComboBox unitLocation;
-	private	Item selectedItem;
-	private JTextField partId;
-	private String[] locations = {"Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2"};
-	private String[] unitTypes = {"Linear Feet", "Pieces"};
+<<<<<<< HEAD
+	private JTextField externalPartNumber;
 	
-	public EditPopup(InventoryModel model, Item item) {
+=======
+	private JComboBox location;
+>>>>>>> origin/jeff-dev2
+	private String[] unitTypes = {"Unknown", "Linear Feet", "Pieces"};
+	private String[] locations = {"Unknown", "Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2"};
+	private JTextField partId;
+	
+	
+
+	
+	public AddPopup(InventoryModel model) {
 
 		super("Add New Item");
 		this.model = model;
@@ -47,40 +53,29 @@ public class EditPopup extends JFrame{
 		setSize(400, 400);
 		setVisible(true);
 
-		this.selectedItem = item;
 		JPanel form = new JPanel(new SpringLayout());
-		editController = new EditPopupController(model,this);
+		itemController = new AddPopupController(model,this);
 		
 		//here are the text fields for the form
-		partNumber = new JTextField(20);
-		externalPartNumber = new JTextField(255);
-		partName = new JTextField(255);
+		
+		partId = new JTextField(10);
+		partName = new JTextField(10);
+		partNumber = new JTextField(255);
 		vendor = new JTextField(255);
 		quantity = new JTextField(255);
-		partId = new JTextField(255);
 		unitType = new JComboBox();
-		unitLocation = new JComboBox();
+<<<<<<< HEAD
+		externalPartNumber = new JTextField(255);
+=======
+		location = new JComboBox();
+>>>>>>> origin/jeff-dev2
 		
-		for(int i = 0; i < 2; i++){
+		for(int i = 0; i < 3; i++){
 			unitType.addItem(unitTypes[i]);
 		}
-		for(int i = 0; i < 3; i++){
-			unitLocation.addItem(locations[i]);
+		for(int i = 0; i < 4; i++){
+			location.addItem(locations[i]);
 		}
-		
-		//fill the textfields with the items info
-		//set default id for the id
-		partId.setText( Integer.toString(selectedItem.getId()) );
-		partNumber.setText(selectedItem.getPartNumber());
-		partName.setText(selectedItem.getPartName());
-		vendor.setText(selectedItem.getVendor());
-		quantity.setText( Integer.toString(selectedItem.getQuantity()) );
-		unitType.setSelectedItem(selectedItem.getUnitType());
-<<<<<<< HEAD
-		externalPartNumber.setText(selectedItem.getExternalPartNumber());
-=======
-		unitLocation.setSelectedItem(selectedItem.getUnitLocation());
->>>>>>> origin/jeff-dev2
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
@@ -88,9 +83,7 @@ public class EditPopup extends JFrame{
 		l = new JLabel("Item ID: ", JLabel.TRAILING);
 		form.add(l);
 		l.setLabelFor(partId);
-		partId.setEditable(false);
 		form.add(partId);
-		
 		
 		l = new JLabel("Part Number: ", JLabel.TRAILING);
 		form.add(l);
@@ -121,11 +114,15 @@ public class EditPopup extends JFrame{
 		form.add(l);
 		l.setLabelFor(unitType);
 		form.add(unitType);
+		//set default id for the id
+		String openId = Integer.toString(model.getCurrentOpenId());
+		partId.setText(openId);
 		
 		l = new JLabel("Location: ", JLabel.TRAILING);
 		form.add(l);
-		l.setLabelFor(unitLocation);
-		form.add(unitLocation);
+		l.setLabelFor(location);
+		form.add(location);
+		
 		
 		
 
@@ -141,8 +138,8 @@ public class EditPopup extends JFrame{
 		 JButton Cancel = new JButton("Cancel");
 		 
 		 //add controllers
-		 Submit.addActionListener(editController);
-		 Cancel.addActionListener(editController);
+		 Submit.addActionListener(itemController);
+		 Cancel.addActionListener(itemController);
 		 
 		 //add buttons to form
 		 buttons.add(new JSeparator(SwingConstants.VERTICAL));
@@ -161,8 +158,17 @@ public class EditPopup extends JFrame{
 	
 	}
 	
+	
 	public void closeWindow(){
 		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));//close the window
+	}
+	
+	public String getUnityType(){
+		return (String) unitType.getSelectedItem();
+	}
+	
+	public String getPartId(){
+		return partId.getText();
 	}
 		
 	public String getPartNumber(){
@@ -186,22 +192,18 @@ public class EditPopup extends JFrame{
 		//return !value.isEmpty() ? Integer.parseUnsignedInt(value) : 0;
 		return quantity.getText();
 	}
-	
-	public String getUnitType(){
+	public String getUnitQuantity(){
 		return (String) unitType.getSelectedItem();
 	}
-	
-	public Item getSelectedItem(){
-		return selectedItem;
-	}
-	
 	public String getUnitLocation(){
-		return (String) unitLocation.getSelectedItem();
+		return (String) location.getSelectedItem();
 	}
 	
-	/* if time, i want to remove this function and replace it with throw/catches */
 	public void formatError(int errorCode){
 		switch(errorCode){
+		case 0:	errorCode=0;
+			partId.setBackground(Color.red);
+			break;
 		case 1:	errorCode=1;
 			partName.setBackground(Color.red);
 			break;
@@ -214,7 +216,11 @@ public class EditPopup extends JFrame{
 		case 4:	errorCode=4;
 			quantity.setBackground(Color.red);
 			break;
+		case 5:	errorCode=5;
+			//wish i could set background to combo box easy
+			break;
 		case 6:	errorCode=6;
+			//wish i could set background to combo box easy
 			break;
 		}
 	}
