@@ -102,7 +102,7 @@ public class EditPopup extends JFrame{
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                5, 2, //rows, cols
+                6, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 
