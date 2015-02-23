@@ -37,13 +37,12 @@ public class InventoryModel{
 
 	}
 	
-	public void addElement(Part item){
-		if(item.getPartName()==null || item.getPartNumber()==null || item.getQuantity()<0 || checkElement(item.getPartName())
-				|| item.getPartName().length()>255 || item.getPartNumber().length()>20){
+	public void addElement(Part part){
+		/*if(part.getPartName()==null || part.getPartNumber()==null ||part.getPartName().length()>255 || part.getPartNumber().length()>20){
 			throw new IllegalArgumentException();
-		}
-			items.put(item.getPartName(),item);
-			addId(item.getId());//add item id to id list
+		}*/
+			items.put(part.getPartName(),part);
+			addId(part.getId());//add item id to id list
 			update();//update the JList to reflect changes
 		
 	}

@@ -7,7 +7,7 @@ Constraint: No two Inventory Items can have same Part/Location
 */
 package Inventory;
 
-public class Part {
+public class Item {
 	
 	private int id;
 	private int part;
@@ -16,7 +16,7 @@ public class Part {
 	//private String unitType;
 	
 	
-	public Part() {
+	public Item() {
 		
 	}
 	

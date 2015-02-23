@@ -3,25 +3,27 @@ package Inventory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class EditPopupController implements ActionListener{
+public class AddItemPopupController implements ActionListener{
 	
 	private InventoryModel model;
-	private PartEditPopup itemP;
+	private AddPartPopup itemP;
 	
 	private static final String submitString = "Submit";
 	private static final String cancelString = "Cancel";
+	private String partId;
 	private String partName;
 	private String partNumber;
-	private String externalPartNumber;
 	private String vendor;
 	private String quantity;
+	private int UIid;
 	private int UIquantity;
-	private String unitType;
+	private String unitQuantity;
+	private String externalPartNumber;
 	private String unitLocation;
 	
-	public EditPopupController(InventoryModel model, PartEditPopup edit_popup) {
+	public AddItemPopupController(InventoryModel model, AddPartPopup item_popup) {
 		this.model = model;
-		this.itemP = edit_popup;		
+		this.itemP = item_popup;		
 	}
 
 	@Override
@@ -29,12 +31,14 @@ public class EditPopupController implements ActionListener{
 		String command = event.getActionCommand();
 		if(command.equals(cancelString)){
 			itemP.dispose();
+			return;
 		} else if(command.equals(submitString)){
+			partId = itemP.getPartId();
 			partNumber = itemP.getPartNumber();
 			partName = itemP.getPartName();
 			vendor = itemP.getVendor();
 			quantity = itemP.getQuantity();
-			unitType = itemP.getUnitType();
+			unitQuantity = itemP.getUnitQuantity();
 			externalPartNumber = itemP.getExternalPartNumber();
 			unitLocation = itemP.getUnitLocation();
 			submit();					
@@ -43,31 +47,56 @@ public class EditPopupController implements ActionListener{
 	}
 
 	private void submit(){
-		
-		itemP.resetErrors();//reset the background color of textboxes for prior errors
+		itemP.resetErrors();
 		boolean error = false;
-		
-		//kind of want to fix this cause it looks weird
-		/* set part name */
 		Part item = new Part();
-		if( partName.length() < 255 && !partName.isEmpty() ){
+		//kind of want to fix this cause it looks weird
+		if( partName.length() < 20 && !partName.isEmpty() ){
+			/* No longer need unique parts
+			if(model.checkElement(partName)){//if it already exists
+				itemP.formatError(1);
+				error = true;
+			}
+			*/
+		}
+		
+		/* set part id */
+		if(!partId.isEmpty() ){
+			//first try to parse to int
+			try{
+				UIid = Integer.parseInt(partId);
+			} catch(Exception NumberFormatException) {
+				itemP.formatError(0);
+				error = true;
+			}
+			if(model.checkIdExists(UIid)){
+				itemP.formatError(0);
+				error = true;
+			} else {
+				item.setId(UIid);
+			}
+		} else {
+			itemP.formatError(0);
+		}
+		
+		/* set part name */
+		if( partName.length() < 20 && !partName.isEmpty() ){
 			item.setPartName(partName);//already did the checks
-		} else{
+		} else {
 			itemP.formatError(1);
-			error = true;
 		}
 		
 		/* set part number */
-		if( partNumber.length() < 20 && !partNumber.isEmpty() ){
+		if( partNumber.length() < 255 && !partNumber.isEmpty() ){
 			item.setPartNumber(partNumber);
 		} else {
 			itemP.formatError(2);
 			error = true;
 		}
 		
-		/* set part number */
-		if( externalPartNumber.length() < 20 && !externalPartNumber.isEmpty() ){
-			item.setPartNumber(externalPartNumber);
+		/* set external part number */
+		if( externalPartNumber.length() < 255 && !externalPartNumber.isEmpty() ){
+			item.setExternalPartNumber(externalPartNumber);
 		} else {
 			itemP.formatError(2);
 			error = true;
@@ -85,7 +114,7 @@ public class EditPopupController implements ActionListener{
 		if(quantity.isEmpty()){//first check if empty
 			itemP.formatError(4);
 			error = true;
-		}		
+		}
 		//try to parse the field to an int, if error, throw a format error
 		try{
 			UIquantity = Integer.parseInt(quantity);
@@ -93,25 +122,19 @@ public class EditPopupController implements ActionListener{
 			itemP.formatError(4);
 			error = true;
 		}
-		if( UIquantity >= 0){
+		if( UIquantity > 0){
 			item.setQuantity(UIquantity);
-		} else {//shouldn't happen since using unsigned
-			itemP.formatError(4);//needs to be throw
+		} else {
+			itemP.formatError(4);
 			error = true;
 		}
-		/* if no error occurred, lets add it to the map */
-		if(!error){
-			/* to edit it we remove the old one and add a new item with the new info */
-			model.removeElement( (itemP.getSelectedItem()).getPartName() );//remove old item
-			model.addElement(item);//add the new one
-			itemP.closeWindow();
-		}
 		
-		if(unitType.equals("Unknown")){
+		/* set unit quantity */
+		if(unitQuantity.equals("Unknown")){
 			itemP.formatError(5);
 			error = true;
 		} else{
-			item.setUnitType(unitType);
+			item.setUnitType(unitQuantity);
 		}
 		
 		if(unitLocation.equals("Unknown")){
@@ -121,9 +144,13 @@ public class EditPopupController implements ActionListener{
 			item.setUnitLocation(unitLocation);
 		}
 		
-		return;
 		
-
+		if(!error){
+			model.addElement(item);
+			itemP.closeWindow();
+		}
+		
+		return;
 	}
 
 }

@@ -39,10 +39,10 @@ public class InventoryController implements ActionListener, MouseListener {
 			if(list.isSelectionEmpty()){
 				return;
 			}
-			EditPopup edit = new EditPopup(model,model.getElement((String) list.getSelectedValue()));
+			PartEditPopup edit = new PartEditPopup(model,model.getElement((String) list.getSelectedValue()));
 			
 		} else if(command.equals(addString)){
-			AddPopup add = new AddPopup(model);
+			AddPartPopup add = new AddPartPopup(model);
 			
 		} else if(command.equals(removeString)){
 			//if nothing it selected we can't remove anything
@@ -51,7 +51,7 @@ public class InventoryController implements ActionListener, MouseListener {
 			}
 			//create delete prompt
 			int index = list.getSelectedIndex();
-			DeletePopup delete = new DeletePopup(list.getSelectedValue());
+			PartDeletePopup delete = new PartDeletePopup(list.getSelectedValue());
 			if(delete.response()){//yes
 				model.removeElement((String)list.getSelectedValue());
 			} else {//no
@@ -68,7 +68,7 @@ public class InventoryController implements ActionListener, MouseListener {
         if (clicksCount%2==0) {
             int index = list.locationToIndex(click.getPoint());
             if (index >= 0) {
-                EditPopup edit = new EditPopup(model,model.getElement((String) list.getModel().getElementAt(index)));
+                PartEditPopup edit = new PartEditPopup(model,model.getElement((String) list.getModel().getElementAt(index)));
             }
         }
 		

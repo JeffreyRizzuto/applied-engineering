@@ -15,17 +15,13 @@ public class Part {
 	private String partNumber;
 	private String partName;
 	private String vendor;
-	private int quantity;//java doesn't have a way to do unsigned right?
+	private String unitType;
 	private String externalPartNumber;
 	
 	public Part() {
 		
 	}
-	
-	public void setExternalPartNumber(String partNumber){
-		this.externalPartNumber = partNumber;
-	}
-	
+		
 	public void setPartNumber(String partNumber){
 		if(partNumber.length() < 20 && !partNumber.isEmpty()){
 			this.partNumber = partNumber;
@@ -51,20 +47,17 @@ public class Part {
 		
 	}
 	
-	public void setQuantity(int quantity){
-		if(quantity >= 0) {
-			this.quantity = quantity;
-		}
+	public void setUnitType(String unitType){
+ 		this.unitType = unitType;
+ 	}
 	
+	public void setExternalPartNumber(String partNumber){
+		this.externalPartNumber = partNumber;
 	}
 		
 	public int getId() {
 		return this.id;
 
-	}
-
-	public String getExternalPartNumber(){
-		return externalPartNumber;
 	}
 	
 	public String getPartNumber() {
@@ -80,8 +73,12 @@ public class Part {
 		return this.vendor;
 	}
 	
-	public int getQuantity() {
-		return this.quantity;
+	public String getUnitType(){
+ 		return this.unitType;
+ 	}
+	
+	public String getExternalPartNumber(){
+		return externalPartNumber;
 	}
 	
 	public String toString(){
