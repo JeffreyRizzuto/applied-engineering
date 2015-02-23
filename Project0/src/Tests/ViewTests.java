@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Inventory.InventoryModel;
-import Inventory.Item;
+import Inventory.Part;
 
 
 /*Not really much to test for for view Parts. Weve testing adding valid/invalid values
@@ -19,9 +19,9 @@ import Inventory.Item;
 public class ViewTests {
 	
 	private InventoryModel model;
-	Item item1 = new Item();
-	Item item2 = new Item();
-	Item item3 = new Item();
+	Part item1 = new Part();
+	Part item2 = new Part();
+	Part item3 = new Part();
 	
 	InventoryModel modelEmpty = new InventoryModel();
 	InventoryModel modelOne = new InventoryModel();

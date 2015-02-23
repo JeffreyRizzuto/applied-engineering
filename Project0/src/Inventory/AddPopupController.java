@@ -49,13 +49,15 @@ public class AddPopupController implements ActionListener{
 	private void submit(){
 		itemP.resetErrors();
 		boolean error = false;
-		Item item = new Item();
+		Part item = new Part();
 		//kind of want to fix this cause it looks weird
 		if( partName.length() < 20 && !partName.isEmpty() ){
+			/* No longer need unique parts
 			if(model.checkElement(partName)){//if it already exists
 				itemP.formatError(1);
 				error = true;
 			}
+			*/
 		}
 		
 		/* set part id */

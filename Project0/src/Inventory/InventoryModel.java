@@ -19,13 +19,13 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 public class InventoryModel{
 
-	private SortedMap<String, Item> items;
+	private SortedMap<String, Part> items;
 	private JList<String> list;
 	private int currentOpenId;
 	private ArrayList<Integer> idList;
 	
 	public InventoryModel(){		
-		items = new TreeMap<String, Item>();
+		items = new TreeMap<String, Part>();
 		list = new JList<String>();
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
@@ -37,7 +37,7 @@ public class InventoryModel{
 
 	}
 	
-	public void addElement(Item item){
+	public void addElement(Part item){
 		if(item.getPartName()==null || item.getPartNumber()==null || item.getQuantity()<0 || checkElement(item.getPartName())
 				|| item.getPartName().length()>255 || item.getPartNumber().length()>20){
 			throw new IllegalArgumentException();
@@ -58,7 +58,7 @@ public class InventoryModel{
 		}
 	}
 	
-	public Item getElement(String item){
+	public Part getElement(String item){
 		if(items.get(item) == null){
 			return null;
 		} else {

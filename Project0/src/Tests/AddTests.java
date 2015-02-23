@@ -9,20 +9,20 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Inventory.InventoryModel;
-import Inventory.Item;
+import Inventory.Part;
 
 /* Class runs test on the InventoryModel class to check for add portion as required by assignment*/
 public class AddTests {
 	
 	private InventoryModel model;
-	private Item expected;
-	private Item returned;
+	private Part expected;
+	private Part returned;
 	
 
 	@Before
 	public void setUp() throws Exception {
-		 expected = new Item();
-		 returned = new Item();
+		 expected = new Part();
+		 returned = new Part();
 		 model = new InventoryModel();
 	}
 
@@ -95,7 +95,7 @@ public class AddTests {
 		expected.setQuantity(4);
 		expected.setVendor("aVendor");
 		
-		Item samepart = new Item();
+		Part samepart = new Part();
 		
 		samepart.setPartNumber("dfjdkfkd");
 		samepart.setPartName("hinge");

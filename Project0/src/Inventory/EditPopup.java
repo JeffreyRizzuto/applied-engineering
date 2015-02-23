@@ -34,12 +34,12 @@ public class EditPopup extends JFrame{
 	private JTextField quantity;
 	private JComboBox unitType;
 	private JComboBox unitLocation;
-	private	Item selectedItem;
+	private	Part selectedItem;
 	private JTextField partId;
 	private String[] locations = {"Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2"};
 	private String[] unitTypes = {"Linear Feet", "Pieces"};
 	
-	public EditPopup(InventoryModel model, Item item) {
+	public EditPopup(InventoryModel model, Part item) {
 
 		super("Add New Item");
 		this.model = model;
@@ -188,7 +188,7 @@ public class EditPopup extends JFrame{
 		return (String) unitType.getSelectedItem();
 	}
 	
-	public Item getSelectedItem(){
+	public Part getSelectedItem(){
 		return selectedItem;
 	}
 	

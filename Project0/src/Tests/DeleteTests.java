@@ -9,17 +9,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Inventory.InventoryModel;
-import Inventory.Item;
+import Inventory.Part;
 
 public class DeleteTests {
 	
 	private InventoryModel model;
-	private Item part;
+	private Part part;
 
 	@Before
 	public void setUp() throws Exception {
 		model = new InventoryModel();
-		part = new Item();
+		part = new Part();
 		part.setPartNumber("1010");
 		part.setPartName("hinge");
 		part.setQuantity(4);

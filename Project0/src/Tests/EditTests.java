@@ -8,19 +8,19 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import Inventory.Item;
+import Inventory.Part;
 
 public class EditTests {
 	/*Editing a part involves just resetting the parts (Item) values. So we only
 	 * need to check that a new set clears old values.
 	 */
 	
-	Item part;
+	Part part;
 
 
 	@Before
 	public void setUp() throws Exception {
-		part = new Item();
+		part = new Part();
 		//Set everything to good values
 		part.setPartName("oldPart");
 		part.setPartNumber("oldItem");

@@ -49,7 +49,7 @@ public class EditPopupController implements ActionListener{
 		
 		//kind of want to fix this cause it looks weird
 		/* set part name */
-		Item item = new Item();
+		Part item = new Part();
 		if( partName.length() < 255 && !partName.isEmpty() ){
 			item.setPartName(partName);//already did the checks
 		} else{
