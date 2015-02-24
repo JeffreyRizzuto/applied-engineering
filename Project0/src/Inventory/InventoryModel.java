@@ -49,6 +49,7 @@ public class InventoryModel{
 	public void refresh() {
 		pdg.loadInventory();
 		
+		
 	}
 	
 	public void addElement(Part part){

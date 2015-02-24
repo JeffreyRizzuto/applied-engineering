@@ -84,13 +84,14 @@ public class InventoryGatewaySQL implements InventoryGateway{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public HashMap<Integer, Item> getItems() {
 		HashMap<Integer, Item> items = new HashMap<Integer, Item>();
 		try {
 			while(result.next()) {
-				Item item = new Part();
+				Item item = new Item();
 				item.setId(result.getInt(1));
 				item.setPart(result.getInt(2));
 				item.setUnitLocation(result.getString(3));
@@ -104,6 +105,7 @@ public class InventoryGatewaySQL implements InventoryGateway{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public void addPart(Part part) {
@@ -119,7 +121,7 @@ public class InventoryGatewaySQL implements InventoryGateway{
 	       	 statement = connection.prepareStatement("INSERT INTO Parts "
 	       	 		+ "VALUES ('" + id + "', '" + partNumber + "', '"
 	       	 		+ partName + "', '" + vendor + "', '" + unit
-	       	 		+ "', '" extPartNum + "')");
+	       	 		+ "', ' + extPartNum" + "')");
 	       	 statement.setInt(1, invId);
 	       	 result = statement.executeQuery();
 	       	 result.first();
@@ -146,6 +148,7 @@ public class InventoryGatewaySQL implements InventoryGateway{
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
+	}
 	
 	public void removePart() {
 		
@@ -176,7 +179,6 @@ public class InventoryGatewaySQL implements InventoryGateway{
          }
  	}
 
-	@Override
 	public void close() {
 		if(DEBUG)
 			System.out.println("Closing db connection...");
