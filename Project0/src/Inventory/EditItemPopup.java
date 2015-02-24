@@ -1,6 +1,6 @@
 /* MODIFY THIS */
 
-package Inventory;
+package inventory;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

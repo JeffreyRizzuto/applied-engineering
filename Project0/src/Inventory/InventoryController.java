@@ -1,4 +1,4 @@
-package Inventory;
+package inventory;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,15 +63,14 @@ public class InventoryController implements ActionListener, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent click) {
-		clicksCount++;
-		System.out.println("IN MOUSE EVENT");
-        if (clicksCount%2==0) {
-            int index = list.locationToIndex(click.getPoint());
-            if (index >= 0) {
-                EditPartPopup edit = new EditPartPopup(model,model.getElement((String) list.getModel().getElementAt(index)));
-            }
-        }
-		
+		JList invList = (JList) click.getSource();
+		if (click.getClickCount() == 2) {
+	          int index = invList.locationToIndex(click.getPoint());
+	          if (index >= 0) {
+	            Object o = invList.getModel().getElementAt(index);
+	            EditPartPopup edit = new EditPartPopup(model,model.getElement((o.toString())));
+	          }
+		}
 	}
 
 	@Override

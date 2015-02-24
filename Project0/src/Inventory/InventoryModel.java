@@ -8,7 +8,7 @@
  */
 
 
-package Inventory;
+package inventory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,12 +19,14 @@ import java.util.Vector;
 
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+
 public class InventoryModel{
 
 	private HashMap<String, Part> items;//Key = partId, V = the part object
 	private JList<String> list;
 	private int currentOpenId;
 	private ArrayList<Integer> idList;
+	private InventoryGateway pdg;
 	
 	public InventoryModel(){		
 		items = new HashMap<String, Part>();
@@ -37,6 +39,16 @@ public class InventoryModel{
 		
 		this.currentOpenId = 1;
 
+	}
+	
+	public void close() {
+		if(pdg != null)
+			pdg.close();
+	}
+	
+	public void refresh() {
+		pdg.loadInventory();
+		
 	}
 	
 	public void addElement(Part part){

@@ -1,4 +1,6 @@
-package Inventory;
+package inventory;
+
+import inventory.GatewayException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,20 +13,34 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-public class InventoryGatewaySQL {
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+
+public class InventoryGatewaySQL implements InventoryGateway{
+	private static final boolean DEBUG = true;
 	
-	Connection connection = null;
-    Statement statement = null;
-    ResultSet result = null;
+	private Connection connection;
+	PreparedStatement statement;
+    private ResultSet result;
+    private int invId;
     
-	private InventoryGatewaySQL(){
-	     
-	     String url = "jdbc:mysql://localhost:3306/testdb";
-	     String user = "xhd629";
-	     String password = "koQw2K2pRb7R5fJe9AaP​";
+	InventoryGatewaySQL(int invId, int isoLevel) throws GatewayException {
+		this.invId = invId;
+		
+		//read the properties file to establish the db connection
+		DataSource ds = getDataSource();
+		if(ds == null) {
+        	throw new GatewayException("Datasource is null!");
+        }
+		try {
+			connection = ds.getConnection();
+		} catch (SQLException e) {
+			throw new GatewayException("SQL Error: " + e.getMessage());
+		}
 	}
 	
-     public void loadInventory() {
+     
+	
+	public void loadInventory() {
     	 statement = null;
     	 result = null;
          try {
@@ -36,6 +52,10 @@ public class InventoryGatewaySQL {
              e.printStackTrace();
          }
  	}
+	
+	public void updateInventory() {
+		
+	}
      
      public DataSource getDataSource() {
  		Properties props = new Properties();
@@ -48,16 +68,28 @@ public class InventoryGatewaySQL {
              return null;
          }
          try {
-         	//MysqlDataSource mysqlDS = new MysqlDataSource();
-         	//mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
-         	//mysqlDS.setUser(props.getProperty("MYSQL_DB_PONGUSER"));
-         	//mysqlDS.setPassword(props.getProperty("MYSQL_DB_PONGPW"));
-         	//return mysqlDS;
+         	MysqlDataSource mysqlDS = new MysqlDataSource();
+         	mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
+         	mysqlDS.setUser(props.getProperty("MYSQL_DB_PONGUSER"));
+         	mysqlDS.setPassword(props.getProperty("MYSQL_DB_PONGPW"));
+         	return mysqlDS;
          } catch(RuntimeException e) {
              e.printStackTrace();
              return null;
          }
-         /* remove this */
-		return null;
  	}
+
+	@Override
+	public void close() {
+		if(DEBUG)
+			System.out.println("Closing db connection...");
+		try {
+			result.close();
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

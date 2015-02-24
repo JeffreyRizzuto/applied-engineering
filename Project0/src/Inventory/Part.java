@@ -8,7 +8,7 @@ External Part #: (same as before)
 Constraint: Part # and Part Name are required. Vendor is not.
 Constraint: No two Parts can have the same Part #
 */
-package Inventory;
+package inventory;
 
 public class Part {
 	private int id;

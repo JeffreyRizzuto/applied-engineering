@@ -5,7 +5,7 @@ Location: (same as before)
 Quantity: (same as before)
 Constraint: No two Inventory Items can have same Part/Location
 */
-package Inventory;
+package inventory;
 
 public class Item {
 	
