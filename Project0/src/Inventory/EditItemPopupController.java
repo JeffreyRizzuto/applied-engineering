@@ -15,13 +15,15 @@ public class EditItemPopupController implements ActionListener{
 	private String partName;
 	private String partNumber;
 	private String externalPartNumber;
+	private String partSomething;
+	private int itemId;
 	private String vendor;
 	private String quantity;
 	private int UIquantity;
 	private String unitType;
 	private String unitLocation;
 	
-	public EditItemPopupController(InventoryModel model, PartEditPopup edit_popup) {
+	public EditItemPopupController(InventoryModel model, EditItemPopup edit_popup) {
 		this.model = model;
 		this.itemP = edit_popup;		
 	}
@@ -32,13 +34,15 @@ public class EditItemPopupController implements ActionListener{
 		if(command.equals(cancelString)){
 			itemP.dispose();
 		} else if(command.equals(submitString)){
-			partNumber = itemP.getPartNumber();
-			partName = itemP.getPartName();
-			vendor = itemP.getVendor();
+			//partNumber = itemP.getPartNumber();
+			//partName = itemP.getPartName();
+			//vendor = itemP.getVendor();
 			quantity = itemP.getQuantity();
-			unitType = itemP.getUnitType();
-			externalPartNumber = itemP.getExternalPartNumber();
+			//unitType = itemP.getUnitType();
+			//externalPartNumber = itemP.getExternalPartNumber();
 			unitLocation = itemP.getUnitLocation();
+			partSomething = "dunno on this";
+			itemId = 1000;
 			submit();					
 		}
 		
@@ -51,37 +55,7 @@ public class EditItemPopupController implements ActionListener{
 		
 		//kind of want to fix this cause it looks weird
 		/* set part name */
-		Part item = new Part();
-		if( partName.length() < 255 && !partName.isEmpty() ){
-			item.setPartName(partName);//already did the checks
-		} else{
-			itemP.formatError(1);
-			error = true;
-		}
-		
-		/* set part number */
-		if( partNumber.length() < 20 && !partNumber.isEmpty() ){
-			item.setPartNumber(partNumber);
-		} else {
-			itemP.formatError(2);
-			error = true;
-		}
-		
-		/* set part number */
-		if( externalPartNumber.length() < 20 && !externalPartNumber.isEmpty() ){
-			item.setPartNumber(externalPartNumber);
-		} else {
-			itemP.formatError(2);
-			error = true;
-		}
-		
-		/* set vendor */
-		if( vendor.length() < 255 || vendor.isEmpty() ){
-			item.setVendor(vendor);
-		} else { 
-			itemP.formatError(3);
-			error = true;
-		}
+		Item item = new Item();
 		
 		/* set quantity */
 		if(quantity.isEmpty()){//first check if empty
@@ -95,12 +69,6 @@ public class EditItemPopupController implements ActionListener{
 			itemP.formatError(4);
 			error = true;
 		}
-		if( UIquantity >= 0){
-			item.setQuantity(UIquantity);
-		} else {//shouldn't happen since using unsigned
-			itemP.formatError(4);//needs to be throw
-			error = true;
-		}
 		/* if no error occurred, lets add it to the map */
 		if(!error){
 			/* to edit it we remove the old one and add a new item with the new info */
@@ -109,18 +77,26 @@ public class EditItemPopupController implements ActionListener{
 			itemP.closeWindow();
 		}
 		
-		if(unitType.equals("Unknown")){
-			itemP.formatError(5);
-			error = true;
-		} else{
-			item.setUnitType(unitType);
-		}
-		
+		//Set Unit location
 		if(unitLocation.equals("Unknown")){
 			itemP.formatError(6);
 			error = true;
 		} else{
 			item.setUnitLocation(unitLocation);
+		}
+		
+		//Set ID
+		if(itemId<0){
+			itemP.formatError(7);
+			error = true;
+		} else{
+			item.setId(itemId);
+		}
+		
+		//Set Part?
+		if(partSomething.equals("")){
+			itemP.formatError(8);
+			error = true;
 		}
 		
 		return;

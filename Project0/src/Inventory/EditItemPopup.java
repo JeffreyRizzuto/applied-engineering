@@ -24,24 +24,20 @@ public class EditItemPopup extends JFrame{
 	
 	private InventoryModel model;
 	
-	private final static String[] labels = {"Part Number: ", "Part Name: ", "Vendor: ", "Quantity: "};
+	private final static String[] labels = {"Part ID: ", "Part: ", "Location: ", "Quantity: "};
 
 	private int labelsLength = labels.length;
 	private JPanel form;
 	private EditItemPopupController editController;
-	private JTextField partName;
-	private JTextField partNumber;
-	private JTextField externalPartNumber;
-	private JTextField vendor;
+	private JTextField partID;
+	private JTextField partSomething; //He just called this part?
 	private JTextField quantity;
-	private JComboBox unitType;
 	private JComboBox unitLocation;
-	private	Part selectedItem;
+	private	Item selectedItem;
 	private JTextField partId;
 	private String[] locations = {"Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2"};
-	private String[] unitTypes = {"Linear Feet", "Pieces"};
 	
-	public EditItemPopup(InventoryModel model, Part item) {
+	public EditItemPopup(InventoryModel model, Item item) {
 
 		super("Add New Item");
 		this.model = model;
@@ -54,18 +50,11 @@ public class EditItemPopup extends JFrame{
 		editController = new EditItemPopupController(model,this);
 		
 		//here are the text fields for the form
-		partNumber = new JTextField(20);
-		externalPartNumber = new JTextField(255);
-		partName = new JTextField(255);
-		vendor = new JTextField(255);
+		partID = new JTextField(55);
+		partSomething = new JTextField(255);
 		quantity = new JTextField(255);
-		partId = new JTextField(255);
-		unitType = new JComboBox();
 		unitLocation = new JComboBox();
 		
-		for(int i = 0; i < 2; i++){
-			unitType.addItem(unitTypes[i]);
-		}
 		for(int i = 0; i < 3; i++){
 			unitLocation.addItem(locations[i]);
 		}
@@ -73,53 +62,32 @@ public class EditItemPopup extends JFrame{
 		//fill the textfields with the items info
 		//set default id for the id
 		partId.setText( Integer.toString(selectedItem.getId()) );
-		partNumber.setText(selectedItem.getPartNumber());
-		partName.setText(selectedItem.getPartName());
-		vendor.setText(selectedItem.getVendor());
+		//Not sure exactly what this needs to be
+		partSomething.setText("What to do");
 		quantity.setText( Integer.toString(selectedItem.getQuantity()) );
-		unitType.setSelectedItem(selectedItem.getUnitType());
-		externalPartNumber.setText(selectedItem.getExternalPartNumber());
 		unitLocation.setSelectedItem(selectedItem.getUnitLocation());
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
 		
-		l = new JLabel("Item ID: ", JLabel.TRAILING);
+		l = new JLabel("ID: ", JLabel.TRAILING);
 		form.add(l);
 		l.setLabelFor(partId);
 		partId.setEditable(false);
 		form.add(partId);
 		
-		
-		l = new JLabel("Part Number: ", JLabel.TRAILING);
+		//again not sure what he wants here
+		l = new JLabel("Part ?: ", JLabel.TRAILING);
 		form.add(l);
-		l.setLabelFor(partNumber);
-		form.add(partNumber);
+		l.setLabelFor(partSomething);
+		form.add(partSomething);
 		
-		l = new JLabel("EXT Part Number: ", JLabel.TRAILING);
-		form.add(l);
-		l.setLabelFor(externalPartNumber);
-		form.add(externalPartNumber);
-		
-		l = new JLabel("Part Name: ", JLabel.TRAILING);
-		form.add(l);
-		l.setLabelFor(partName);
-		form.add(partName);
-		
-		l = new JLabel("Vendor: ", JLabel.TRAILING);
-		form.add(l);
-		l.setLabelFor(vendor);
-		form.add(vendor);
 		
 		l = new JLabel("Quantity: ", JLabel.TRAILING);
 		form.add(l);
 		l.setLabelFor(quantity);
 		form.add(quantity);
-		
-		l = new JLabel("Unit Type: ", JLabel.TRAILING);
-		form.add(l);
-		l.setLabelFor(unitType);
-		form.add(unitType);
+
 		
 		l = new JLabel("Location: ", JLabel.TRAILING);
 		form.add(l);
@@ -164,21 +132,11 @@ public class EditItemPopup extends JFrame{
 		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));//close the window
 	}
 		
-	public String getPartNumber(){
-		return partNumber.getText();	
+
+	public String getPartID(){
+		return partId.getText();
 	}
 	
-	public String getExternalPartNumber(){
-		return externalPartNumber.getText();
-	}
-	
-	public String getPartName(){
-		return partName.getText();	
-	}
-	
-	public String getVendor(){
-		return vendor.getText();	
-	}
 	
 	public String getQuantity(){
 		//String value = quantity.getText();
@@ -186,11 +144,8 @@ public class EditItemPopup extends JFrame{
 		return quantity.getText();
 	}
 	
-	public String getUnitType(){
-		return (String) unitType.getSelectedItem();
-	}
 	
-	public Part getSelectedItem(){
+	public Item getSelectedItem(){
 		return selectedItem;
 	}
 	
@@ -201,15 +156,7 @@ public class EditItemPopup extends JFrame{
 	/* if time, i want to remove this function and replace it with throw/catches */
 	public void formatError(int errorCode){
 		switch(errorCode){
-		case 1:	errorCode=1;
-			partName.setBackground(Color.red);
-			break;
-		case 2:	errorCode=2;
-			partNumber.setBackground(Color.red);
-			break;
-		case 3:	errorCode=3;
-			vendor.setBackground(Color.red);
-			break;
+		//Will need to modify this if we wish to stick with error codes
 		case 4:	errorCode=4;
 			quantity.setBackground(Color.red);
 			break;
@@ -219,9 +166,7 @@ public class EditItemPopup extends JFrame{
 	}
 	
 	public void resetErrors(){
-		partName.setBackground(Color.WHITE);
-		partNumber.setBackground(Color.WHITE);
-		vendor.setBackground(Color.WHITE);
+		//Will need to add to this if we stick with error codes
 		quantity.setBackground(Color.WHITE);
 	}
 }
