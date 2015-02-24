@@ -17,27 +17,42 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
 public class InventoryModel{
 
 	private HashMap<Integer, Part> parts;//Key = partId, V = the part object
-	private HashMap<Integer, Part> items;//Key = partId, V = the part object
-	private JList<String> list;
+	private HashMap<Integer, Item> items;//Key = partId, V = the part object
+	private JList itemsList;
+	private JList partsList;
+	private DefaultListModel<String> partNameList;
+	private DefaultListModel<String> itemNameList;
 	private InventoryGateway pdg;
+	
 	
 	private int currentPartId = 1;
 	private int currentItemId = 1;
 	
 	public InventoryModel(){		
 		parts = new HashMap<Integer, Part>();
-		items = new HashMap<Integer, Part>();
-		list = new JList<String>();
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setLayoutOrientation(JList.VERTICAL);
+		items = new HashMap<Integer, Item>();
+		itemsList = new JList();
+		partsList = new JList();
+		
+		partNameList = new DefaultListModel();
+		itemNameList = new DefaultListModel();
+		
+		partsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		partsList.setLayoutOrientation(JList.VERTICAL);
+		
+		itemsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		itemsList.setLayoutOrientation(JList.VERTICAL);
+		
 		/* this is where we would add saved items if we used persistent data*/
 		refresh();
+		update();
 
 	}
 	
@@ -50,7 +65,7 @@ public class InventoryModel{
 		pdg.loadParts();
 		parts = (HashMap<Integer, Part>) pdg.getParts();
 		pdg.loadItems();
-		items = (HashMap<Integer, Part>) pdg.getItems();
+		items = (HashMap<Integer, Item>) pdg.getItems();
 	}
 	
 	public void addElement(Part part){
@@ -109,27 +124,30 @@ public class InventoryModel{
 	}
 	
 	public boolean checkPartIdExists(int id){
-		if(parts.get(id) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		return parts.containsKey(id);
 	}
 	public boolean checkItemIdExists(int id){
-		if(items.get(id) != null) {
-			return true;
-		} else {
-			return false;
+		return items.containsKey(id);
+	}
+	
+	private void getPartslist(){
+		for(Part value : parts.values()) {
+			String Name = value.getPartName();
+			partNameList.addElement(Name);
 		}
 		
 	}
-
-	public JList<String> getItemList(){
-		return list;
+	
+	private void getItemslist(){
+		for(Item value : items.values()) {
+			String Name = value.getPart().getPartName();
+			itemNameList.addElement(Name);
+		}
 	}
 	
 	private void update(){
-		list.setListData(new Vector<String>());
+		getPartslist();
+		getItemslist();
 	}
 
 }

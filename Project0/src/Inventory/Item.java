@@ -10,7 +10,7 @@ package inventory;
 public class Item {
 	
 	private int id;
-	private int part;
+	private Part part;
 	private String unitLocation;
 	private int quantity;
 	//private String unitType;
@@ -24,8 +24,8 @@ public class Item {
 		this.id = itemId;		
 	}
 	
-	public void setPart(int partNumber){
-		this.part = partNumber;
+	public void setPart(Part part){
+		this.part = part;
 	}
 
 	
@@ -51,7 +51,7 @@ public class Item {
 		return this.id;
 	}
 	
-	public int getPart(){
+	public Part getPart(){
 		return this.part;
 	}
 	
