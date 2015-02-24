@@ -27,8 +27,8 @@ public class InventoryModel{
 	private HashMap<Integer, Item> items;//Key = partId, V = the part object
 	private JList itemsList;
 	private JList partsList;
-	private DefaultListModel<String> partNameList;
-	private DefaultListModel<String> itemNameList;
+	private ArrayList<String> partNameList;
+	private ArrayList<String> itemNameList;
 	private InventoryGateway pdg;
 	
 	
@@ -41,8 +41,8 @@ public class InventoryModel{
 		itemsList = new JList();
 		partsList = new JList();
 		
-		partNameList = new DefaultListModel();
-		itemNameList = new DefaultListModel();
+		partNameList = new ArrayList<String>();
+		itemNameList = new ArrayList<String>();
 		
 		partsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		partsList.setLayoutOrientation(JList.VERTICAL);
@@ -52,7 +52,8 @@ public class InventoryModel{
 		
 		/* this is where we would add saved items if we used persistent data*/
 		refresh();
-		update();
+		getPartslist();
+		getItemslist();
 
 	}
 	
@@ -83,8 +84,8 @@ public class InventoryModel{
 		}
 	}
 	
-	public Part getElement(String item){
-		if(item == null || parts.get(item) == null) {
+	public Part getElement(int item){
+		if(parts.get(item) == null) {
 			throw new IllegalArgumentException();
 		} else {
 			return parts.get(item);
@@ -133,21 +134,21 @@ public class InventoryModel{
 	private void getPartslist(){
 		for(Part value : parts.values()) {
 			String Name = value.getPartName();
-			partNameList.addElement(Name);
+			partNameList.add(Name);
 		}
 		
 	}
 	
 	private void getItemslist(){
 		for(Item value : items.values()) {
-			String Name = value.getPart().getPartName();
-			itemNameList.addElement(Name);
+			Part itemPart = getElement(value.getPart());
+			itemNameList.add(itemPart.getPartName());
 		}
 	}
 	
 	private void update(){
-		getPartslist();
-		getItemslist();
+		partsList.setListData(new Vector<String>(partNameList));
+		itemsList.setListData(new Vector<String>(itemNameList));
 	}
 
 }
