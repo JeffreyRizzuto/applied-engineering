@@ -17,6 +17,7 @@ public class InventoryView extends JFrame{
 	private JMenu invMenu;
 	private JPopupMenu popupMenu;
 	private JPanel buttonPane;
+	private int mode = 0;//0 = part, 1 = item
 	
 	private static final String editString = "edit";
 	private static final String addString = "add";
@@ -36,7 +37,7 @@ public class InventoryView extends JFrame{
 		//inventory scroll pane
 		invPanel = new JPanel();
 		invPanel.setLayout(new BorderLayout());
-		scrollPane = new JScrollPane(model.getItemList());
+		scrollPane = new JScrollPane(model.getPartsList());
 		invPanel.add(scrollPane);
 		
 		//button pane
@@ -107,5 +108,20 @@ public class InventoryView extends JFrame{
 		scrollPane.addMouseListener(Icontrol);
 		
 		
+	}
+	
+	public int getMode() {
+		return mode;
+	}
+	
+	public void changeMode() {
+		if(mode == 0) {
+			scrollPane.setViewportView(model.getItemsList());
+			mode = 1;
+		} else {
+			scrollPane.setViewportView(model.getPartsList());
+			mode = 0;
+		}
+				
 	}
 }

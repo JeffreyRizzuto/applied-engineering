@@ -111,7 +111,7 @@ public class AddPartPopupController implements ActionListener{
 		}
 		
 		if(!error){
-			model.addElement(part);
+			model.addPart(part);
 			itemP.closeWindow();
 		}
 		

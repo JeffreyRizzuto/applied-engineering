@@ -10,6 +10,8 @@
 
 package inventory;
 
+import java.awt.List;
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,18 +19,24 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
 
+import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 public class InventoryModel{
 
 	private HashMap<Integer, Part> parts;//Key = partId, V = the part object
 	private HashMap<Integer, Item> items;//Key = partId, V = the part object
-	private JList itemsList;
-	private JList partsList;
-	private ArrayList<String> partNameList;
-	private ArrayList<String> itemNameList;
+	private ArrayList<String> itemsListName;
+	private ArrayList<String> partsListName;
+	private ArrayList<Integer> itemsListId;
+	private ArrayList<Integer> partsListId;
+	private JList partList;
+	private JList itemList;
 	private InventoryGateway pdg;
 	
 	
@@ -36,24 +44,17 @@ public class InventoryModel{
 	private int currentItemId = 1;
 	
 	public InventoryModel(){		
+		
 		parts = new HashMap<Integer, Part>();
 		items = new HashMap<Integer, Item>();
-		itemsList = new JList();
-		partsList = new JList();
 		
-		partNameList = new ArrayList<String>();
-		itemNameList = new ArrayList<String>();
-		
-		partsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		partsList.setLayoutOrientation(JList.VERTICAL);
-		
-		itemsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		itemsList.setLayoutOrientation(JList.VERTICAL);
+		partsListName = new ArrayList<String>();
+		itemsListName = new ArrayList<String>();
+		partsListId = new ArrayList<Integer>();
+		itemsListId = new ArrayList<Integer>();
 		
 		/* this is where we would add saved items if we used persistent data*/
-		refresh();
-		getPartslist();
-		getItemslist();
+		update();		
 
 	}
 	
@@ -69,26 +70,54 @@ public class InventoryModel{
 		items = (HashMap<Integer, Item>) pdg.getItems();
 	}
 	
-	public void addElement(Part part){
+	public void addPart(Part part){
 			parts.put(part.getId(),part);
+			pdg.addPart(part);
+			update();//update the JList to reflect changes
+		
+	}
+
+	public void addItem(Item item){
+			items.put(item.getId(),item);
+			pdg.addItem(item);
 			update();//update the JList to reflect changes
 		
 	}
 	
-	public void removeElement(String item){
-		if(item == null || parts.get(item) == null){
+	public void removePart(int item){
+		if(parts.get(parts) == null){
 			throw new IllegalArgumentException();
 		} else {
+			//remove from mysql
 			parts.remove(item);
 			update();//update the JList to reflect changes
 		}
 	}
 	
-	public Part getElement(int item){
-		if(parts.get(item) == null) {
+	public void removeitem(int item){
+		if(items.get(item) == null){
 			throw new IllegalArgumentException();
 		} else {
-			return parts.get(item);
+			//remove from mysql
+			items.remove(item);
+			
+			update();//update the JList to reflect changes
+		}
+	}
+	
+	public Part getPart(int partNum){
+		if(parts.get(partNum) == null) {
+			throw new IllegalArgumentException();
+		} else {
+			return parts.get(partNum);
+		}
+	}
+	
+	public Item getItem(int itemNum){
+		if(items.get(itemNum) == null) {
+			throw new IllegalArgumentException();
+		} else {
+			return items.get(itemNum);
 		}
 	}
 	
@@ -131,24 +160,60 @@ public class InventoryModel{
 		return items.containsKey(id);
 	}
 	
-	private void getPartslist(){
-		for(Part value : parts.values()) {
-			String Name = value.getPartName();
-			partNameList.add(Name);
+	public void populatePartsList(){
+		for(Part part : parts.values()) {
+			partsListName.add(part.getPartName());//so hacky
+			partsListId.add(part.getId());
 		}
-		
 	}
 	
-	private void getItemslist(){
-		for(Item value : items.values()) {
-			Part itemPart = getElement(value.getPart());
-			itemNameList.add(itemPart.getPartName());
+	public void populateItemsList(){
+		for(Item item : items.values()) {
+			itemsListName.add(getPart(item.getId()).getPartName());
+			itemsListId.add(item.getId());
 		}
+	}
+	
+	public JList getPartsList() {
+		return partList;
+	}
+	
+	public JList getItemsList() {
+		return itemList;
+	}
+	
+	public int partToId(int index){
+		return partsListId.get(index);
+	}
+	
+	/*public int itemToId(int index){
+		return items.get(itemsListId.get(index)).getPart();
+	}*/
+	
+	public int itemToId(int index){
+	return itemsListId.get(index);
+	}
+	
+	public void addPartsList(String name, Integer id) {
+		partsListName.add(name);
+		partsListId.add(id);
+	}
+	
+	public void addItemsList(String name, Integer id) {
+		itemsListName.add(name);
+		itemsListId.add(id);
 	}
 	
 	private void update(){
-		partsList.setListData(new Vector<String>(partNameList));
-		itemsList.setListData(new Vector<String>(itemNameList));
+		refresh();
+		partsListName.clear();
+		itemsListName.clear();
+		partsListId.clear();
+		itemsListId.clear();
+		populateItemsList();
+		populatePartsList();
+		partList = new JList(partsListName.toArray());
+		itemList = new JList(itemsListName.toArray());
 	}
 
 }
