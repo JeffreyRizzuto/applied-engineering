@@ -53,8 +53,8 @@ public class InventoryGatewaySQL implements InventoryGateway{
  	}
 	
 	public void loadItems() {
-   	 statement = null;
-   	 result = null;
+		statement = null;
+   	 	result = null;
         try {
        	 statement = connection.prepareStatement("select * from Inventory");
        	 statement.setInt(1, invId);
@@ -157,6 +157,7 @@ public class InventoryGatewaySQL implements InventoryGateway{
 	public void removeItem() {
 		
 	}	
+	
      public DataSource getDataSource() {
  		Properties props = new Properties();
  		FileInputStream fis = null;

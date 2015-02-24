@@ -55,7 +55,7 @@ public class AddPartPopupController implements ActionListener{
 				itemP.formatError(0);
 				error = true;
 			}
-			if(model.checkIdExists(UIid)){
+			if(model.checkPartIdExists(UIid)){
 				itemP.formatError(0);
 				error = true;
 			} else {

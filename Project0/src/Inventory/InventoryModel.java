@@ -22,22 +22,22 @@ import javax.swing.ListSelectionModel;
 
 public class InventoryModel{
 
-	private HashMap<String, Part> items;//Key = partId, V = the part object
+	private HashMap<Integer, Part> parts;//Key = partId, V = the part object
+	private HashMap<Integer, Part> items;//Key = partId, V = the part object
 	private JList<String> list;
-	private int currentOpenId;
-	private ArrayList<Integer> idList;
 	private InventoryGateway pdg;
 	
+	private int currentPartId = 1;
+	private int currentItemId = 1;
+	
 	public InventoryModel(){		
-		items = new HashMap<String, Part>();
+		parts = new HashMap<Integer, Part>();
+		items = new HashMap<Integer, Part>();
 		list = new JList<String>();
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
-		idList = new ArrayList<Integer>();
 		/* this is where we would add saved items if we used persistent data*/
-		//update();
-		
-		this.currentOpenId = 1;
+		refresh();
 
 	}
 	
@@ -47,47 +47,44 @@ public class InventoryModel{
 	}
 	
 	public void refresh() {
-		pdg.loadInventory();
-		
-		
+		pdg.loadParts();
+		parts = (HashMap<Integer, Part>) pdg.getParts();
+		pdg.loadItems();
+		items = (HashMap<Integer, Part>) pdg.getItems();
 	}
 	
 	public void addElement(Part part){
-			items.put(part.getPartNumber(),part);
-			addId(part.getId());//add item id to id list
+			parts.put(part.getId(),part);
 			update();//update the JList to reflect changes
 		
 	}
 	
 	public void removeElement(String item){
-		if(item == null || items.get(item) == null){
+		if(item == null || parts.get(item) == null){
 			throw new IllegalArgumentException();
 		} else {
-			removeId(items.get(item).getId());//remove the id from the list
-			items.remove(item);
+			parts.remove(item);
 			update();//update the JList to reflect changes
 		}
 	}
 	
 	public Part getElement(String item){
-		if(item == null || items.get(item) == null) {
+		if(item == null || parts.get(item) == null) {
 			throw new IllegalArgumentException();
 		} else {
-			return items.get(item);
+			return parts.get(item);
 		}
 	}
 	
 	public boolean checkPartNumber(String partNumber) {
-		if(items.get(partNumber) == null){
+		if(parts.get(partNumber) == null){
 			return false;
 		}
 		return true;
 	}
 	
 	public boolean checkPartName(String item) {
-		/*make an iterator to go through items, see if item exists with this name */
-		/* lots of casting :( don't know how to do it otherwise */
-		for(Part value : items.values()) {
+		for(Part value : parts.values()) {
 			if( item.equals(value.getPartName()) ){
 				return true;
 			}
@@ -95,21 +92,35 @@ public class InventoryModel{
 		return false;
 	}
 	
-	public int getCurrentOpenId(){
-		currentOpenId++;
-		return currentOpenId-1;
+	public int getCurrentOpenPartId(){
+		while(parts.get(currentPartId) != null) {
+			currentPartId++;
+		}
+		return currentPartId;
+			
+		
 	}
 	
-	private void addId(int id){
-		idList.add(new Integer(id));
+	public int getCurrentOpenItemId(){
+		while(items.get(currentItemId) != null) {
+			currentItemId++;
+		}
+		return currentItemId;
 	}
 	
-	private void removeId(int id){
-		idList.remove(new Integer(id));
+	public boolean checkPartIdExists(int id){
+		if(parts.get(id) != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-	
-	public boolean checkIdExists(int id){
-		return(idList.contains(id));//returns true if id is taken
+	public boolean checkItemIdExists(int id){
+		if(items.get(id) != null) {
+			return true;
+		} else {
+			return false;
+		}
 		
 	}
 
@@ -118,7 +129,7 @@ public class InventoryModel{
 	}
 	
 	private void update(){
-		list.setListData(new Vector<String>(items.keySet()));
+		list.setListData(new Vector<String>());
 	}
 
 }

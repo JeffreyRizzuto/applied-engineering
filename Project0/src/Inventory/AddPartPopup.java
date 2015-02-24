@@ -86,7 +86,7 @@ public class AddPartPopup extends JFrame{
 		l.setLabelFor(unitType);
 		form.add(unitType);
 		//set default id for the id
-		String openId = Integer.toString(model.getCurrentOpenId());
+		String openId = Integer.toString(model.getCurrentOpenPartId());
 		partId.setText(openId);
 		
 		l = new JLabel("External Part #: ", JLabel.TRAILING);
