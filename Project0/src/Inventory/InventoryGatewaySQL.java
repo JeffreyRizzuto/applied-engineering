@@ -38,25 +38,61 @@ public class InventoryGatewaySQL implements InventoryGateway{
 		}
 	}
 	
-     
-	
-	public void loadInventory() {
+	public void loadParts() {
     	 statement = null;
     	 result = null;
          try {
-        	 statement = connection.prepareStatement("select * from pong_game where id = ?");
-        	 //statement.setInt(1, gameId);
-        	// result = statement.executeQuery();
+        	 statement = connection.prepareStatement("select * from PARTS");
+        	 statement.setInt(1, invId);
+        	 result = statement.executeQuery();
         	 result.first();
          } catch (SQLException e) {
              e.printStackTrace();
          }
  	}
 	
-	public void updateInventory() {
+	public void loadItems() {
+   	 statement = null;
+   	 result = null;
+        try {
+       	 statement = connection.prepareStatement("select * from Inventory");
+       	 statement.setInt(1, invId);
+       	 result = statement.executeQuery();
+       	 result.first();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public void getParts() {
+		try {
+			while(result.next()) {
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void getItems() {
 		
 	}
+	
+	public void addPart() {
+		
+	}
+	
+	public void addItem() {
+		
+	}
+	
+	public void removePart() {
+		
+	}	
      
+	public void removeItem() {
+		
+	}	
      public DataSource getDataSource() {
  		Properties props = new Properties();
  		FileInputStream fis = null;
