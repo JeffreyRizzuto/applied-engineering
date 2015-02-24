@@ -67,7 +67,7 @@ public class InventoryGatewaySQL implements InventoryGateway{
 	public void getParts() {
 		try {
 			while(result.next()) {
-				
+				//make the objects
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
