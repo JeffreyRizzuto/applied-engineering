@@ -3,10 +3,10 @@ package Inventory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AddPartPopupController implements ActionListener{
+public class EditPartPopupController implements ActionListener{
 	
 	private InventoryModel model;
-	private AddPartPopup itemP;
+	private EditPartPopup itemP;
 	
 	private static final String submitString = "Submit";
 	private static final String cancelString = "Cancel";
@@ -18,9 +18,9 @@ public class AddPartPopupController implements ActionListener{
 	private String externalPartNumber;
 	private int UIid;
 	
-	public AddPartPopupController(InventoryModel model, AddPartPopup item_popup) {
+	public EditPartPopupController(InventoryModel model, EditPartPopup editPartPopup) {
 		this.model = model;
-		this.itemP = item_popup;		
+		this.itemP = editPartPopup;		
 	}
 
 	@Override
@@ -28,7 +28,6 @@ public class AddPartPopupController implements ActionListener{
 		String command = event.getActionCommand();
 		if(command.equals(cancelString)){
 			itemP.dispose();
-			return;
 		} else if(command.equals(submitString)){
 			partId = itemP.getPartId();
 			partNumber = itemP.getPartNumber();
@@ -46,8 +45,8 @@ public class AddPartPopupController implements ActionListener{
 		boolean error = false;
 		Part part = new Part();
 		
-		/* set part id */
-		if(!partId.isEmpty() ){
+		/* set part id, can't be changed */
+		if(!partId.isEmpty()){//this shouldn't be possible
 			//first try to parse to int
 			try{
 				UIid = Integer.parseInt(partId);
@@ -55,12 +54,7 @@ public class AddPartPopupController implements ActionListener{
 				itemP.formatError(0);
 				error = true;
 			}
-			if(model.checkIdExists(UIid)){
-				itemP.formatError(0);
-				error = true;
-			} else {
-				part.setId(UIid);
-			}
+			part.setId(UIid);
 		} else {
 			itemP.formatError(0);
 			error = true;
@@ -68,7 +62,7 @@ public class AddPartPopupController implements ActionListener{
 		
 		/* set part number */
 		/* need to make sure no parts have the same part # */
-		if( partNumber.length() < 20 && !partNumber.isEmpty() && !model.checkPartNumber(partNumber) ){
+		if( partNumber.length() < 20 && !partNumber.isEmpty() ){
 			part.setPartNumber(partNumber);
 		} else {
 			itemP.formatError(1);
@@ -76,11 +70,8 @@ public class AddPartPopupController implements ActionListener{
 		}
 		
 		/* set part name */
-		if( partName.length() < 255 && !partName.isEmpty()){
-			if(model.checkPartName(partName)) {
-				//must throw a quick message to the user saying part name exists (is allowed though)
-			}
-			part.setPartName(partName);
+		if( partName.length() < 255 && !partName.isEmpty() ){
+			part.setPartName(partName);//already did the checks
 		} else {
 			itemP.formatError(2);
 			error = true;
@@ -109,12 +100,12 @@ public class AddPartPopupController implements ActionListener{
 			itemP.formatError(5);
 			error = true;
 		}
-		
 		if(!error){
-			model.addElement(part);
+			/* to edit it we remove the old one and add a new item with the new info */
+			model.removeElement( (itemP.getSelectedItem()).getPartNumber());//remove old item
+			model.addElement(part);//add the new one
 			itemP.closeWindow();
-		}
-		
+		}		
 		return;
 	}
 

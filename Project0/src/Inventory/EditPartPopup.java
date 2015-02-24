@@ -16,7 +16,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 
-public class AddItemPopup extends JFrame{
+public class EditPartPopup extends JFrame{
 	
 	private static final long serialVersionUID = -8616906922402009596L;
 	
@@ -26,22 +26,21 @@ public class AddItemPopup extends JFrame{
 
 	private int labelsLength = labels.length;
 	private JPanel form;
-	private AddPartPopupController itemController;
+	private EditPartPopupController editController;
+	
+	private JTextField partId;
 	private JTextField partName;
 	private JTextField partNumber;
 	private JTextField vendor;
-	private JTextField quantity;
 	private JComboBox unitType;
 	private JTextField externalPartNumber;
-	private JComboBox location;
-	private String[] unitTypes = {"Unknown", "Linear Feet", "Pieces"};
-	private String[] locations = {"Unknown", "Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2"};
-	private JTextField partId;
 	
+	private	Part selectedItem;
 	
-
+	private String[] locations = {"Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2"};
+	private String[] unitTypes = {"Linear Feet", "Pieces"};
 	
-	public AddItemPopup(InventoryModel model) {
+	public EditPartPopup(InventoryModel model, Part item) {
 
 		super("Add New Item");
 		this.model = model;
@@ -49,26 +48,30 @@ public class AddItemPopup extends JFrame{
 		setSize(400, 400);
 		setVisible(true);
 
+		this.selectedItem = item;
 		JPanel form = new JPanel(new SpringLayout());
-		itemController = new AddPartPopupController(model,this);
+		editController = new EditPartPopupController(model,this);
 		
 		//here are the text fields for the form
-		
-		partId = new JTextField(10);
-		partName = new JTextField(10);
-		partNumber = new JTextField(255);
+		partId = new JTextField(255);
+		partNumber = new JTextField(20);
+		partName = new JTextField(255);
 		vendor = new JTextField(255);
-		quantity = new JTextField(255);
 		unitType = new JComboBox();
 		externalPartNumber = new JTextField(255);
-		location = new JComboBox();
 		
-		for(int i = 0; i < 3; i++){
+		for(int i = 0; i < 2; i++){
 			unitType.addItem(unitTypes[i]);
 		}
-		for(int i = 0; i < 4; i++){
-			location.addItem(locations[i]);
-		}
+		
+		//fill the textfields with the items info
+		//set default id for the id
+		partId.setText( Integer.toString(selectedItem.getId()) );
+		partNumber.setText(selectedItem.getPartNumber());
+		partName.setText(selectedItem.getPartName());
+		vendor.setText(selectedItem.getVendor());
+		unitType.setSelectedItem(selectedItem.getUnitType());
+		externalPartNumber.setText(selectedItem.getExternalPartNumber());
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
@@ -76,12 +79,15 @@ public class AddItemPopup extends JFrame{
 		l = new JLabel("Item ID: ", JLabel.TRAILING);
 		form.add(l);
 		l.setLabelFor(partId);
+		partId.setEditable(false);
 		form.add(partId);
+		
 		
 		l = new JLabel("Part Number: ", JLabel.TRAILING);
 		form.add(l);
 		l.setLabelFor(partNumber);
 		form.add(partNumber);
+		
 		
 		l = new JLabel("Part Name: ", JLabel.TRAILING);
 		form.add(l);
@@ -92,22 +98,16 @@ public class AddItemPopup extends JFrame{
 		form.add(l);
 		l.setLabelFor(vendor);
 		form.add(vendor);
-		
+				
 		l = new JLabel("Unit Type: ", JLabel.TRAILING);
 		form.add(l);
 		l.setLabelFor(unitType);
 		form.add(unitType);
-		//set default id for the id
-		String openId = Integer.toString(model.getCurrentOpenId());
-		partId.setText(openId);
 		
-		l = new JLabel("External Part #: ", JLabel.TRAILING);
+		l = new JLabel("EXT Part Number: ", JLabel.TRAILING);
 		form.add(l);
-		l.setLabelFor(location);
-		form.add(location);
-		
-		
-		
+		l.setLabelFor(externalPartNumber);
+		form.add(externalPartNumber);
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
@@ -121,8 +121,8 @@ public class AddItemPopup extends JFrame{
 		 JButton Cancel = new JButton("Cancel");
 		 
 		 //add controllers
-		 Submit.addActionListener(itemController);
-		 Cancel.addActionListener(itemController);
+		 Submit.addActionListener(editController);
+		 Cancel.addActionListener(editController);
 		 
 		 //add buttons to form
 		 buttons.add(new JSeparator(SwingConstants.VERTICAL));
@@ -141,26 +141,18 @@ public class AddItemPopup extends JFrame{
 	
 	}
 	
-	
 	public void closeWindow(){
 		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));//close the window
-	}
-	
-	public String getUnityType(){
-		return (String) unitType.getSelectedItem();
 	}
 	
 	public String getPartId(){
 		return partId.getText();
 	}
-		
+	
 	public String getPartNumber(){
 		return partNumber.getText();	
 	}
 	
-	public String getExternalPartNumber(){
-		return externalPartNumber.getText();
-	}
 	
 	public String getPartName(){
 		return partName.getText();	
@@ -170,48 +162,48 @@ public class AddItemPopup extends JFrame{
 		return vendor.getText();	
 	}
 	
-	public String getQuantity(){
-		//String value = quantity.getText();
-		//return !value.isEmpty() ? Integer.parseUnsignedInt(value) : 0;
-		return quantity.getText();
-	}
 	public String getUnitQuantity(){
 		return (String) unitType.getSelectedItem();
 	}
-	public String getUnitLocation(){
-		return (String) location.getSelectedItem();
+	
+	public String getExternalPartNumber(){
+		return externalPartNumber.getText();
 	}
 	
+	public Part getSelectedItem(){
+		return selectedItem;
+	}
+	
+	
+	/* if time, i want to remove this function and replace it with throw/catches */
 	public void formatError(int errorCode){
 		switch(errorCode){
-		case 0:	errorCode=0;
+		case 0:	errorCode=0;//id
 			partId.setBackground(Color.red);
 			break;
-		case 1:	errorCode=1;
+		case 1:	errorCode=1;//part #
+			partNumber.setBackground(Color.red);
+			break;	
+		case 2:	errorCode=2;//part name
 			partName.setBackground(Color.red);
 			break;
-		case 2:	errorCode=2;
-			partNumber.setBackground(Color.red);
-			break;
-		case 3:	errorCode=3;
+		case 3:	errorCode=3;//vendor
 			vendor.setBackground(Color.red);
 			break;
-		case 4:	errorCode=4;
-			quantity.setBackground(Color.red);
-			break;
-		case 5:	errorCode=5;
-			//wish i could set background to combo box easy
-			break;
-		case 6:	errorCode=6;
+		case 4:	errorCode=4;//unit of quantity
+			//quantity.setBackground(Color.red);
+			//break;
+		case 5:	errorCode=5;//external part #
 			//wish i could set background to combo box easy
 			break;
 		}
 	}
 	
 	public void resetErrors(){
+		partId.setBackground(Color.WHITE);
 		partName.setBackground(Color.WHITE);
 		partNumber.setBackground(Color.WHITE);
 		vendor.setBackground(Color.WHITE);
-		quantity.setBackground(Color.WHITE);
 	}
+
 }

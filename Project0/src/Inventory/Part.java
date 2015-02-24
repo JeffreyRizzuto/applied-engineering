@@ -22,15 +22,15 @@ public class Part {
 		
 	}
 		
+	public void setId(int itemId){
+		this.id = itemId;		
+	}
+	
 	public void setPartNumber(String partNumber){
 		if(partNumber.length() < 20 && !partNumber.isEmpty()){
 			this.partNumber = partNumber;
 		}
 		
-	}
-	
-	public void setId(int itemId){
-		this.id = itemId;		
 	}
 	
 	public void setPartName(String partName){

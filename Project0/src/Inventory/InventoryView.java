@@ -22,9 +22,6 @@ public class InventoryView extends JFrame{
 	private static final String addString = "add";
     private static final String removeString = "remove";
 	
-	// properties of the panel
-	private int width, height;
-	
 	public InventoryView(InventoryModel model) {
 		super("Inventory");
 		this.model = model;

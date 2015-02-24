@@ -11,21 +11,23 @@
 package Inventory;
 
 import java.util.ArrayList;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 public class InventoryModel{
 
-	private SortedMap<String, Part> items;
+	private HashMap<String, Part> items;//Key = partId, V = the part object
 	private JList<String> list;
 	private int currentOpenId;
 	private ArrayList<Integer> idList;
 	
 	public InventoryModel(){		
-		items = new TreeMap<String, Part>();
+		items = new HashMap<String, Part>();
 		list = new JList<String>();
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
@@ -38,10 +40,7 @@ public class InventoryModel{
 	}
 	
 	public void addElement(Part part){
-		/*if(part.getPartName()==null || part.getPartNumber()==null ||part.getPartName().length()>255 || part.getPartNumber().length()>20){
-			throw new IllegalArgumentException();
-		}*/
-			items.put(part.getPartName(),part);
+			items.put(part.getPartNumber(),part);
 			addId(part.getId());//add item id to id list
 			update();//update the JList to reflect changes
 		
@@ -58,19 +57,29 @@ public class InventoryModel{
 	}
 	
 	public Part getElement(String item){
-		if(items.get(item) == null){
-			return null;
+		if(item == null || items.get(item) == null) {
+			throw new IllegalArgumentException();
 		} else {
 			return items.get(item);
 		}
 	}
 	
-	public boolean checkElement(String item){
-		if(items.get(item) == null){
+	public boolean checkPartNumber(String partNumber) {
+		if(items.get(partNumber) == null){
 			return false;
-		} else {
-			return true;
 		}
+		return true;
+	}
+	
+	public boolean checkPartName(String item) {
+		/*make an iterator to go through items, see if item exists with this name */
+		/* lots of casting :( don't know how to do it otherwise */
+		for(Part value : items.values()) {
+			if( item.equals(value.getPartName()) ){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public int getCurrentOpenId(){
