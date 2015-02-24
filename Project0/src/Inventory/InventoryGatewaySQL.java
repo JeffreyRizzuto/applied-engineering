@@ -65,32 +65,87 @@ public class InventoryGatewaySQL implements InventoryGateway{
         }
 	}
 	
-	public void getParts() {
-		HashMap items = new HashMap<String, Part>();
+	public HashMap<Integer, Part> getParts() {
+		HashMap<Integer, Part> items = new HashMap<Integer, Part>();
 		try {
 			while(result.next()) {
 				Part part = new Part();
-				//fill the item
+				part.setId(result.getInt(1));
+				part.setPartNumber(result.getString(2));
+				part.setPartName(result.getString(3));
+				part.setVendor(result.getString(4));
+				part.setUnitType(result.getString(5));
+				part.setExternalPartNumber(result.getString(6));
 				
-				//add part to the items
-				//items.add(itemid, part);
+				items.put(new Integer(result.getInt(1)), part);
+				
+				return items;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void getItems() {
-		
+	public HashMap<Integer, Item> getItems() {
+		HashMap<Integer, Item> items = new HashMap<Integer, Item>();
+		try {
+			while(result.next()) {
+				Item item = new Part();
+				item.setId(result.getInt(1));
+				item.setPart(result.getInt(2));
+				item.setUnitLocation(result.getString(3));
+				item.setQuantity(result.getInt(4));
+
+				
+				items.put(new Integer(result.getInt(1)), item);
+				
+				return items;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void addPart() {
-		
+	public void addPart(Part part) {
+	  	 statement = null;
+	   	 result = null;
+	   	 String id = String.valueOf(part.getId());
+	   	 String partNumber = part.getPartNumber();
+	   	 String partName = part.getPartName();
+	   	 String vendor = part.getVendor();
+	   	 String unit = part.getUnitType();
+	   	 String extPartNum = part.getExternalPartNumber();
+	        try {
+	       	 statement = connection.prepareStatement("INSERT INTO Parts "
+	       	 		+ "VALUES ('" + id + "', '" + partNumber + "', '"
+	       	 		+ partName + "', '" + vendor + "', '" + unit
+	       	 		+ "', '" extPartNum + "')");
+	       	 statement.setInt(1, invId);
+	       	 result = statement.executeQuery();
+	       	 result.first();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	}
 	
-	public void addItem() {
-		
-	}
+	public void addItem(Item item) {
+	  	 statement = null;
+	   	 result = null;
+	   	 String id = String.valueOf(item.getId());
+	   	 String itemSomething = String.valueOf(item.getPart());
+	   	 String location = item.getLocation();
+	   	 String quantity = String.valueOf(item.getQuantity());
+
+	        try {
+	       	 statement = connection.prepareStatement("INSERT INTO Inventory "
+	       	 		+ "VALUES ('" + id + "', '" + itemSomething + "', '"
+	       	 		+ location + "', '" + quantity + "')");
+	       	 statement.setInt(1, invId);
+	       	 result = statement.executeQuery();
+	       	 result.first();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	
 	public void removePart() {
 		
