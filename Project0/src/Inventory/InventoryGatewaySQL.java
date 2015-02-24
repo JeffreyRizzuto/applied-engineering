@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -65,9 +66,14 @@ public class InventoryGatewaySQL implements InventoryGateway{
 	}
 	
 	public void getParts() {
+		HashMap items = new HashMap<String, Part>();
 		try {
 			while(result.next()) {
-				//make the objects
+				Part part = new Part();
+				//fill the item
+				
+				//add part to the items
+				//items.add(itemid, part);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
