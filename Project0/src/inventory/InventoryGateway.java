@@ -9,7 +9,7 @@ public interface InventoryGateway {
 	public void loadParts();
 	public void loadItems();
 	public void addItem(Item item);
-	public void removeItem();
-	public void removePart();
+	public void removeItem(int id);
+	public void removePart(int id);
 	public void close();
 }

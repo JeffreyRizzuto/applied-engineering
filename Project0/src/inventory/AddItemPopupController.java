@@ -5,27 +5,27 @@ package inventory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class EditItemPopupController implements ActionListener{
+public class AddItemPopupController implements ActionListener{
 	
 	private InventoryModel model;
-	private EditItemPopup itemP;
+	private AddItemPopup itemP;
 	
 	private static final String submitString = "Submit";
 	private static final String cancelString = "Cancel";
 	private String partName;
 	private String partNumber;
 	private String externalPartNumber;
-	private String partSomething;
-	private int itemId;
+	private String part;
+	private String itemId;
 	private String vendor;
 	private String quantity;
 	private int UIquantity;
 	private String unitType;
 	private String unitLocation;
 	
-	public EditItemPopupController(InventoryModel model, EditItemPopup edit_popup) {
+	public AddItemPopupController(InventoryModel model, AddItemPopup addItemPopup) {
 		this.model = model;
-		this.itemP = edit_popup;		
+		this.itemP = addItemPopup;		
 	}
 
 	@Override
@@ -33,21 +33,17 @@ public class EditItemPopupController implements ActionListener{
 		String command = event.getActionCommand();
 		if(command.equals(cancelString)){
 			itemP.dispose();
+			return;
 		} else if(command.equals(submitString)){
-			//partNumber = itemP.getPartNumber();
-			//partName = itemP.getPartName();
-			//vendor = itemP.getVendor();
 			quantity = itemP.getQuantity();
-			//unitType = itemP.getUnitType();
-			//externalPartNumber = itemP.getExternalPartNumber();
 			unitLocation = itemP.getUnitLocation();
-			partSomething = "dunno on this";
-			itemId = 1000;
+			part = itemP.getPartID();
+			itemId = itemP.getId();
 			submit();					
 		}
 		
 	}
-
+	
 	private void submit(){
 		
 		itemP.resetErrors();//reset the background color of textboxes for prior errors
@@ -65,16 +61,10 @@ public class EditItemPopupController implements ActionListener{
 		//try to parse the field to an int, if error, throw a format error
 		try{
 			UIquantity = Integer.parseInt(quantity);
+			item.setQuantity(UIquantity);
 		} catch(Exception NumberFormatException) {
-			itemP.formatError(4);
+			itemP.formatError(7);
 			error = true;
-		}
-		/* if no error occurred, lets add it to the map */
-		if(!error){
-			/* to edit it we remove the old one and add a new item with the new info */
-			model.removeitem( (itemP.getSelectedItem()).getPart() );//remove old item
-			model.addItem(item);//add the new one
-			itemP.closeWindow();
 		}
 		
 		//Set Unit location
@@ -86,21 +76,30 @@ public class EditItemPopupController implements ActionListener{
 		}
 		
 		//Set ID
-		if(itemId<0){
+		try {
+			item.setId(Integer.parseInt(itemId));
+			error = true;
+		} catch(Exception NumberFormatException) {
 			itemP.formatError(7);
 			error = true;
-		} else{
-			item.setId(itemId);
 		}
 		
 		//Set Part?
-		if(partSomething.equals("")){
+		if(part.equals("")){
 			itemP.formatError(8);
 			error = true;
+		} else {
+			item.setPart(Integer.parseInt(part));
 		}
 		
-		return;
 		
+		/* if no error occurred, lets add it to the map */
+		if(!error){
+			/* to edit it we remove the old one and add a new item with the new info */
+			model.addItem(item);//add the new one
+			itemP.closeWindow();
+		}
+		return;
 
 	}
 

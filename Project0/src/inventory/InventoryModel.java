@@ -90,11 +90,10 @@ public class InventoryModel{
 	}
 	
 	public void removePart(int item){
-		if(parts.get(parts) == null){
+		if(parts.get(item) == null){
 			throw new IllegalArgumentException();
 		} else {
-			//remove from mysql
-			parts.remove(item);
+			pdg.removePart(item);
 			update();//update the JList to reflect changes
 		}
 	}
@@ -103,7 +102,7 @@ public class InventoryModel{
 		if(items.get(item) == null){
 			throw new IllegalArgumentException();
 		} else {
-			//remove from mysql
+			pdg.removeItem(item);
 			items.remove(item);
 			
 			update();//update the JList to reflect changes

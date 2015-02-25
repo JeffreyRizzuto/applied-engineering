@@ -152,12 +152,26 @@ public class InventoryGatewaySQL implements InventoryGateway{
 	        }
 	}
 	
-	public void removePart() {
-		
+	public void removePart(int id) {
+		statement = null;
+	   	result = null;
+	   	try {
+	   		statement = connection.prepareStatement("DELETE FROM PARTS WHERE part_id=" +id);
+	   		statement.executeUpdate();
+	   	} catch (SQLException e) {
+            e.printStackTrace();
+        }
 	}	
      
-	public void removeItem() {
-		
+	public void removeItem(int id) {
+		statement = null;
+	   	result = null;
+	   	try {
+	   		statement = connection.prepareStatement("DELETE FROM Inventory WHERE id=" +id);
+	   		statement.executeUpdate();
+	   	} catch (SQLException e) {
+            e.printStackTrace();
+        }
 	}	
 	
      public DataSource getDataSource() {

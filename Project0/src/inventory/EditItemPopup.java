@@ -30,7 +30,7 @@ public class EditItemPopup extends JFrame{
 	private JPanel form;
 	private EditItemPopupController editController;
 	private JTextField partID;
-	private JTextField partSomething; //He just called this part?
+	private JTextField part; //He just called this part?
 	private JTextField quantity;
 	private JComboBox unitLocation;
 	private	Item selectedItem;
@@ -51,7 +51,7 @@ public class EditItemPopup extends JFrame{
 		
 		//here are the text fields for the form
 		partID = new JTextField(55);
-		partSomething = new JTextField(255);
+		part = new JTextField(255);
 		quantity = new JTextField(255);
 		unitLocation = new JComboBox();
 		
@@ -63,7 +63,7 @@ public class EditItemPopup extends JFrame{
 		//set default id for the id
 		partId.setText( Integer.toString(selectedItem.getId()) );
 		//Not sure exactly what this needs to be
-		partSomething.setText("What to do");
+		part.setText("What to do");
 		quantity.setText( Integer.toString(selectedItem.getQuantity()) );
 		unitLocation.setSelectedItem(selectedItem.getUnitLocation());
 		
@@ -79,8 +79,8 @@ public class EditItemPopup extends JFrame{
 		//again not sure what he wants here
 		l = new JLabel("Part ?: ", JLabel.TRAILING);
 		form.add(l);
-		l.setLabelFor(partSomething);
-		form.add(partSomething);
+		l.setLabelFor(part);
+		form.add(part);
 		
 		
 		l = new JLabel("Quantity: ", JLabel.TRAILING);
@@ -98,7 +98,7 @@ public class EditItemPopup extends JFrame{
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                8, 2, //rows, cols
+                4, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 

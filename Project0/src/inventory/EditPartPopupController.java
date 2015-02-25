@@ -102,8 +102,8 @@ public class EditPartPopupController implements ActionListener{
 		}
 		if(!error){
 			/* to edit it we remove the old one and add a new item with the new info */
-			model.removeElement( (itemP.getSelectedItem()).getPartNumber());//remove old item
-			model.addElement(part);//add the new one
+			model.removePart( (itemP.getSelectedItem()).getId());//remove old item
+			model.addPart(part);//add the new one
 			itemP.closeWindow();
 		}		
 		return;
