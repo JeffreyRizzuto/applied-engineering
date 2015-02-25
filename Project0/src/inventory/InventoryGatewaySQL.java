@@ -73,14 +73,6 @@ public class InventoryGatewaySQL implements InventoryGateway{
 				part.setVendor(result.getString(4));
 				part.setUnitType(result.getString(5));
 				part.setExternalPartNumber(result.getString(6));
-				System.out.println("BEGIN");
-				System.out.println(part.getId());
-				System.out.println(part.getPartNumber());
-				System.out.println(part.getPartName());
-				System.out.println(part.getVendor());
-				System.out.println(part.getUnitType());
-				System.out.println(part.getExternalPartNumber());
-				System.out.println("END");
 				items.put(new Integer(part.getId()), part);
 			}
 		} catch (SQLException e) {
@@ -94,7 +86,6 @@ public class InventoryGatewaySQL implements InventoryGateway{
         		e.printStackTrace();
         	}
         }
-		System.out.println(items.size());
 		return items;
 	}
 	

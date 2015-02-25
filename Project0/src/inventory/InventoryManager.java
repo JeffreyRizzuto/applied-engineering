@@ -1,6 +1,7 @@
 package inventory;
 
 import java.awt.event.*;
+
 import javax.swing.Timer;
 import javax.swing.JFrame;
 
@@ -26,6 +27,11 @@ public class InventoryManager{
 		MenuController Mcontrol = new MenuController(model, view);
 		view.registerListeners(Mcontrol, Icontrol);
 		//add controllers
+		
+		//observer
+		ListObserver o1 = new ListObserver();
+		model.registerObserver(o1);
+		o1.setView(view);
 		
 		
 		/* start the app */

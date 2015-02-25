@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -15,6 +17,8 @@ public class InventoryController implements ActionListener, MouseListener {
 	
 	private InventoryModel model;
 	private InventoryView view;
+	
+	 private ArrayList<Observer> observers = new ArrayList<Observer>();  
 	
 	private boolean alreadyEnabled = false;
 	private JButton button;
@@ -104,8 +108,8 @@ public class InventoryController implements ActionListener, MouseListener {
 	          }
 		}
 	}
-
-
+	
+	    
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -129,6 +133,7 @@ public class InventoryController implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
 	
 }

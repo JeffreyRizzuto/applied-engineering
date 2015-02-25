@@ -19,5 +19,8 @@ public class MenuController extends KeyAdapter implements ActionListener  {
 			view.dispose();
 			System.exit(0);
 		}
+		if (command.equals("Toggle")) {
+			view.changeMode();
+		}
 	}
 }

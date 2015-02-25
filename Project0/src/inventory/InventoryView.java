@@ -1,12 +1,13 @@
 package inventory;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.Observer;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class InventoryView extends JFrame{
+public class InventoryView extends JFrame {
 
 	private static final long serialVersionUID = 293596607766330824L;
 
@@ -56,6 +57,10 @@ public class InventoryView extends JFrame{
 		JMenuItem exitItem = new JMenuItem("Exit");
 		exitItem.setMnemonic('E');
 		invMenu.add(exitItem);
+		
+		JMenuItem Toggle = new JMenuItem("Toggle");
+		exitItem.setMnemonic('E');
+		invMenu.add(Toggle);
 		
 		/*
 		 * Panel that the inventory is in
@@ -109,6 +114,7 @@ public class InventoryView extends JFrame{
 		
 		
 	}
+
 	
 	public int getMode() {
 		return mode;
@@ -116,9 +122,9 @@ public class InventoryView extends JFrame{
 	
 	public void update() {
 		if(mode == 0) {
-			scrollPane.setViewportView(model.getItemsList());
-		} else {
 			scrollPane.setViewportView(model.getPartsList());
+		} else {
+			scrollPane.setViewportView(model.getItemsList());
 		}
 	}
 	

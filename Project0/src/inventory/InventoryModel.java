@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Observable;
 import java.util.Map.Entry;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.Vector;
 
 import javax.swing.AbstractListModel;
@@ -39,12 +41,17 @@ public class InventoryModel{
 	private JList itemList;
 	private InventoryGateway pdg;
 	
+	private ListObserver o1;
+	
 	
 	private int currentPartId = 1;
 	private int currentItemId = 1;
 	
+
 	public InventoryModel(InventoryGateway pdg){
 		this.pdg = pdg;
+		
+		
 				
 		partsListName = new ArrayList<String>();
 		itemsListName = new ArrayList<String>();
@@ -52,7 +59,7 @@ public class InventoryModel{
 		itemsListId = new ArrayList<Integer>();
 		
 		/* this is where we would add saved items if we used persistent data*/
-		update();		
+		load();		
 
 	}
 	
@@ -202,7 +209,12 @@ public class InventoryModel{
 		itemsListId.add(id);
 	}
 	
-	private void update(){
+	public void registerObserver(ListObserver o1) {
+		this.o1 = o1;
+		
+	}
+	
+	private void load(){
 		refresh();
 		partsListName.clear();
 		itemsListName.clear();
@@ -215,5 +227,17 @@ public class InventoryModel{
 		partList = new JList(partsListName.toArray());
 		itemList = new JList(itemsListName.toArray());
 	}
-
+	
+	private void update() {
+		refresh();
+		partsListName.clear();
+		itemsListName.clear();
+		partsListId.clear();
+		itemsListId.clear();
+		populateItemsList();
+		populatePartsList();
+		partList = new JList(partsListName.toArray());
+		itemList = new JList(itemsListName.toArray());
+		o1.update();
+	}
 }
