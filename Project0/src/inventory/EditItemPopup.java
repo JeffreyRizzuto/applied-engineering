@@ -153,14 +153,17 @@ public class EditItemPopup extends JFrame{
 		return (String) unitLocation.getSelectedItem();
 	}
 	
-	/* if time, i want to remove this function and replace it with throw/catches */
 	public void formatError(int errorCode){
 		switch(errorCode){
 		//Will need to modify this if we wish to stick with error codes
-		case 4:	errorCode=4;
+		case 1:	errorCode=1;
 			quantity.setBackground(Color.red);
 			break;
-		case 6:	errorCode=6;
+		case 2:	errorCode=2;
+			partId.setBackground(Color.red);
+			break;
+		case 3:	errorCode=3;
+			part.setBackground(Color.red);
 			break;
 		}
 	}

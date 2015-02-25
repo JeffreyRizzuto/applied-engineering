@@ -2,6 +2,7 @@
 
 package inventory;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -55,7 +56,7 @@ public class AddItemPopupController implements ActionListener{
 		
 		/* set quantity */
 		if(quantity.isEmpty()){//first check if empty
-			itemP.formatError(4);
+			itemP.formatError(1);
 			error = true;
 		}		
 		//try to parse the field to an int, if error, throw a format error
@@ -63,13 +64,13 @@ public class AddItemPopupController implements ActionListener{
 			UIquantity = Integer.parseInt(quantity);
 			item.setQuantity(UIquantity);
 		} catch(Exception NumberFormatException) {
-			itemP.formatError(7);
+			itemP.formatError(1);
 			error = true;
 		}
 		
 		//Set Unit location
 		if(unitLocation.equals("Unknown")){
-			itemP.formatError(6);
+			//itemP.formatError(6);
 			error = true;
 		} else{
 			item.setUnitLocation(unitLocation);
@@ -77,19 +78,29 @@ public class AddItemPopupController implements ActionListener{
 		
 		//Set ID
 		try {
-			item.setId(Integer.parseInt(itemId));
-			error = true;
+			if(!model.checkItemIdExists(Integer.parseInt(itemId))) {//if id doesn't exists
+				item.setId(Integer.parseInt(itemId));
+			} else {
+				itemP.formatError(2);
+				error = true;
+			}
+			
 		} catch(Exception NumberFormatException) {
-			itemP.formatError(7);
+			itemP.formatError(2);
 			error = true;
 		}
 		
-		//Set Part?
 		if(part.equals("")){
-			itemP.formatError(8);
-			error = true;
+			itemP.formatError(3);
 		} else {
-			item.setPart(Integer.parseInt(part));
+			try {
+				if(model.getPart(Integer.parseInt(part)) != null){
+					item.setPart(Integer.parseInt(part));
+				}
+			} catch(Exception NumberFormatException) {
+				itemP.formatError(3);
+				error =equals(true);
+			}
 		}
 		
 		

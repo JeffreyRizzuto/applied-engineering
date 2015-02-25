@@ -117,12 +117,8 @@ public class InventoryModel{
 		}
 	}
 	
-	public Item getItem(int itemNum){
-		if(items.get(itemNum) == null) {
-			throw new IllegalArgumentException();
-		} else {
-			return items.get(itemNum);
-		}
+	public Item getItem(int id){
+		return items.get(id);
 	}
 	
 	public boolean checkPartNumber(String partNumber) {
@@ -219,8 +215,8 @@ public class InventoryModel{
 		itemsListName.clear();
 		partsListId.clear();
 		itemsListId.clear();
-		populateItemsList();
 		populatePartsList();
+		populateItemsList();
 		partList = null;
 		itemList = null;
 		partList = new JList(partsListName.toArray());
@@ -233,8 +229,8 @@ public class InventoryModel{
 		itemsListName.clear();
 		partsListId.clear();
 		itemsListId.clear();
-		populateItemsList();
 		populatePartsList();
+		populateItemsList();
 		partList = new JList(partsListName.toArray());
 		itemList = new JList(itemsListName.toArray());
 		o1.update();

@@ -56,7 +56,6 @@ public class InventoryGatewaySQL implements InventoryGateway{
         try {
        	 statement = connection.prepareStatement("select * from Inventory");
        	 result = statement.executeQuery();
-       	 result.first();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -137,14 +136,14 @@ public class InventoryGatewaySQL implements InventoryGateway{
 	public void addItem(Item item) {
 	  	 statement = null;
 	   	 result = null;
-	   	 String id = String.valueOf(item.getId());
-	   	 String itemSomething = String.valueOf(item.getPart());
+	   	 int id = item.getId();
+	   	 int part = item.getPart();
 	   	 String location = item.getLocation();
-	   	 String quantity = String.valueOf(item.getQuantity());
+	   	 int quantity = item.getQuantity();
 
 	        try {
 	       	 statement = connection.prepareStatement("INSERT INTO Inventory "
-	       	 		+ "VALUES ('" + id + "', '" + itemSomething + "', '"
+	       	 		+ "VALUES ('" + id + "', '" + part + "', '"
 	       	 		+ location + "', '" + quantity + "')");
 	       	 statement.executeUpdate();
 	        } catch (SQLException e) {
