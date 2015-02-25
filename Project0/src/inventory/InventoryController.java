@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JTable;
+import javax.swing.text.View;
 
 public class InventoryController implements ActionListener, MouseListener {
 	
@@ -90,7 +91,6 @@ public class InventoryController implements ActionListener, MouseListener {
 				}
 			}
 		}
-		
     }
 	
 	@Override

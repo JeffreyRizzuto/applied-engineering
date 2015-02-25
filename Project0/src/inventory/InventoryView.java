@@ -114,6 +114,14 @@ public class InventoryView extends JFrame{
 		return mode;
 	}
 	
+	public void update() {
+		if(mode == 0) {
+			scrollPane.setViewportView(model.getItemsList());
+		} else {
+			scrollPane.setViewportView(model.getPartsList());
+		}
+	}
+	
 	public void changeMode() {
 		if(mode == 0) {
 			scrollPane.setViewportView(model.getItemsList());

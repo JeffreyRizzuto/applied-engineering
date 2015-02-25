@@ -44,7 +44,6 @@ public class InventoryGatewaySQL implements InventoryGateway{
          try {
         	 statement = connection.prepareStatement("select * from PARTS");
         	 result = statement.executeQuery();
-        	 result.first();
          } catch (SQLException e) {
              e.printStackTrace();
          }
