@@ -15,13 +15,12 @@ public class InventoryManager{
 		InventoryGateway pdg = null;
 		try {
 			pdg = new InventoryGatewaySQL(INV_ID, Connection.TRANSACTION_REPEATABLE_READ);
-			
 		} catch(GatewayException e) {
 			System.out.println("Error creating DB connection: " + e.getMessage());
 			System.exit(0);
 		}
 		
-		InventoryModel model = new InventoryModel();
+		InventoryModel model = new InventoryModel(pdg);
 		InventoryView view = new InventoryView(model);
 		InventoryController Icontrol = new InventoryController(model, view);
 		MenuController Mcontrol = new MenuController(model, view);

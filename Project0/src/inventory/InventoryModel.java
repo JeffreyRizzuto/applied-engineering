@@ -43,11 +43,9 @@ public class InventoryModel{
 	private int currentPartId = 1;
 	private int currentItemId = 1;
 	
-	public InventoryModel(){		
-		
-		parts = new HashMap<Integer, Part>();
-		items = new HashMap<Integer, Item>();
-		
+	public InventoryModel(InventoryGateway pdg){
+		this.pdg = pdg;
+				
 		partsListName = new ArrayList<String>();
 		itemsListName = new ArrayList<String>();
 		partsListId = new ArrayList<Integer>();
@@ -212,6 +210,8 @@ public class InventoryModel{
 		itemsListId.clear();
 		populateItemsList();
 		populatePartsList();
+		partList = null;
+		itemList = null;
 		partList = new JList(partsListName.toArray());
 		itemList = new JList(itemsListName.toArray());
 	}

@@ -92,46 +92,43 @@ public class InventoryController implements ActionListener, MouseListener {
 		}
 		
     }
-
-	/*@Override
+	
+	@Override
 	public void mouseClicked(MouseEvent click) {
 		JList invList = (JList) click.getSource();
 		if (click.getClickCount() == 2) {
 	          int index = invList.locationToIndex(click.getPoint());
 	          if (index >= 0) {
 	            Object o = invList.getModel().getElementAt(index);
-	            EditPartPopup edit = new EditPartPopup(model,model.getPart((o.toString())));
+	            //EditPartPopup edit = new EditPartPopup(model,model.getPart((o.toString())));
 	          }
 		}
-	}*/
+	}
+
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
+	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
+	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

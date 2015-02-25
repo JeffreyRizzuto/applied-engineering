@@ -105,7 +105,7 @@ public class InventoryView extends JFrame{
 		}
 		
 		//add mouse listener for the list
-		scrollPane.addMouseListener(Icontrol);
+		//scrollPane.addMouseListener(Icontrol);
 		
 		
 	}
