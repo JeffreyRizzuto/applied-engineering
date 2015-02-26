@@ -15,8 +15,8 @@ public class EditItemPopupController implements ActionListener{
 	private String partName;
 	private String partNumber;
 	private String externalPartNumber;
-	private String partSomething;
-	private int itemId;
+	private String part;
+	private String itemId;
 	private String vendor;
 	private String quantity;
 	private int UIquantity;
@@ -34,15 +34,11 @@ public class EditItemPopupController implements ActionListener{
 		if(command.equals(cancelString)){
 			itemP.dispose();
 		} else if(command.equals(submitString)){
-			//partNumber = itemP.getPartNumber();
-			//partName = itemP.getPartName();
-			//vendor = itemP.getVendor();
+			itemId = itemP.getId();
+			part = itemP.getPartID();
 			quantity = itemP.getQuantity();
-			//unitType = itemP.getUnitType();
-			//externalPartNumber = itemP.getExternalPartNumber();
 			unitLocation = itemP.getUnitLocation();
-			partSomething = "dunno on this";
-			itemId = 1000;
+			
 			submit();					
 		}
 		
@@ -59,48 +55,51 @@ public class EditItemPopupController implements ActionListener{
 		
 		/* set quantity */
 		if(quantity.isEmpty()){//first check if empty
-			itemP.formatError(4);
+			itemP.formatError(1);
 			error = true;
 		}		
 		//try to parse the field to an int, if error, throw a format error
 		try{
 			UIquantity = Integer.parseInt(quantity);
+			item.setQuantity(UIquantity);
 		} catch(Exception NumberFormatException) {
-			itemP.formatError(4);
+			itemP.formatError(1);
 			error = true;
-		}
-		/* if no error occurred, lets add it to the map */
-		if(!error){
-			/* to edit it we remove the old one and add a new item with the new info */
-			model.removeitem( (itemP.getSelectedItem()).getPart() );//remove old item
-			model.addItem(item);//add the new one
-			itemP.closeWindow();
 		}
 		
 		//Set Unit location
 		if(unitLocation.equals("Unknown")){
-			itemP.formatError(6);
+			//itemP.formatError(6);
 			error = true;
 		} else{
 			item.setUnitLocation(unitLocation);
 		}
 		
 		//Set ID
-		if(itemId<0){
-			itemP.formatError(7);
-			error = true;
-		} else{
-			item.setId(itemId);
+		item.setId(Integer.parseInt(itemId));
+		
+		if(part.equals("")){
+			itemP.formatError(3);
+		} else {
+			try {
+				if(model.getPart(Integer.parseInt(part)) != null){
+					item.setPart(Integer.parseInt(part));
+				}
+			} catch(Exception NumberFormatException) {
+				itemP.formatError(3);
+				error =equals(true);
+			}
 		}
 		
-		//Set Part?
-		if(partSomething.equals("")){
-			itemP.formatError(8);
-			error = true;
-		}
 		
+		/* if no error occurred, lets add it to the map */
+		if(!error){
+			/* to edit it we remove the old one and add a new item with the new info */
+			model.removeitem(item.getId());
+			model.addItem(item);//add the new one
+			itemP.closeWindow();
+		}
 		return;
-		
 
 	}
 

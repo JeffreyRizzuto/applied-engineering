@@ -29,7 +29,6 @@ public class EditItemPopup extends JFrame{
 	private int labelsLength = labels.length;
 	private JPanel form;
 	private EditItemPopupController editController;
-	private JTextField partID;
 	private JTextField part; //He just called this part?
 	private JTextField quantity;
 	private JComboBox unitLocation;
@@ -50,7 +49,7 @@ public class EditItemPopup extends JFrame{
 		editController = new EditItemPopupController(model,this);
 		
 		//here are the text fields for the form
-		partID = new JTextField(55);
+		partId = new JTextField(55);
 		part = new JTextField(255);
 		quantity = new JTextField(255);
 		unitLocation = new JComboBox();
@@ -59,12 +58,10 @@ public class EditItemPopup extends JFrame{
 			unitLocation.addItem(locations[i]);
 		}
 		
-		//fill the textfields with the items info
-		//set default id for the id
-		partId.setText( Integer.toString(selectedItem.getId()) );
-		//Not sure exactly what this needs to be
-		part.setText("What to do");
-		quantity.setText( Integer.toString(selectedItem.getQuantity()) );
+		//set text
+		partId.setText(Integer.toString(item.getId()));
+		part.setText(Integer.toString(item.getPart()));
+		quantity.setText(Integer.toString(selectedItem.getQuantity()));
 		unitLocation.setSelectedItem(selectedItem.getUnitLocation());
 		
 		//add some labels to the fields (this is probably very ugly
@@ -77,7 +74,7 @@ public class EditItemPopup extends JFrame{
 		form.add(partId);
 		
 		//again not sure what he wants here
-		l = new JLabel("Part ?: ", JLabel.TRAILING);
+		l = new JLabel("Part : ", JLabel.TRAILING);
 		form.add(l);
 		l.setLabelFor(part);
 		form.add(part);
@@ -131,7 +128,10 @@ public class EditItemPopup extends JFrame{
 	public void closeWindow(){
 		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));//close the window
 	}
-		
+	
+	public String getId() {
+		return partId.getText();
+	}
 
 	public String getPartID(){
 		return partId.getText();
