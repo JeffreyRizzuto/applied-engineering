@@ -68,7 +68,7 @@ public class AddPartPopupController implements ActionListener{
 		
 		/* set part number */
 		/* need to make sure no parts have the same part # */
-		if( partNumber.length() < 20 && !partNumber.isEmpty() && !model.checkPartNumber(partNumber) ){
+		if( partNumber.length() < 20 && !partNumber.isEmpty() && !model.checkPartNumber(partNumber) && partNumber.startsWith("P")) {
 			part.setPartNumber(partNumber);
 		} else {
 			itemP.formatError(1);

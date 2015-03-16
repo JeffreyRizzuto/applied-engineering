@@ -27,6 +27,8 @@ public class EditPartPopupController implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if(command.equals(cancelString)){
+			//unlock part and dispose of edit frame
+			model.unlockPart( itemP.getSelectedItem().getId() );
 			itemP.dispose();
 		} else if(command.equals(submitString)){
 			partId = itemP.getPartId();
@@ -45,6 +47,7 @@ public class EditPartPopupController implements ActionListener{
 		boolean error = false;
 		Part part = new Part();
 		
+		
 		/* set part id, can't be changed */
 		if(!partId.isEmpty()){//this shouldn't be possible
 			//first try to parse to int
@@ -62,7 +65,7 @@ public class EditPartPopupController implements ActionListener{
 		
 		/* set part number */
 		/* need to make sure no parts have the same part # */
-		if( partNumber.length() < 20 && !partNumber.isEmpty() ){
+		if( partNumber.length() < 20 && !partNumber.isEmpty() && partNumber.startsWith("P")){
 			part.setPartNumber(partNumber);
 		} else {
 			itemP.formatError(1);
@@ -105,6 +108,7 @@ public class EditPartPopupController implements ActionListener{
 			model.removePart( (itemP.getSelectedItem()).getId());//remove old item
 			model.addPart(part);//add the new one
 			itemP.closeWindow();
+			//no need to unlock anything cause if part was successfully made, it is unlocked
 		}		
 		return;
 	}

@@ -11,5 +11,8 @@ public interface InventoryGateway {
 	public void addItem(Item item);
 	public void removeItem(int id);
 	public void removePart(int id);
+	public boolean checkLock(int id);
+	public void lockPart(int id);
+	public void unlockPart(int id);
 	public void close();
 }

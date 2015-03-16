@@ -4,12 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.text.View;
 
@@ -42,6 +46,8 @@ public class InventoryController implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent event) {	
 		
 		String command = event.getActionCommand();
+		
+		Part selectedPart = model.getPart(model.partToId(partList.getSelectedIndex()));//ew
 		//part mode
 		if(view.getMode() == 0) {
 			if(command.equals(editString)){
@@ -49,7 +55,31 @@ public class InventoryController implements ActionListener, MouseListener {
 				if(partList.isSelectionEmpty()){
 					return;
 				}
-				EditPartPopup edit = new EditPartPopup(model, model.getPart(model.partToId(partList.getSelectedIndex())));//i'm sorry
+				
+				//first lets make sure the part isn't being edited elsewhere
+				if(model.checkLock(selectedPart.getId())) {
+					//will show a brief message, with an OK button. Ignore the edit command for now
+					JOptionPane.showMessageDialog(new JFrame(), "That part is in use elsewhere");
+					return;
+				}
+				
+				//lock the part first
+				model.lockPart(selectedPart.getId());
+				//show edit popup
+				EditPartPopup edit = new EditPartPopup(model, selectedPart);
+				/*I want to add a listener here for when the window closes
+				 * to free the lock, but if the part is changed, the part we have here no longer
+				 * exists, which is a problem, so unlocking will be done in editPaprtPopupController for now
+				 */
+				
+				/*
+				edit.addWindowListener(new WindowAdapter() {
+					public void windowClosing(WindowEvent e)
+				    {
+				        model.unlockPart(selectedPart.getId());
+				    }
+				}
+				*/
 				
 			} else if(command.equals(addString)){
 				AddPartPopup add = new AddPartPopup(model);
@@ -57,6 +87,13 @@ public class InventoryController implements ActionListener, MouseListener {
 			} else if(command.equals(removeString)){
 				//if nothing it selected we can't remove anything
 				if(partList.isSelectionEmpty()){
+					return;
+				}
+				
+				//first lets make sure the part were deleting is opened somewhere
+				if(model.checkLock(selectedPart.getId())) {
+					//will show a brief message, with an OK button. Ignore the edit command for now
+					JOptionPane.showMessageDialog(new JFrame(), "That part is in use elsewhere");
 					return;
 				}
 				//create delete prompt

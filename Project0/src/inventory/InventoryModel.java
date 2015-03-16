@@ -104,7 +104,6 @@ public class InventoryModel{
 		} else {
 			pdg.removeItem(item);
 			items.remove(item);
-			
 			update();//update the JList to reflect changes
 		}
 	}
@@ -207,6 +206,21 @@ public class InventoryModel{
 	public void registerObserver(ListObserver o1) {
 		this.o1 = o1;
 		
+	}
+	
+	//functions for the lock
+	//might try and combine these 3 functions
+	
+	public boolean checkLock(int id) {
+		return pdg.checkLock(id);
+	}
+	
+	public void lockPart(int id) {
+		pdg.lockPart(id);
+	}
+	
+	public void unlockPart(int id) {
+		pdg.unlockPart(id);
 	}
 	
 	private void load(){
