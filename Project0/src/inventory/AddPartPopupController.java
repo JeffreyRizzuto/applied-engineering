@@ -10,7 +10,7 @@ public class AddPartPopupController implements ActionListener{
 	
 	private static final String submitString = "Submit";
 	private static final String cancelString = "Cancel";
-	private String partId;
+	//private String partId;
 	private String partName;
 	private String partNumber;
 	private String vendor;
@@ -30,7 +30,7 @@ public class AddPartPopupController implements ActionListener{
 			itemP.dispose();
 			return;
 		} else if(command.equals(submitString)){
-			partId = itemP.getPartId();
+			//partId = itemP.getPartId();
 			partNumber = itemP.getPartNumber();
 			partName = itemP.getPartName();
 			vendor = itemP.getVendor();
@@ -46,7 +46,8 @@ public class AddPartPopupController implements ActionListener{
 		boolean error = false;
 		Part part = new Part();
 		
-		/* set part id */
+		/* set part id, commented out since it will be automatically assigned */
+		/*
 		if(!partId.isEmpty() ){
 			//first try to parse to int
 			try{
@@ -65,6 +66,7 @@ public class AddPartPopupController implements ActionListener{
 			itemP.formatError(0);
 			error = true;
 		}
+		*/
 		
 		/* set part number */
 		/* need to make sure no parts have the same part # */

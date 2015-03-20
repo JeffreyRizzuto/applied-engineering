@@ -3,6 +3,7 @@ package inventory;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
@@ -40,7 +41,7 @@ public class EditPartPopup extends JFrame{
 	private String[] locations = {"Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2"};
 	private String[] unitTypes = {"Linear Feet", "Pieces"};
 	
-	public EditPartPopup(InventoryModel model, Part item) {
+	public EditPartPopup(final InventoryModel model, Part item) {
 
 		super("Add New Item");
 		this.model = model;
@@ -123,6 +124,12 @@ public class EditPartPopup extends JFrame{
 		 //add controllers
 		 Submit.addActionListener(editController);
 		 Cancel.addActionListener(editController);
+		 //on close we need to free the lock
+		 this.addWindowListener(new WindowAdapter(){
+             public void windowClosing(WindowEvent e){
+                 model.unlockPart( selectedItem.getId() );
+             }
+         });
 		 
 		 //add buttons to form
 		 buttons.add(new JSeparator(SwingConstants.VERTICAL));

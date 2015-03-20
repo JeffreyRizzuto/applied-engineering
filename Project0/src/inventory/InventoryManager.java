@@ -13,31 +13,52 @@ public class InventoryManager{
 
 	public static void main(String args[]) {
 		//create the RDG for the inventory
-		InventoryGateway pdg = null;
+		Gateway pdg = null;
 		try {
-			pdg = new InventoryGatewaySQL(INV_ID, Connection.TRANSACTION_REPEATABLE_READ);
+			pdg = new GatewaySQL(INV_ID, Connection.TRANSACTION_REPEATABLE_READ);
 		} catch(GatewayException e) {
 			System.out.println("Error creating DB connection: " + e.getMessage());
 			System.exit(0);
 		}
 		
-		InventoryModel model = new InventoryModel(pdg);
-		InventoryView view = new InventoryView(model);
-		InventoryController Icontrol = new InventoryController(model, view);
-		MenuController Mcontrol = new MenuController(model, view);
-		view.registerListeners(Mcontrol, Icontrol);
-		//add controllers
+		//models
+		InventoryModel iModel = new InventoryModel(pdg);
+		ProductModel pModel = new ProductModel(pdg);
+		
+		//switcher
+		ModeSwitcher mode = new ModeSwitcher();
+		
+		//inventory
+		InventoryView iView = new InventoryView(iModel, mode);
+		InventoryController invControl = new InventoryController(iModel, iView);
+		InventoryMenuController invMenuControl =  new InventoryMenuController(iModel, iView);
+		iView.registerListeners(invMenuControl, invControl);
+		//products
+		ProductView pView = new ProductView(pModel, mode);
+		ProductController prodControl = new ProductController(pModel, pView);
+		ProductMenuController prodMenuControl = new ProductMenuController(pModel,pView);
+		pView.registerListeners(prodControl, prodMenuControl);
+		
+		//register the views with the mode switcher
+		mode.registerInv(iView);
+		mode.registerProd(pView);
+		
+		
+		mode.registerInv(iView);
+		mode.registerProd(pView);
+		
+		
 		
 		//observer
 		ListObserver o1 = new ListObserver();
-		model.registerObserver(o1);
-		o1.setView(view);
+		iModel.registerObserver(o1);
+		o1.setView(iView);
 		
 		
 		/* start the app */
-		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		view.setSize(400, 300);
-		view.setVisible(true);
+		iView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		iView.setSize(400, 300);
+		iView.setVisible(true);
 		
 	}
 

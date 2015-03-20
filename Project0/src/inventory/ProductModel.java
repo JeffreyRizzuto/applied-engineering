@@ -1,0 +1,85 @@
+package inventory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.JList;
+
+public class ProductModel {
+	
+	private Gateway pdg;
+	private HashMap<Integer, Product> products;//Key = id, V = the product
+	private ArrayList<Integer> productIds;
+	private ArrayList<String> productNumbers;
+	private JList productList;
+	
+	private ListObserver o1;
+	
+	public ProductModel(Gateway pdg) {
+		this.pdg = pdg;
+		
+		productIds = new ArrayList<Integer>();
+		productNumbers = new ArrayList<String>();
+		
+		load();
+		
+	}
+
+	public void registerObserver(ListObserver o1) {
+		this.o1 = o1;
+		
+	}
+	
+	public JList getProductList() {
+		return productList;
+	}
+	
+	public void addProduct(Product product) {
+		pdg.addProduct(product);
+		update();
+	}
+	
+	public void removeProduct(Product product) {
+		pdg.removeProduct(product.getId());
+		update();
+	}
+	
+	public HashMap<Integer, Part> getAssociatedParts(int id) {
+		return pdg.getAssociatedParts(id);
+	}
+	
+	
+	public Product getProductAt(int index) {
+		int id = productIds.get(index);
+		if(products.get(id) == null) {
+			throw new IllegalArgumentException();
+		} else {
+			return products.get(id);
+		}
+	}
+	
+	public void refresh() {
+		pdg.loadProducts();
+		products = (HashMap<Integer, Product>) pdg.getProducts();
+	}
+	
+	private void load(){
+		refresh();
+		productIds.clear();
+		productNumbers.clear();
+		for(Product product : products.values()) {
+			productIds.add(product.getId());
+			productNumbers.add(product.getNumber());
+		}
+		productList = new JList(productNumbers.toArray());
+	}
+	
+	private void update() {
+		refresh();
+		productIds.clear();
+		productNumbers.clear();
+		load();
+		o1.update();
+	}
+
+}

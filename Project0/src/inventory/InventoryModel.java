@@ -7,6 +7,11 @@
  * 
  */
 
+/* this is old code from the start of the project, when I kinda of hacked it together
+ * to make it work, eventually I want to update this code with the new format of the controller
+ * like productModel
+ */
+
 
 package inventory;
 
@@ -39,7 +44,7 @@ public class InventoryModel{
 	private ArrayList<Integer> partsListId;
 	private JList partList;
 	private JList itemList;
-	private InventoryGateway pdg;
+	private Gateway pdg;
 	
 	private ListObserver o1;
 	
@@ -48,11 +53,8 @@ public class InventoryModel{
 	private int currentItemId = 1;
 	
 
-	public InventoryModel(InventoryGateway pdg){
+	public InventoryModel(Gateway pdg){
 		this.pdg = pdg;
-		
-		
-				
 		partsListName = new ArrayList<String>();
 		itemsListName = new ArrayList<String>();
 		partsListId = new ArrayList<Integer>();
@@ -134,6 +136,10 @@ public class InventoryModel{
 			}
 		}
 		return false;
+	}
+	
+	public boolean checkPartAssociation(int id) {
+		return pdg.checkPartAssociation(id);
 	}
 	
 	public int getCurrentOpenPartId(){
