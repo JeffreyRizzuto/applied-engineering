@@ -5,20 +5,21 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Popup;
 
-public class AddProductPopupController implements ActionListener{
+public class EditProductPopupController implements ActionListener{
 	
 	private static final String submitString = "Submit";
 	private static final String cancelString = "Cancel";
 
-	private AddProductPopup popup;
+	private EditProductPopup popup;
 	private ProductModel model;
 	
 	private String number;
 	private String description;
+	
 
-	public AddProductPopupController(ProductModel model,
-			AddProductPopup addProductPopup) {
-		this.popup = addProductPopup;
+	public EditProductPopupController(ProductModel model,
+			EditProductPopup editProductPopup) {
+		this.popup = editProductPopup;
 		this.model = model;
 	}
 
@@ -57,6 +58,7 @@ public class AddProductPopupController implements ActionListener{
 		}
 		
 		if(!error) {
+			model.removeProduct(popup.getProduct());
 			model.addProduct(newProduct);
 			popup.closeWindow();
 		}

@@ -13,7 +13,7 @@ public class ProductModel {
 	private ArrayList<String> productNumbers;
 	private JList productList;
 	
-	private ListObserver o1;
+	private ListObserver o2;
 	
 	public ProductModel(Gateway pdg) {
 		this.pdg = pdg;
@@ -25,8 +25,8 @@ public class ProductModel {
 		
 	}
 
-	public void registerObserver(ListObserver o1) {
-		this.o1 = o1;
+	public void registerObserver(ListObserver o2) {
+		this.o2 = o2;
 		
 	}
 	
@@ -79,7 +79,7 @@ public class ProductModel {
 		productIds.clear();
 		productNumbers.clear();
 		load();
-		o1.update();
+		o2.update();
 	}
 
 }

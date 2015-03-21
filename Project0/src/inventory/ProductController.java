@@ -29,12 +29,17 @@ public class ProductController implements ActionListener, MouseListener {
 	}
 
 	public void actionPerformed(ActionEvent event) {
+		System.out.println("I AM HERE");
 
 		String command = event.getActionCommand();
 		
 		int selectedIndex = productList.getSelectedIndex();
-		Product selectedProduct = model.getProductAt(selectedIndex);
-
+		
+		Product selectedProduct = null;
+		if (!productList.isSelectionEmpty()) {
+			selectedProduct = model.getProductAt(selectedIndex);
+		}
+		
 		if (!productList.isSelectionEmpty()) {
 			selecetedProduct = selectedProduct;
 		}
@@ -65,7 +70,7 @@ public class ProductController implements ActionListener, MouseListener {
 			}
 		//parts--------------------------------------------
 		} else if (command.equals(partString)) {
-			ProductPartsPopup parts = new ProductPartsPopup(model.getAssociatedParts(selectedProduct.getId()));
+			ProductPartsPopup parts = new ProductPartsPopup(model, model.getAssociatedParts(selectedProduct.getId()));
 		}
 	}
 

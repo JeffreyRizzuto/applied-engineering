@@ -20,11 +20,8 @@ public class AddProductPopup extends JFrame{
 	
 	private static final long serialVersionUID = -8616906922402009596L;
 	
-	private InventoryModel model;
+	private ProductModel model;
 	
-	private final static String[] labels = {"Part Number: ", "Part Name: ", "Vendor: ", "Quantity: "};
-	private String[] unitTypes = {"Unknown", "Linear Feet", "Pieces"};
-	private int labelsLength = labels.length;
 	private JPanel form;
 	private AddProductPopupController productController;
 	
@@ -32,7 +29,7 @@ public class AddProductPopup extends JFrame{
 	private JTextField productNumber;
 	private JTextField productDescription;
 
-	public AddProductPopup(InventoryModel model) {
+	public AddProductPopup(ProductModel model) {
 
 		super("Add New Item");
 		this.model = model;
@@ -71,7 +68,7 @@ public class AddProductPopup extends JFrame{
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                5, 2, //rows, cols
+                2, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 
@@ -125,6 +122,7 @@ public class AddProductPopup extends JFrame{
 		case 2:	errorCode=2;//part name
 			productDescription.setBackground(Color.red);
 			break;
+		}
 	}
 	
 	public void resetErrors(){

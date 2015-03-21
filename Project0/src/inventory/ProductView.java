@@ -119,14 +119,14 @@ public class ProductView extends JFrame {
 		for (Component component : prodMenu.getMenuComponents()) {
 			if (component instanceof AbstractButton) {
 				AbstractButton button = (AbstractButton) component;
-				button.addActionListener(prodControl);
+				button.addActionListener(prodMenuControl);
 			}
 		}
 		
 		for (Component component : modeMenu.getMenuComponents()) {
 			if (component instanceof AbstractButton) {
 				AbstractButton button = (AbstractButton) component;
-				button.addActionListener(prodControl);
+				button.addActionListener(prodMenuControl);
 			}
 		}
 
@@ -134,7 +134,7 @@ public class ProductView extends JFrame {
 		for (Component component : components) {
 			if (component instanceof AbstractButton) {
 				AbstractButton button = (AbstractButton) component;
-				button.addActionListener(prodMenuControl);
+				button.addActionListener(prodControl);
 			}
 		}
 

@@ -53,6 +53,9 @@ public class InventoryManager{
 		ListObserver o1 = new ListObserver();
 		iModel.registerObserver(o1);
 		o1.setView(iView);
+		ListObserver o2 = new ListObserver();
+		pModel.registerObserver(o2);
+		o2.setView(pView);
 		
 		
 		/* start the app */

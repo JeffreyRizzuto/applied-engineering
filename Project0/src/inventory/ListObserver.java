@@ -1,16 +1,22 @@
 package inventory;
 
 public class ListObserver {
-	InventoryView view;
+	InventoryView Iview;
+	ProductView Pview;
 	public ListObserver() {
 		
 	}
 
 	public void setView(InventoryView view) {
-		this.view = view;
+		this.Iview = view;
 	}
 	public void update() {
-		view.update();
+		Pview.update();
+		Iview.update();
+	}
+
+	public void setView(ProductView view) {
+		this.Pview = view;
 		
 	}
 }
