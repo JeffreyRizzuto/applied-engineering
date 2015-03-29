@@ -39,10 +39,7 @@ public class ProductController implements ActionListener, MouseListener {
 		if (!productList.isSelectionEmpty()) {
 			selectedProduct = model.getProductAt(selectedIndex);
 		}
-		
-		if (!productList.isSelectionEmpty()) {
-			selecetedProduct = selectedProduct;
-		}
+
 		//edit--------------------------------------------
 		if (command.equals(editString)) {
 			// if nothing it selected we can't remove anything
@@ -70,6 +67,9 @@ public class ProductController implements ActionListener, MouseListener {
 			}
 		//parts--------------------------------------------
 		} else if (command.equals(partString)) {
+			if (productList.isSelectionEmpty()) {
+				return;
+			}
 			ProductPartsPopup parts = new ProductPartsPopup(model, model.getAssociatedParts(selectedProduct.getId()));
 		}
 	}

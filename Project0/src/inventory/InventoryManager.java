@@ -41,20 +41,17 @@ public class InventoryManager{
 		
 		//register the views with the mode switcher
 		mode.registerInv(iView);
-		mode.registerProd(pView);
-		
-		
-		mode.registerInv(iView);
-		mode.registerProd(pView);
-		
+		mode.registerProd(pView);		
 		
 		
 		//observer
 		ListObserver o1 = new ListObserver();
 		iModel.registerObserver(o1);
 		o1.setView(iView);
+		o1.setView(pView);
 		ListObserver o2 = new ListObserver();
 		pModel.registerObserver(o2);
+		o2.setView(iView);
 		o2.setView(pView);
 		
 		

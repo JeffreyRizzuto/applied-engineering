@@ -137,10 +137,10 @@ public class EditPartPopup extends JFrame{
 		 buttons.add(Cancel);
 		 
 		 //set buttons layout
-		 SpringUtilities.makeCompactGrid(buttons,
-                 3, 2, 		 //rows, columns
-                 6, 6,        //initX, initY
-                 6, 6);       //xPad, yPad
+		 SpringUtilities.makeCompactGrid(form,
+	                4, 2, //rows, cols
+	                6, 6,        //initX, initY
+	                6, 6);       //xPad, yPad
 		 
 		//add form and buttons to the jframe
 	    add(form, BorderLayout.CENTER);
