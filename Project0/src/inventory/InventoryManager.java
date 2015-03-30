@@ -1,5 +1,7 @@
 package inventory;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.*;
 
 import javax.swing.Timer;
@@ -12,7 +14,11 @@ public class InventoryManager{
 	public static final int INV_ID = 1;
 
 	public static void main(String args[]) {
-		//create the RDG for the inventory
+		
+		//authenticate
+		Session session = Authenticator.authenticate("tj@cab.net", "hunter1");
+		
+		//create the database stuff
 		Gateway pdg = null;
 		try {
 			pdg = new GatewaySQL(INV_ID, Connection.TRANSACTION_REPEATABLE_READ);
@@ -22,7 +28,7 @@ public class InventoryManager{
 		}
 		
 		//models
-		InventoryModel iModel = new InventoryModel(pdg);
+		InventoryModel iModel = new InventoryModel(pdg,session);
 		ProductModel pModel = new ProductModel(pdg);
 		
 		//switcher
@@ -54,10 +60,13 @@ public class InventoryManager{
 		o2.setView(iView);
 		o2.setView(pView);
 		
-		
+		//get screen dimensions so we can have app pop up in middle of screen
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		/* start the app */
 		iView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		iView.setSize(400, 300);
+		iView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
+		pView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
 		iView.setVisible(true);
 		
 	}

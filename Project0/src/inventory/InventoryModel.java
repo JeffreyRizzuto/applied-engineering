@@ -45,6 +45,7 @@ public class InventoryModel{
 	private JList partList;
 	private JList itemList;
 	private Gateway pdg;
+	Session session;
 	
 	private ListObserver o1;
 	
@@ -53,7 +54,7 @@ public class InventoryModel{
 	private int currentItemId = 1;
 	
 
-	public InventoryModel(Gateway pdg){
+	public InventoryModel(Gateway pdg, Session session){
 		this.pdg = pdg;
 		partsListName = new ArrayList<String>();
 		itemsListName = new ArrayList<String>();
