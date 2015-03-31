@@ -110,11 +110,6 @@ public class EditPartPopup extends JFrame{
 		l.setLabelFor(externalPartNumber);
 		form.add(externalPartNumber);
 
-		//set the layout for form with springUtilities (provided by oracle :P)
-		SpringUtilities.makeCompactGrid(form,
-                6, 2, //rows, cols
-                6, 6,        //initX, initY
-                6, 6);       //xPad, yPad
 		 
 		 //make some buttons also
 		 JPanel buttons = new JPanel(new SpringLayout());
@@ -138,7 +133,7 @@ public class EditPartPopup extends JFrame{
 		 
 		 //set buttons layout
 		 SpringUtilities.makeCompactGrid(form,
-	                5, 2, //rows, cols
+	                6, 2, //rows, cols
 	                6, 6,        //initX, initY
 	                6, 6);       //xPad, yPad
 		 

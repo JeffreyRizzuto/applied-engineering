@@ -34,7 +34,7 @@ public class EditItemPopup extends JFrame{
 	private JTextField quantity;
 	private JComboBox unitLocation;
 	private	Item selectedItem;
-	private JTextField partId;
+	private JTextField id;
 	private String[] locations = {"Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2"};
 	
 	public EditItemPopup(InventoryModel model, Item item) {
@@ -50,7 +50,7 @@ public class EditItemPopup extends JFrame{
 		editController = new EditItemPopupController(model,this);
 		
 		//here are the text fields for the form
-		partId = new JTextField(55);
+		id = new JTextField(55);
 		part = new JTextField(255);
 		quantity = new JTextField(255);
 		unitLocation = new JComboBox();
@@ -60,7 +60,7 @@ public class EditItemPopup extends JFrame{
 		}
 		
 		//set text
-		partId.setText(Integer.toString(item.getId()));
+		id.setText(Integer.toString(item.getId()));
 		part.setText(Integer.toString(item.getPart()));
 		quantity.setText(Integer.toString(selectedItem.getQuantity()));
 		unitLocation.setSelectedItem(selectedItem.getUnitLocation());
@@ -70,9 +70,9 @@ public class EditItemPopup extends JFrame{
 		
 		l = new JLabel("ID: ", JLabel.TRAILING);
 		form.add(l);
-		l.setLabelFor(partId);
-		partId.setEditable(false);
-		form.add(partId);
+		l.setLabelFor(id);
+		id.setEditable(false);
+		form.add(id);
 		
 		//again not sure what he wants here
 		l = new JLabel("Part : ", JLabel.TRAILING);
@@ -131,11 +131,11 @@ public class EditItemPopup extends JFrame{
 	}
 	
 	public String getId() {
-		return partId.getText();
+		return id.getText();
 	}
 
 	public String getPartID(){
-		return partId.getText();
+		return part.getText();
 	}
 	
 	
@@ -161,7 +161,7 @@ public class EditItemPopup extends JFrame{
 			quantity.setBackground(Color.red);
 			break;
 		case 2:	errorCode=2;
-			partId.setBackground(Color.red);
+			id.setBackground(Color.red);
 			break;
 		case 3:	errorCode=3;
 			part.setBackground(Color.red);

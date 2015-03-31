@@ -38,7 +38,9 @@ public class InventoryModel {
 	private HashMap<Integer, Part> parts;// Key = partId, V = the part object
 	private HashMap<Integer, Item> items;// Key = partId, V = the part object
 	private DefaultListModel<String> partList;
-	private DefaultListModel<Integer> itemList;
+	private DefaultListModel<String> itemList;
+	private DefaultListModel<Integer> partIdList;
+	private DefaultListModel<Integer> itemIdList;
 	private Gateway pdg;
 	Session session;
 
@@ -49,6 +51,8 @@ public class InventoryModel {
 		this.session = session;
 		partList = new DefaultListModel();
 		itemList = new DefaultListModel();
+		partIdList = new DefaultListModel();
+		itemIdList = new DefaultListModel();
 		/* this is where we would add saved items if we used persistent data */
 		load();
 
@@ -95,6 +99,7 @@ public class InventoryModel {
 		} else {
 			pdg.removeItem(item);
 			items.remove(item);
+			
 			update();// update the JList to reflect changes
 		}
 	}
@@ -158,8 +163,10 @@ public class InventoryModel {
 	}
 	
 	public Item getItemByName(int name) {
+		
+		int id = itemIdList.get(name);
 		for (Item i : items.values()) {
-			if(i.getId() == name)
+			if(i.getId() == id)
 				return i;
 		}
 		return null;
@@ -198,7 +205,8 @@ public class InventoryModel {
 		}
 
 		for (Item i : items.values()) {
-			itemList.addElement(i.getId());
+			itemList.addElement(getPart(i.getPart()).getPartName());
+			itemIdList.addElement(i.getId());
 		}
 	}
 
@@ -206,12 +214,14 @@ public class InventoryModel {
 		refresh();
 		partList.clear();
 		itemList.clear();
+		itemIdList.clear();
 		for (Part p : parts.values()) {
 			partList.addElement(p.getPartName());
 		}
 
 		for (Item i : items.values()) {
-			itemList.addElement(i.getId());
+			itemList.addElement(getPart(i.getPart()).getPartName());
+			itemIdList.addElement(i.getId());
 		}
 		o1.update();
 	}

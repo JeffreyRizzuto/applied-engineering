@@ -155,7 +155,7 @@ public class InventoryController implements ActionListener, MouseListener {
 					System.out.println("IN HERE");
 					return;
 				}
-				EditItemPopup edit = new EditItemPopup(model,model.getItemByName((int)itemList.getSelectedValue()));
+				EditItemPopup edit = new EditItemPopup(model,model.getItemByName(itemList.getSelectedIndex()));
 
 			} else if (command.equals(addString)) {
 				if(!session.canAddInventory()) {

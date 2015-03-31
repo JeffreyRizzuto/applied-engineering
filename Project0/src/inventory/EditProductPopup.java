@@ -23,6 +23,7 @@ public class EditProductPopup extends JFrame{
 	private EditProductPopupController productController;
 	
 	//private JTextField partId;
+	private JTextField id;
 	private JTextField productNumber;
 	private JTextField productDescription;
 	private Product product;
@@ -41,13 +42,24 @@ public class EditProductPopup extends JFrame{
 		
 		//here are the text fields for the form
 		//partId = new JTextField(10);
+		
+		id = new JTextField();
 		productNumber = new JTextField(20);
 		productDescription = new JTextField(255);
 		
+		id.setText(Integer.toString(product.getId()));
 		productNumber.setText(product.getNumber());
 		productDescription.setText(product.getDescription());
 		
+		id.setEditable(false);
+		
 		JLabel l;
+		
+		l = new JLabel("ID: ", JLabel.TRAILING);
+		form.add(l);
+		l.setLabelFor(id);
+		form.add(id);
+		
 		l = new JLabel("Product Number: ", JLabel.TRAILING);
 		form.add(l);
 		l.setLabelFor(productNumber);
@@ -62,7 +74,7 @@ public class EditProductPopup extends JFrame{
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                2, 2, //rows, cols
+                3, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 

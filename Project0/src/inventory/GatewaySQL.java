@@ -392,6 +392,9 @@ public class GatewaySQL implements Gateway {
 			statement = connection
 					.prepareStatement("DELETE FROM products WHERE id=" + id);
 			statement.executeUpdate();
+			
+			statement = connection.prepareStatement("DELETE FROM productParts WHERE product = "+ id);
+			statement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
