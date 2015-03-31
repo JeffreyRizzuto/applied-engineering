@@ -40,13 +40,21 @@ public class ProductModel {
 		update();
 	}
 	
+	public void addProductPart(Product product, Part part) {
+		pdg.addProductPart(product, part);
+	}
+	
 	public void removeProduct(Product product) {
 		pdg.removeProduct(product.getId());
 		update();
 	}
 	
+	public void removeProductPart(Product product, Part part) {
+		pdg.removeProductPart(product, part);
+	}
+	
 	public HashMap<Integer, Part> getAssociatedParts(int id) {
-		return pdg.getAssociatedParts(id);
+		return pdg.getProductParts(id);
 	}
 	
 	
@@ -59,13 +67,21 @@ public class ProductModel {
 		}
 	}
 	
+	public boolean checkPart(String partNum) {
+		return pdg.checkPart(partNum);
+	}
+	
+	public Part getPart(String partNum) {
+		return pdg.getPart(partNum);
+	}
+	
 	public Session getLoggedInUser() {
 		return session;
 	}
 	
 	public void refresh() {
 		pdg.loadProducts();
-		products = (HashMap<Integer, Product>) pdg.getProducts();
+		products = (HashMap<Integer, Product>) pdg.getProducts();		
 	}
 	
 	private void load(){
@@ -80,9 +96,6 @@ public class ProductModel {
 	}
 	
 	private void update() {
-		refresh();
-		productIds.clear();
-		productNumbers.clear();
 		load();
 		o2.update();
 	}

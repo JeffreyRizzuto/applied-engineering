@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -16,7 +17,7 @@ public class ProductController implements ActionListener, MouseListener {
 	private JList productList;
 	private Product selecetedProduct;
 	private Session session;
-	
+
 	private static final String addString = "add";
 	private static final String removeString = "remove";
 	private static final String editString = "edit";
@@ -33,17 +34,18 @@ public class ProductController implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent event) {
 
 		String command = event.getActionCommand();
-		
+
 		int selectedIndex = productList.getSelectedIndex();
-		
+
 		Product selectedProduct = null;
 		if (!productList.isSelectionEmpty()) {
 			selectedProduct = model.getProductAt(selectedIndex);
 		}
 
-		//edit--------------------------------------------
+		// edit--------------------------------------------
 		if (command.equals(editString)) {
-			if(!session.canAddProductTemplates) {
+			System.out.println("edit pressed");
+			if (!session.canAddProductTemplates) {
 				JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
 				return;
 			}
@@ -52,18 +54,18 @@ public class ProductController implements ActionListener, MouseListener {
 				return;
 			}
 
-			EditProductPopup edit = new EditProductPopup(model, selecetedProduct);
+			new EditProductPopup(model, model.getProductAt(selectedIndex));//selectedProduct isn't working????
 
-		//add--------------------------------------------
+			// add--------------------------------------------
 		} else if (command.equals(addString)) {
-			if(!session.canAddProductTemplates) {
+			if (!session.canAddProductTemplates) {
 				JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
 				return;
 			}
 			AddProductPopup add = new AddProductPopup(model);
-		//remove--------------------------------------------
+			// remove--------------------------------------------
 		} else if (command.equals(removeString)) {
-			if(!session.canDeleteProductTemplates) {
+			if (!session.canDeleteProductTemplates) {
 				JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
 				return;
 			}
@@ -71,24 +73,26 @@ public class ProductController implements ActionListener, MouseListener {
 			if (productList.isSelectionEmpty()) {
 				return;
 			}
-			DeletePopup delete = new DeletePopup(
-					productList.getSelectedValue());
+			DeletePopup delete = new DeletePopup(productList.getSelectedValue());
 			if (delete.response()) {// yes
 				model.removeProduct(selectedProduct);
 			} else {// no
 				return;
 			}
-		//parts--------------------------------------------
+			// parts--------------------------------------------
 		} else if (command.equals(partString)) {
-			if(!session.canAddProductTemplates) {
+			if (!session.canAddProductTemplates) {
 				JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
 				return;
 			}
 			if (productList.isSelectionEmpty()) {
 				return;
 			}
-			ProductPartsPopup parts = new ProductPartsPopup(model, model.getAssociatedParts(selectedProduct.getId()));
+			ProductPartsPopup parts = new ProductPartsPopup(model,
+					model.getAssociatedParts(selectedProduct.getId()), model.getProductAt(selectedIndex));
+			parts.registerListeners(new ProductPartPopupController(parts,model));
 		}
+		 productList = model.getProductList();
 	}
 
 	@Override

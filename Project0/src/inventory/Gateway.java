@@ -12,14 +12,18 @@ public interface Gateway {
 	public void loadProducts();
 	public void addPart(Part part);
 	public void addItem(Item item);
+	public Part getPart(String partNum);
 	public void addProduct(Product product);
 	public boolean removeItem(int id);
+	public void addProductPart(Product product, Part part);
 	public boolean removePart(int id);
 	public boolean removeProduct(int id);
 	public boolean checkLock(int id);
+	public void removeProductPart(Product product, Part part);
 	public void lockPart(int id);
 	public void unlockPart(int id);
+	public boolean checkPart(String partNum);
 	public boolean checkPartAssociation(int id);
-	public HashMap getAssociatedParts(int productId);
+	public HashMap getProductParts(int productId);
 	public void close();
 }

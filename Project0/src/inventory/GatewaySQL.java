@@ -62,7 +62,7 @@ public class GatewaySQL implements Gateway {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void loadProducts() {
 		statement = null;
 		result = null;
@@ -110,8 +110,8 @@ public class GatewaySQL implements Gateway {
 				item.setPart(result.getInt(2));
 				item.setUnitLocation(result.getString(3));
 				item.setQuantity(result.getInt(4));
-				
-				//add that new item to the list
+
+				// add that new item to the list
 				items.put(new Integer(result.getInt(1)), item);
 			}
 		} catch (SQLException e) {
@@ -217,8 +217,7 @@ public class GatewaySQL implements Gateway {
 							+ part
 							+ "', '"
 							+ unitLocation
-							+ "', '"
-							+ quantity + "')");
+							+ "', '" + quantity + "')");
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -236,14 +235,14 @@ public class GatewaySQL implements Gateway {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void addProduct(Product product) {
 		statement = null;
 		result = null;
 		int id;
 		String number = product.getNumber();
 		String description = product.getDescription();
-		
+
 		try {
 			statement = connection
 					.prepareStatement("INSERT INTO products (number,description) "
@@ -256,8 +255,8 @@ public class GatewaySQL implements Gateway {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		//get auto generated id
+
+		// get auto generated id
 		try {
 			statement = connection
 					.prepareStatement("SELECT LAST_INSERT_ID() AS id from products");
@@ -269,7 +268,7 @@ public class GatewaySQL implements Gateway {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void addProductPart(Product product, Part part) {
 		statement = null;
 		result = null;
@@ -278,24 +277,78 @@ public class GatewaySQL implements Gateway {
 		try {
 			statement = connection
 					.prepareStatement("INSERT INTO productParts (product,part) "
-							+ "VALUES ('"
-							+ productId
-							+ "', '"
-							+ partId
-							+ "')");
+							+ "VALUES ('" + productId + "', '" + partId + "')");
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void removeProductPart(Product product, Part part) {
+		statement = null;
+		result = null;
+		int productId = product.getId();
+		int partId = part.getId();
+		try {
+			statement = connection
+					.prepareStatement("DELETE FROM productParts (product,part) "
+							+ "VALUES ('" + productId + "', '" + partId + "')");
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean checkPart(String partNum) {
+		statement = null;
+		result = null;
+		// remove the part
+		try {
+			statement = connection
+					.prepareStatement("SELECT FROM parts WHERE part_number=" + partNum);
+			result = statement.executeQuery();
+			if(result.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
+	
+	public Part getPart(String partNum) {
+		statement = null;
+		result = null;
+		// remove the part
+		try {
+			statement = connection
+					.prepareStatement("SELECT FROM parts WHERE part_number=" + partNum);
+			result = statement.executeQuery();
+			if(result.next()) {
+				Part part = new Part();
+				part.setId(result.getInt(1));
+				part.setPartNumber(result.getString(2));
+				part.setPartName(result.getString(3));
+				part.setVendor(result.getString(4));
+				part.setUnitType(result.getString(5));
+				part.setExternalPartNumber(result.getString(6));
+				return part;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+
 	public boolean removePart(int id) {
 		statement = null;
 		result = null;
-		if(checkPartAssociation(id)) {
+		if (checkPartAssociation(id)) {
 			return false;
 		}
-		//remove the part
+		// remove the part
 		try {
 			statement = connection
 					.prepareStatement("DELETE FROM parts WHERE id=" + id);
@@ -326,11 +379,11 @@ public class GatewaySQL implements Gateway {
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		}
 		return false;
 	}
-	
+
 	public boolean removeProduct(int id) {
 		statement = null;
 		result = null;
@@ -341,7 +394,7 @@ public class GatewaySQL implements Gateway {
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		}
 		return false;
 	}
@@ -389,7 +442,7 @@ public class GatewaySQL implements Gateway {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public boolean checkPartAssociation(int Id) {
 		statement = null;
 		result = null;
@@ -398,15 +451,16 @@ public class GatewaySQL implements Gateway {
 					.prepareStatement("SELECT * FROM productParts WHERE part = '"
 							+ Id + "'");
 			result = statement.executeQuery();
-			
-			return (result.next());//if there was a part associated to a product, return true
+
+			return (result.next());// if there was a part associated to a
+									// product, return true
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
-	public HashMap getAssociatedParts(int productId) {
+
+	public HashMap getProductParts(int productId) {
 		HashMap<Integer, Part> parts = new HashMap<Integer, Part>();
 		statement = null;
 		result = null;
@@ -419,14 +473,14 @@ public class GatewaySQL implements Gateway {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			while (matchingParts.next()) {
 				statement = connection
 						.prepareStatement("SELECT * FROM parts WHERE id = '"
 								+ matchingParts.getInt("part") + "'");
 				result = statement.executeQuery();
-				while(result.next()) {//should only be one result
+				while (result.next()) {// should only be one result
 					Part part = new Part();
 					part.setId(result.getInt(1));
 					part.setPartNumber(result.getString(2));
