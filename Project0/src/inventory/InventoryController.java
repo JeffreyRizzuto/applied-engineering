@@ -40,12 +40,12 @@ public class InventoryController implements ActionListener, MouseListener {
 	private JList itemList;
 	private int clicksCount;
 	private Part selectedPart;
+	private Session session;
 
 	public InventoryController(InventoryModel model, InventoryView view) {
 		this.model = model;
 		this.view = view;
-		this.partList = model.getPartsList();
-		this.itemList = model.getItemsList();
+		this.session = model.getLoggedInUser();
 		clicksCount = 0;
 	}
 
@@ -54,13 +54,19 @@ public class InventoryController implements ActionListener, MouseListener {
 
 		String command = event.getActionCommand();
 
-		if (!partList.isSelectionEmpty()) {
-			selectedPart = model.getPart(model.partToId(partList
-					.getSelectedIndex()));// ew
-		}
 		// part mode
 		if (view.getView() == 0) {
+			partList = view.getCurrentPartList();
+			
+			if (!partList.isSelectionEmpty()) {
+				selectedPart = model.getPartByName((String)partList.getSelectedValue());
+			}
+			
 			if (command.equals(editString)) {
+				if(!session.canAddParts) {
+					JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+					return;
+				}
 				// if nothing it selected we can't remove anything
 				if (partList.isSelectionEmpty()) {
 					return;
@@ -93,9 +99,17 @@ public class InventoryController implements ActionListener, MouseListener {
 				 */
 
 			} else if (command.equals(addString)) {
+				if(!session.canAddParts) {
+					JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+					return;
+				}
 				AddPartPopup add = new AddPartPopup(model);
 
 			} else if (command.equals(removeString)) {
+				if(!session.canDeleteParts()) {
+					JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+					return;
+				}
 				// if nothing it selected we can't remove anything
 				if (partList.isSelectionEmpty()) {
 					return;
@@ -112,7 +126,7 @@ public class InventoryController implements ActionListener, MouseListener {
 				}
 				// Delete stuff
 				//first make sure chosen part isn't part of a product
-				if(model.checkPartAssociation(model.partToId(partList.getSelectedIndex()))) {
+				if(model.checkPartAssociation(model.getPartByName((String)partList.getSelectedValue()).getId())) {
 					//show
 					JOptionPane.showMessageDialog(new JFrame(),
 							"That part is part of a product template and can't be deleted");
@@ -121,7 +135,7 @@ public class InventoryController implements ActionListener, MouseListener {
 					DeletePopup delete = new DeletePopup(
 							partList.getSelectedValue());
 					if (delete.response()) {// yes
-						model.removePart(model.partToId(partList.getSelectedIndex()));
+						model.removePart(model.getPartByName((String)partList.getSelectedValue()).getId());
 					} else {// no
 						return;
 					}
@@ -129,19 +143,32 @@ public class InventoryController implements ActionListener, MouseListener {
 			}
 			// item mode
 		} else if (view.getView() == 1) {// sanity check
+			itemList = view.getCurrentItemList();
 			if (command.equals(editString)) {
-				// if nothing it selected we can't remove anything
-				if (itemList.isSelectionEmpty()) {
+				if(!session.canAddInventory()) {
+					JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
 					return;
 				}
-				EditItemPopup edit = new EditItemPopup(model,
-						model.getItem((model.partToId(itemList
-								.getSelectedIndex()))));// i'm sorry
+				// if nothing it selected we can't remove anything
+				
+				if (itemList.isSelectionEmpty()) {
+					System.out.println("IN HERE");
+					return;
+				}
+				EditItemPopup edit = new EditItemPopup(model,model.getItemByName((int)itemList.getSelectedValue()));
 
 			} else if (command.equals(addString)) {
+				if(!session.canAddInventory()) {
+					JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+					return;
+				}
 				AddItemPopup add = new AddItemPopup(model);
 
 			} else if (command.equals(removeString)) {
+				if(!session.canDeleteInventory()) {
+					JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+					return;
+				}
 				// if nothing it selected we can't remove anything
 				if (itemList.isSelectionEmpty()) {
 					return;
@@ -152,8 +179,7 @@ public class InventoryController implements ActionListener, MouseListener {
 						itemList.getSelectedValue());// part popup will work for
 														// item
 				if (delete.response()) {// yes
-					model.removeitem((model.itemToId(itemList
-							.getSelectedIndex())));
+					model.removeitem(model.getItemByName((int)itemList.getSelectedValue()).getId());
 				} else {// no
 					return;
 				}

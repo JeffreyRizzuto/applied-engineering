@@ -46,30 +46,6 @@ public class AddPartPopupController implements ActionListener{
 		boolean error = false;
 		Part part = new Part();
 		
-		/* set part id, commented out since it will be automatically assigned */
-		/*
-		if(!partId.isEmpty() ){
-			//first try to parse to int
-			try{
-				UIid = Integer.parseInt(partId);
-			} catch(Exception NumberFormatException) {
-				itemP.formatError(0);
-				error = true;
-			}
-			if(model.checkPartIdExists(UIid)){
-				itemP.formatError(0);
-				error = true;
-			} else {
-				part.setId(UIid);
-			}
-		} else {
-			itemP.formatError(0);
-			error = true;
-		}
-		*/
-		
-		/* set part number */
-		/* need to make sure no parts have the same part # */
 		if( partNumber.length() < 20 && !partNumber.isEmpty() && !model.checkPartNumber(partNumber) && partNumber.startsWith("P")) {
 			part.setPartNumber(partNumber);
 		} else {

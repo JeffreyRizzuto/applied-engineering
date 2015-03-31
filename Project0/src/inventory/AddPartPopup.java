@@ -37,7 +37,7 @@ public class AddPartPopup extends JFrame{
 
 	public AddPartPopup(InventoryModel model) {
 
-		super("Add New Item");
+		super("Add New Part");
 		this.model = model;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(400, 400);

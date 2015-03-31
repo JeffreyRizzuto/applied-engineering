@@ -4,15 +4,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 
-public class InventoryMenuController extends KeyAdapter implements ActionListener  {
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+public class InventoryMenuController extends KeyAdapter implements
+		ActionListener {
 	private InventoryModel model;
 	private InventoryView view;
-	
+	private Session session;
+
 	public InventoryMenuController(InventoryModel model, InventoryView view) {
 		this.model = model;
 		this.view = view;
+		session = model.getLoggedInUser();
 	}
-	
+
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if (command.equals("Exit")) {
@@ -20,17 +26,28 @@ public class InventoryMenuController extends KeyAdapter implements ActionListene
 			System.exit(0);
 		}
 		if (command.equals("Inventory View")) {
-			return;//do nothing, we are in this mode
+			return;// do nothing, we are in this mode
 		}
 		if (command.equals("Product View")) {
-			System.out.println("Changing modes");
-			view.changeMode();
+			if (session.canViewProductTemplates) {
+				view.changeMode();
+			} else {
+				JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+			}
 		}
 		if (command.equals("parts")) {
-			view.changeView(0);
+			if (session.canViewParts) {
+				view.changeView(0);
+			} else {
+				JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+			}
 		}
 		if (command.equals("items")) {
-			view.changeView(1);
+			if (session.canViewInventory) {
+				view.changeView(1);
+			} else {
+				JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+			}
 		}
 	}
 }

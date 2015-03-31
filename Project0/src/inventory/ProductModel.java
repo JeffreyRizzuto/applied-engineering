@@ -12,12 +12,13 @@ public class ProductModel {
 	private ArrayList<Integer> productIds;
 	private ArrayList<String> productNumbers;
 	private JList productList;
+	Session session;
 	
 	private ListObserver o2;
 	
-	public ProductModel(Gateway pdg) {
+	public ProductModel(Gateway pdg, Session session) {
 		this.pdg = pdg;
-		
+		this.session = session;
 		productIds = new ArrayList<Integer>();
 		productNumbers = new ArrayList<String>();
 		
@@ -56,6 +57,10 @@ public class ProductModel {
 		} else {
 			return products.get(id);
 		}
+	}
+	
+	public Session getLoggedInUser() {
+		return session;
 	}
 	
 	public void refresh() {

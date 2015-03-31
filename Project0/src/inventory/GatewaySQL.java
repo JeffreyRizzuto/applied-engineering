@@ -110,6 +110,8 @@ public class GatewaySQL implements Gateway {
 				item.setPart(result.getInt(2));
 				item.setUnitLocation(result.getString(3));
 				item.setQuantity(result.getInt(4));
+				
+				//add that new item to the list
 				items.put(new Integer(result.getInt(1)), item);
 			}
 		} catch (SQLException e) {
@@ -204,16 +206,32 @@ public class GatewaySQL implements Gateway {
 	public void addItem(Item item) {
 		statement = null;
 		result = null;
-		int id = item.getId();
+		int partId = 0;
 		int part = item.getPart();
-		String location = item.getLocation();
+		String unitLocation = item.getUnitLocation();
 		int quantity = item.getQuantity();
-
 		try {
-			statement = connection.prepareStatement("INSERT INTO Inventory "
-					+ "VALUES ('" + id + "', '" + part + "', '" + location
-					+ "', '" + quantity + "')");
+			statement = connection
+					.prepareStatement("INSERT INTO Inventory (part,location,quantity) "
+							+ "VALUES ('"
+							+ part
+							+ "', '"
+							+ unitLocation
+							+ "', '"
+							+ quantity + "')");
 			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// cool little function built into mysql to get the id just generated,
+		// add it to the part
+		try {
+			statement = connection
+					.prepareStatement("SELECT LAST_INSERT_ID() AS id from Inventory");
+			result = statement.executeQuery();
+			result.next();
+			partId = result.getInt("id");
+			item.setId(partId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

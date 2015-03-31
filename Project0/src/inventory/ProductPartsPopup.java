@@ -51,7 +51,4 @@ public class ProductPartsPopup extends JFrame{
 		partPane.add(buttonPane);
 		
 	}
-	
-	public void registerListeners() { 
-
 }

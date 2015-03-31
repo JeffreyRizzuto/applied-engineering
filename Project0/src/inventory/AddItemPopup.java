@@ -28,7 +28,6 @@ public class AddItemPopup extends JFrame{
 	private JPanel form;
 	private AddItemPopupController itemController;
 	
-	private JTextField partId;
 	private JTextField part;
 	private JComboBox unitLocation;
 	private JTextField quantity;
@@ -47,7 +46,6 @@ public class AddItemPopup extends JFrame{
 		itemController = new AddItemPopupController(model,this);
 		
 		//here are the text fields for the form
-		partId = new JTextField(55);
 		part = new JTextField(255);
 		quantity = new JTextField(255);
 		unitLocation = new JComboBox();
@@ -58,15 +56,7 @@ public class AddItemPopup extends JFrame{
 		
 		//add some labels to the fields (this is probably very ugly
 		JLabel l;
-		
-		partId.setText(Integer.toString(model.getCurrentOpenItemId()));
-		
-		l = new JLabel("ID: ", JLabel.TRAILING);
-		form.add(l);
-		l.setLabelFor(partId);
-		partId.setEditable(false);
-		form.add(partId);
-		
+						
 		//again not sure what he wants here
 		l = new JLabel("Part : ", JLabel.TRAILING);
 		form.add(l);
@@ -89,7 +79,7 @@ public class AddItemPopup extends JFrame{
 
 		//set the layout for form with springUtilities (provided by oracle :P)
 		SpringUtilities.makeCompactGrid(form,
-                4, 2, //rows, cols
+                3, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 		 
@@ -122,10 +112,6 @@ public class AddItemPopup extends JFrame{
 	public void closeWindow(){
 		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));//close the window
 	}
-	
-	public String getId() {
-		return partId.getText();
-	}
 		
 
 	public String getPartID(){
@@ -151,9 +137,6 @@ public class AddItemPopup extends JFrame{
 			quantity.setBackground(Color.red);
 			break;
 		case 2:	errorCode=2;
-			partId.setBackground(Color.red);
-			break;
-		case 3:	errorCode=3;
 			part.setBackground(Color.red);
 			break;
 		}
@@ -162,7 +145,6 @@ public class AddItemPopup extends JFrame{
 	public void resetErrors(){
 		//Will need to add to this if we stick with error codes
 		quantity.setBackground(Color.WHITE);
-		partId.setBackground(Color.WHITE);
 		part.setBackground(Color.WHITE);
 	}
 }

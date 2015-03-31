@@ -12,7 +12,6 @@
  * like productModel
  */
 
-
 package inventory;
 
 import java.awt.List;
@@ -34,226 +33,186 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-public class InventoryModel{
+public class InventoryModel {
 
-	private HashMap<Integer, Part> parts;//Key = partId, V = the part object
-	private HashMap<Integer, Item> items;//Key = partId, V = the part object
-	private ArrayList<String> itemsListName;
-	private ArrayList<String> partsListName;
-	private ArrayList<Integer> itemsListId;
-	private ArrayList<Integer> partsListId;
-	private JList partList;
-	private JList itemList;
+	private HashMap<Integer, Part> parts;// Key = partId, V = the part object
+	private HashMap<Integer, Item> items;// Key = partId, V = the part object
+	private DefaultListModel<String> partList;
+	private DefaultListModel<Integer> itemList;
 	private Gateway pdg;
 	Session session;
-	
-	private ListObserver o1;
-	
-	
-	private int currentPartId = 1;
-	private int currentItemId = 1;
-	
 
-	public InventoryModel(Gateway pdg, Session session){
+	private ListObserver o1;
+
+	public InventoryModel(Gateway pdg, Session session) {
 		this.pdg = pdg;
-		partsListName = new ArrayList<String>();
-		itemsListName = new ArrayList<String>();
-		partsListId = new ArrayList<Integer>();
-		itemsListId = new ArrayList<Integer>();
-		
-		/* this is where we would add saved items if we used persistent data*/
-		load();		
+		this.session = session;
+		partList = new DefaultListModel();
+		itemList = new DefaultListModel();
+		/* this is where we would add saved items if we used persistent data */
+		load();
 
 	}
-	
+
 	public void close() {
-		if(pdg != null)
+		if (pdg != null)
 			pdg.close();
 	}
-	
+
 	public void refresh() {
 		pdg.loadParts();
 		parts = (HashMap<Integer, Part>) pdg.getParts();
 		pdg.loadItems();
 		items = (HashMap<Integer, Item>) pdg.getItems();
 	}
-	
-	public void addPart(Part part){
-			parts.put(part.getId(),part);
-			pdg.addPart(part);
-			update();//update the JList to reflect changes
-		
+
+	public void addPart(Part part) {
+		parts.put(part.getId(), part);
+		pdg.addPart(part);
+		update();// update the JList to reflect changes
+
 	}
 
-	public void addItem(Item item){
-			items.put(item.getId(),item);
-			pdg.addItem(item);
-			update();//update the JList to reflect changes
-		
+	public void addItem(Item item) {
+		items.put(item.getId(), item);
+		pdg.addItem(item);
+		update();// update the JList to reflect changes
+
 	}
-	
-	public void removePart(int item){
-		if(parts.get(item) == null){
+
+	public void removePart(int item) {
+		if (parts.get(item) == null) {
 			throw new IllegalArgumentException();
 		} else {
 			pdg.removePart(item);
-			update();//update the JList to reflect changes
+			update();// update the JList to reflect changes
 		}
 	}
-	
-	public void removeitem(int item){
-		if(items.get(item) == null){
+
+	public void removeitem(int item) {
+		if (items.get(item) == null) {
 			throw new IllegalArgumentException();
 		} else {
 			pdg.removeItem(item);
 			items.remove(item);
-			update();//update the JList to reflect changes
+			update();// update the JList to reflect changes
 		}
 	}
-	
-	public Part getPart(int partNum){
-		if(parts.get(partNum) == null) {
-			throw new IllegalArgumentException();
+
+	public Part getPart(int partNum) {
+		if (parts.get(partNum) == null) {
+			return null;
 		} else {
 			return parts.get(partNum);
 		}
 	}
-	
-	public Item getItem(int id){
+
+	public Item getItem(int id) {
 		return items.get(id);
 	}
-	
+
 	public boolean checkPartNumber(String partNumber) {
-		if(parts.get(partNumber) == null){
-			return false;
-		}
-		return true;
-	}
-	
-	public boolean checkPartName(String item) {
-		for(Part value : parts.values()) {
-			if( item.equals(value.getPartName()) ){
+		for (Part value : parts.values()) {
+			if (partNumber.equals(value.getPartNumber())) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
+	public boolean checkPartName(String item) {
+		for (Part value : parts.values()) {
+			if (item.equals(value.getPartName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean checkPartAssociation(int id) {
 		return pdg.checkPartAssociation(id);
 	}
-	
-	public int getCurrentOpenPartId(){
-		while(parts.get(currentPartId) != null) {
-			currentPartId++;
-		}
-		return currentPartId;
-			
-		
-	}
-	
-	public int getCurrentOpenItemId(){
-		while(items.get(currentItemId) != null) {
-			currentItemId++;
-		}
-		return currentItemId;
-	}
-	
-	public boolean checkPartIdExists(int id){
+
+	public boolean checkPartIdExists(int id) {
 		return parts.containsKey(id);
 	}
-	public boolean checkItemIdExists(int id){
+
+	public boolean checkItemIdExists(int id) {
 		return items.containsKey(id);
 	}
-	
-	public void populatePartsList(){
-		for(Part part : parts.values()) {
-			partsListName.add(part.getPartName());//so hacky
-			partsListId.add(part.getId());
-		}
-	}
-	
-	public void populateItemsList(){
-		for(Item item : items.values()) {
-			itemsListName.add(getPart(item.getId()).getPartName());
-			itemsListId.add(item.getId());
-		}
-	}
-	
+
 	public JList getPartsList() {
-		return partList;
+		return new JList(partList);
 	}
-	
+
 	public JList getItemsList() {
-		return itemList;
+		return new JList(itemList);
 	}
 	
-	public int partToId(int index){
-		return partsListId.get(index);
+	public Part getPartByName(String name) {
+		for (Part p : parts.values()) {
+			if(p.getPartName().equals(name))
+				return p;
+		}
+		return null;
 	}
 	
-	/*public int itemToId(int index){
-		return items.get(itemsListId.get(index)).getPart();
-	}*/
-	
-	public int itemToId(int index){
-	return itemsListId.get(index);
+	public Item getItemByName(int name) {
+		for (Item i : items.values()) {
+			if(i.getId() == name)
+				return i;
+		}
+		return null;
 	}
-	
-	public void addPartsList(String name, Integer id) {
-		partsListName.add(name);
-		partsListId.add(id);
-	}
-	
-	public void addItemsList(String name, Integer id) {
-		itemsListName.add(name);
-		itemsListId.add(id);
-	}
-	
+
+
 	public void registerObserver(ListObserver o1) {
 		this.o1 = o1;
-		
+
 	}
 	
-	//functions for the lock
-	//might try and combine these 3 functions
-	
+	//get user
+	public Session getLoggedInUser() {
+		return session;
+	}
+
+	// functions for the lock
+	// might try and combine these 3 functions
+
 	public boolean checkLock(int id) {
 		return pdg.checkLock(id);
 	}
-	
+
 	public void lockPart(int id) {
 		pdg.lockPart(id);
 	}
-	
+
 	public void unlockPart(int id) {
 		pdg.unlockPart(id);
 	}
-	
-	private void load(){
+
+	private void load() {
 		refresh();
-		partsListName.clear();
-		itemsListName.clear();
-		partsListId.clear();
-		itemsListId.clear();
-		populatePartsList();
-		populateItemsList();
-		partList = null;
-		itemList = null;
-		partList = new JList(partsListName.toArray());
-		itemList = new JList(itemsListName.toArray());
+		for (Part p : parts.values()) {
+			partList.addElement(p.getPartName());
+		}
+
+		for (Item i : items.values()) {
+			itemList.addElement(i.getId());
+		}
 	}
-	
+
 	private void update() {
 		refresh();
-		partsListName.clear();
-		itemsListName.clear();
-		partsListId.clear();
-		itemsListId.clear();
-		populatePartsList();
-		populateItemsList();
-		partList = new JList(partsListName.toArray());
-		itemList = new JList(itemsListName.toArray());
+		partList.clear();
+		itemList.clear();
+		for (Part p : parts.values()) {
+			partList.addElement(p.getPartName());
+		}
+
+		for (Item i : items.values()) {
+			itemList.addElement(i.getId());
+		}
 		o1.update();
 	}
 }

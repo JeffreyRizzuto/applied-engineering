@@ -24,8 +24,8 @@ public class Item {
 		this.id = itemId;		
 	}
 	
-	public void setPart(int i){
-		this.part = i;
+	public void setPart(int part){
+		this.part = part;
 	}
 
 	
@@ -36,9 +36,6 @@ public class Item {
 		this.unitLocation = location;
 	}
 	
-	public String getUnitLocation(){
-		return this.unitLocation;
-	}
 	
 	public void setQuantity(int quantity){
 		if(quantity >= 0) {
@@ -55,9 +52,10 @@ public class Item {
 		return this.part;
 	}
 	
-	public String getLocation(){
+	public String getUnitLocation(){
 		return this.unitLocation;
 	}
+	
 	
 	public int getQuantity(){
 		return this.quantity;

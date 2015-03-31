@@ -29,7 +29,6 @@ public class ProductController implements ActionListener, MouseListener {
 	}
 
 	public void actionPerformed(ActionEvent event) {
-		System.out.println("I AM HERE");
 
 		String command = event.getActionCommand();
 		

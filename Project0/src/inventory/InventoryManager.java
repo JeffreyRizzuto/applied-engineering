@@ -28,22 +28,35 @@ public class InventoryManager{
 		}
 		
 		//models
-		InventoryModel iModel = new InventoryModel(pdg,session);
-		ProductModel pModel = new ProductModel(pdg);
+		InventoryModel iModel = null;
+		ProductModel pModel = null;
+		if(session.canViewInventory || session.canViewParts)
+			iModel = new InventoryModel(pdg,session);
+		if(session.canViewProductTemplates)
+			pModel = new ProductModel(pdg, session);
 		
 		//switcher
-		ModeSwitcher mode = new ModeSwitcher();
+		ModeSwitcher mode = new ModeSwitcher(session);
 		
 		//inventory
-		InventoryView iView = new InventoryView(iModel, mode);
-		InventoryController invControl = new InventoryController(iModel, iView);
-		InventoryMenuController invMenuControl =  new InventoryMenuController(iModel, iView);
-		iView.registerListeners(invMenuControl, invControl);
-		//products
-		ProductView pView = new ProductView(pModel, mode);
-		ProductController prodControl = new ProductController(pModel, pView);
-		ProductMenuController prodMenuControl = new ProductMenuController(pModel,pView);
-		pView.registerListeners(prodControl, prodMenuControl);
+		InventoryView iView = null;
+		ProductView pView = null;
+		if(session.canViewInventory) {
+			iView = new InventoryView(iModel, mode);
+			InventoryController invControl = new InventoryController(iModel, iView);
+			InventoryMenuController invMenuControl =  new InventoryMenuController(iModel, iView);
+			iView.registerListeners(invMenuControl, invControl);
+		}
+		
+		if(session.canViewProductTemplates) {
+			//products
+			pView = new ProductView(pModel, mode);
+			ProductController prodControl = new ProductController(pModel, pView);
+			ProductMenuController prodMenuControl = new ProductMenuController(pModel,pView);
+			pView.registerListeners(prodControl, prodMenuControl);
+		}
+		
+		
 		
 		//register the views with the mode switcher
 		mode.registerInv(iView);
@@ -63,11 +76,23 @@ public class InventoryManager{
 		//get screen dimensions so we can have app pop up in middle of screen
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		/* start the app */
-		iView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		iView.setSize(400, 300);
-		iView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
-		pView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
-		iView.setVisible(true);
+		if(session.canViewInventory) {
+			iView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			iView.setSize(400, 300);
+			pView.setSize(400,300);
+			iView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
+			pView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
+			iView.setVisible(true);
+		} else if(session.canViewProductTemplates){
+			pView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			iView.setSize(400, 300);
+			pView.setSize(400,300);
+			iView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
+			pView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
+			pView.setVisible(true);
+
+		}
+		
 		
 	}
 

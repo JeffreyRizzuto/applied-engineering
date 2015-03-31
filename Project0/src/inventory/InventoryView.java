@@ -14,11 +14,11 @@ public class InventoryView extends JFrame {
 	private InventoryModel model;
 	private JPanel invPanel;
 	private JScrollPane scrollPane;
-	private JLabel statusBar;
 	private JMenu invMenu;
 	private JMenu modeMenu;
 	private JMenu viewMenu;
-	private JPopupMenu popupMenu;
+	private JList partList;
+	private JList itemList;
 	private JPanel buttonPane;
 	private int view = 0;//0 = part, 1 = item
 	private ModeSwitcher mode;//0 = inv, 1 = prod
@@ -42,7 +42,7 @@ public class InventoryView extends JFrame {
 		//inventory scroll pane
 		invPanel = new JPanel();
 		invPanel.setLayout(new BorderLayout());
-		scrollPane = new JScrollPane(model.getPartsList());
+		scrollPane = new JScrollPane(partList = model.getPartsList());
 		invPanel.add(scrollPane);
 		
 		//button pane
@@ -164,21 +164,31 @@ public class InventoryView extends JFrame {
 		return view;
 	}
 	
+	public JList getCurrentPartList() {
+		return partList;
+	}
+	
+	public JList getCurrentItemList() {
+		return itemList;
+	}
+	
 	public void update() {
 		if(view == 0) {
-			scrollPane.setViewportView(model.getPartsList());
+			scrollPane.setViewportView(partList = model.getPartsList());
 		} else {
-			scrollPane.setViewportView(model.getItemsList());
+			scrollPane.setViewportView(itemList = model.getItemsList());
 		}
 	}
 	
 	public void changeView(int setting) {
 		if(setting == 0) {
 			this.view = setting;
-			scrollPane.setViewportView(model.getItemsList());
+			this.setTitle("Parts");
+			scrollPane.setViewportView(partList = model.getPartsList());
 		} else {
 			this.view = setting;
-			scrollPane.setViewportView(model.getPartsList());
+			this.setTitle("Items");
+			scrollPane.setViewportView(itemList = model.getItemsList());
 		}		
 	}
 	
