@@ -27,9 +27,6 @@ public class ProductPartsPopup extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		JList<String> partNames = new JList<String>();
-		for(Part part : parts.values()) {
-			
-		}
 		
 		for(Part part : parts.values()) {
 			partList.add(part.getPartName());

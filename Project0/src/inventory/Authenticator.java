@@ -35,6 +35,6 @@ public class Authenticator {
 		if(usersLogins.get(email) != null && usersLogins.get(email).equals(password)) {
 			 return new Session(users.get(email), roles.get(email));
 		}
-		return null;		
+		return  new Session(new User("",""),"");		
 	}
 }

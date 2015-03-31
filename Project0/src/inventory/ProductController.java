@@ -15,6 +15,7 @@ public class ProductController implements ActionListener, MouseListener {
 	private ProductView view;
 	private JList productList;
 	private Product selecetedProduct;
+	private Session session;
 	
 	private static final String addString = "add";
 	private static final String removeString = "remove";
@@ -24,6 +25,7 @@ public class ProductController implements ActionListener, MouseListener {
 	public ProductController(ProductModel pModel, ProductView pView) {
 		this.model = pModel;
 		this.view = pView;
+		session = model.getLoggedInUser();
 		this.productList = model.getProductList();
 
 	}
@@ -41,6 +43,10 @@ public class ProductController implements ActionListener, MouseListener {
 
 		//edit--------------------------------------------
 		if (command.equals(editString)) {
+			if(!session.canAddProductTemplates) {
+				JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+				return;
+			}
 			// if nothing it selected we can't remove anything
 			if (productList.isSelectionEmpty()) {
 				return;
@@ -50,9 +56,17 @@ public class ProductController implements ActionListener, MouseListener {
 
 		//add--------------------------------------------
 		} else if (command.equals(addString)) {
+			if(!session.canAddProductTemplates) {
+				JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+				return;
+			}
 			AddProductPopup add = new AddProductPopup(model);
 		//remove--------------------------------------------
 		} else if (command.equals(removeString)) {
+			if(!session.canDeleteProductTemplates) {
+				JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+				return;
+			}
 			// if nothing it selected we can't remove anything
 			if (productList.isSelectionEmpty()) {
 				return;
@@ -66,6 +80,10 @@ public class ProductController implements ActionListener, MouseListener {
 			}
 		//parts--------------------------------------------
 		} else if (command.equals(partString)) {
+			if(!session.canAddProductTemplates) {
+				JOptionPane.showMessageDialog(new JFrame(), "Access Denied");
+				return;
+			}
 			if (productList.isSelectionEmpty()) {
 				return;
 			}

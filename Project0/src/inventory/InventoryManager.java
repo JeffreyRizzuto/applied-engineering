@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.*;
 
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.JFrame;
 
@@ -63,16 +64,6 @@ public class InventoryManager{
 		mode.registerProd(pView);		
 		
 		
-		//observer
-		ListObserver o1 = new ListObserver();
-		iModel.registerObserver(o1);
-		o1.setView(iView);
-		o1.setView(pView);
-		ListObserver o2 = new ListObserver();
-		pModel.registerObserver(o2);
-		o2.setView(iView);
-		o2.setView(pView);
-		
 		//get screen dimensions so we can have app pop up in middle of screen
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		/* start the app */
@@ -83,17 +74,35 @@ public class InventoryManager{
 			iView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
 			pView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
 			iView.setVisible(true);
-		} else if(session.canViewProductTemplates){
+		} else if(session.canViewParts) {
+			iView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			iView.setSize(400, 300);
+			pView.setSize(400,300);
+			iView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
+			pView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
+			iView.changeMode();
+			iView.setVisible(true);
+		} else if(session.canViewProductTemplates) {
 			pView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			iView.setSize(400, 300);
 			pView.setSize(400,300);
 			iView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
 			pView.setLocation(dim.width/2-400/2, dim.height/2-300/2);
 			pView.setVisible(true);
-
+		} else {
+			JOptionPane.showMessageDialog(new JFrame(), "Access Denied: Invalid User");
+			System.exit(0);
 		}
 		
-		
+		//observer
+		ListObserver o1 = new ListObserver();
+		iModel.registerObserver(o1);
+		o1.setView(iView);
+		o1.setView(pView);
+		ListObserver o2 = new ListObserver();
+		pModel.registerObserver(o2);
+		o2.setView(iView);
+		o2.setView(pView);
 	}
 
 }
