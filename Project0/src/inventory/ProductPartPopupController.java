@@ -22,13 +22,15 @@ public class ProductPartPopupController implements ActionListener {
 			if (model.checkPart(popup.getInput())) {
 				model.addProductPart(popup.getProduct(),
 						model.getPart(popup.getInput()));
+				popup.closeWindow();
 			}
 		}
 
 		if (command.equals("remove")) {
 			if (model.checkPart(popup.getInput())) {
-				model.addProductPart(popup.getProduct(),
+				model.removeProductPart(popup.getProduct(),
 						model.getPart(popup.getInput()));
+				popup.closeWindow();
 			}
 		}
 	}

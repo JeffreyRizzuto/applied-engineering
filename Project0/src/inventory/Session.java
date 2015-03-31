@@ -72,16 +72,16 @@ public class Session {
 	}
 
 	private void setAdmin() {
-		boolean canViewProductTemplates = true;
-		boolean canAddProductTemplates = true;
-		boolean canDeleteProductTemplates = true;
-		boolean canCreateProducts = true;
-		boolean canViewInventory = true;
-		boolean canAddInventory = true;
-		boolean canViewParts = true;
-		boolean canAddParts = true;
-		boolean canDeleteParts = true;
-		boolean canDeleteInventory = true;
+		canViewProductTemplates = true;
+		canAddProductTemplates = true;
+		canDeleteProductTemplates = true;
+		canCreateProducts = true;
+		canViewInventory = true;
+		canAddInventory = true;
+		canViewParts = true;
+		canAddParts = true;
+		canDeleteParts = true;
+		canDeleteInventory = true;
 	}
 	
 	public boolean canViewProductTemplates() {

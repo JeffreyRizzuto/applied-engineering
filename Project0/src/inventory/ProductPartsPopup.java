@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
@@ -20,13 +21,13 @@ import javax.swing.SpringLayout;
 
 public class ProductPartsPopup extends JFrame{
 	
-	private HashMap<Integer,Part> parts;
+	private ArrayList<Part> parts;
 	DefaultListModel partNames;
 	JPanel buttonPane;
 	JTextField input;
 	Product currentProduct;
 
-	public ProductPartsPopup(ProductModel model, HashMap<Integer,Part> parts, Product product) {
+	public ProductPartsPopup(ProductModel model, ArrayList<Part> parts, Product product) {
 		super("parts");
 		this.parts = parts;
 		this.currentProduct = product;
@@ -35,8 +36,10 @@ public class ProductPartsPopup extends JFrame{
 		
 		partNames = new DefaultListModel();
 		
-		for(Part part : parts.values()) {
-			partNames.addElement(part.getPartName());
+		Iterator it = parts.iterator();
+		
+		while(it.hasNext()) {
+			partNames.addElement(((Part) it.next()).getPartName());
 		}
 		
 		JPanel partPane = new JPanel();

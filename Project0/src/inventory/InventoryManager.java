@@ -17,7 +17,7 @@ public class InventoryManager{
 	public static void main(String args[]) {
 		
 		//authenticate
-		Session session = Authenticator.authenticate("tj@cab.net", "hunter1");
+		Session session = Authenticator.authenticate("rn@cab.net", "hunter1");
 		
 		//create the database stuff
 		Gateway pdg = null;

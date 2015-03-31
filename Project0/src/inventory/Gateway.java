@@ -1,5 +1,6 @@
 package inventory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface Gateway {
@@ -24,6 +25,6 @@ public interface Gateway {
 	public void unlockPart(int id);
 	public boolean checkPart(String partNum);
 	public boolean checkPartAssociation(int id);
-	public HashMap getProductParts(int productId);
+	public ArrayList<Part> getProductParts(int productId);
 	public void close();
 }

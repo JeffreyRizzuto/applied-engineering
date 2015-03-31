@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -291,8 +293,7 @@ public class GatewaySQL implements Gateway {
 		int partId = part.getId();
 		try {
 			statement = connection
-					.prepareStatement("DELETE FROM productParts (product,part) "
-							+ "VALUES ('" + productId + "', '" + partId + "')");
+					.prepareStatement("DELETE FROM productParts WHERE product = "+ productId +" AND part = " + partId + " Limit 1");
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -305,7 +306,7 @@ public class GatewaySQL implements Gateway {
 		// remove the part
 		try {
 			statement = connection
-					.prepareStatement("SELECT FROM parts WHERE part_number=" + partNum);
+					.prepareStatement("SELECT * FROM `parts` WHERE part_number = '" + partNum +"'");
 			result = statement.executeQuery();
 			if(result.next()) {
 				return true;
@@ -323,7 +324,7 @@ public class GatewaySQL implements Gateway {
 		// remove the part
 		try {
 			statement = connection
-					.prepareStatement("SELECT FROM parts WHERE part_number=" + partNum);
+					.prepareStatement("SELECT * FROM `parts` WHERE part_number = '" + partNum +"'");
 			result = statement.executeQuery();
 			if(result.next()) {
 				Part part = new Part();
@@ -351,7 +352,7 @@ public class GatewaySQL implements Gateway {
 		// remove the part
 		try {
 			statement = connection
-					.prepareStatement("DELETE FROM parts WHERE id=" + id);
+					.prepareStatement("DELETE FROM parts WHERE id = " + id);
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -360,7 +361,7 @@ public class GatewaySQL implements Gateway {
 		// remove the lock
 		try {
 			statement = connection
-					.prepareStatement("DELETE FROM partLock WHERE id=" + id);
+					.prepareStatement("DELETE FROM partLock WHERE id = " + id);
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -460,8 +461,8 @@ public class GatewaySQL implements Gateway {
 		return false;
 	}
 
-	public HashMap getProductParts(int productId) {
-		HashMap<Integer, Part> parts = new HashMap<Integer, Part>();
+	public ArrayList<Part> getProductParts(int productId) {
+		ArrayList<Part> parts = new ArrayList<Part>();
 		statement = null;
 		result = null;
 		ResultSet matchingParts = null;
@@ -488,7 +489,7 @@ public class GatewaySQL implements Gateway {
 					part.setVendor(result.getString(4));
 					part.setUnitType(result.getString(5));
 					part.setExternalPartNumber(result.getString(6));
-					parts.put(new Integer(part.getId()), part);
+					parts.add(part);
 				}
 			}
 		} catch (SQLException e) {

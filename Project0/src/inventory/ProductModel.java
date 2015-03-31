@@ -1,6 +1,7 @@
 package inventory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import javax.swing.JList;
@@ -53,7 +54,7 @@ public class ProductModel {
 		pdg.removeProductPart(product, part);
 	}
 	
-	public HashMap<Integer, Part> getAssociatedParts(int id) {
+	public ArrayList<Part> getAssociatedParts(int id) {
 		return pdg.getProductParts(id);
 	}
 	
