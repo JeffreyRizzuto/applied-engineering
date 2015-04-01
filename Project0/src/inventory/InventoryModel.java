@@ -99,7 +99,7 @@ public class InventoryModel {
 		} else {
 			pdg.removeItem(item);
 			items.remove(item);
-			
+
 			update();// update the JList to reflect changes
 		}
 	}
@@ -138,8 +138,13 @@ public class InventoryModel {
 		return pdg.checkPartAssociation(id);
 	}
 
-	public boolean checkPartIdExists(int id) {
-		return parts.containsKey(id);
+	public String getPartByNumber(int id) {
+		for (Part p : parts.values()) {
+			if (p.getId() == id) {
+				return p.getPartNumber();
+			}
+		}
+		return null;
 	}
 
 	public boolean checkItemIdExists(int id) {
@@ -153,32 +158,31 @@ public class InventoryModel {
 	public JList getItemsList() {
 		return new JList(itemList);
 	}
-	
+
 	public Part getPartByName(String name) {
 		for (Part p : parts.values()) {
-			if(p.getPartName().equals(name))
+			if (p.getPartName().equals(name))
 				return p;
 		}
 		return null;
 	}
-	
+
 	public Item getItemByName(int name) {
-		
+
 		int id = itemIdList.get(name);
 		for (Item i : items.values()) {
-			if(i.getId() == id)
+			if (i.getId() == id)
 				return i;
 		}
 		return null;
 	}
 
-
 	public void registerObserver(ListObserver o1) {
 		this.o1 = o1;
 
 	}
-	
-	//get user
+
+	// get user
 	public Session getLoggedInUser() {
 		return session;
 	}
@@ -224,5 +228,10 @@ public class InventoryModel {
 			itemIdList.addElement(i.getId());
 		}
 		o1.update();
+	}
+
+	public String getProductByNumber(int partId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

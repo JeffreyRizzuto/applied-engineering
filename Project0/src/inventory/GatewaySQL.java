@@ -109,7 +109,7 @@ public class GatewaySQL implements Gateway {
 			while (result.next()) {
 				Item item = new Item();
 				item.setId(result.getInt(1));
-				item.setPart(result.getInt(2));
+				item.setPart(result.getString(2));
 				item.setUnitLocation(result.getString(3));
 				item.setQuantity(result.getInt(4));
 
@@ -209,7 +209,7 @@ public class GatewaySQL implements Gateway {
 		statement = null;
 		result = null;
 		int partId = 0;
-		int part = item.getPart();
+		String part = item.getPart();
 		String unitLocation = item.getUnitLocation();
 		int quantity = item.getQuantity();
 		try {

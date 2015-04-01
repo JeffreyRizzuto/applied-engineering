@@ -78,12 +78,14 @@ public class EditItemPopupController implements ActionListener{
 		//Set ID
 		item.setId(Integer.parseInt(itemId));
 		
+		
+		//need same code here as add
 		if(part.equals("")){
 			itemP.formatError(3);
 		} else {
 			try {
-				if(model.getPart(Integer.parseInt(part)) != null){
-					item.setPart(Integer.parseInt(part));
+				if(model.getPart(part) != null){
+					item.setPart(part);
 				}
 			} catch(Exception NumberFormatException) {
 				itemP.formatError(3);

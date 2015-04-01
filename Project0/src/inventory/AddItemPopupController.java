@@ -50,17 +50,16 @@ public class AddItemPopupController implements ActionListener {
 
 		Item item = new Item();
 
-		try {
-			partId = Integer.parseInt(part);
-			if (!model.checkPartIdExists(partId)) {
-				itemP.formatError(2);
-				error = true;
-			}
-		} catch (Exception NumberFormatException) {
+		
+		if (model.getPartByNumber(partId).isEmpty()) {//see if input is a part
+			
+		} else if(model.getProductByNumber(partId).isEmpty()) {//see if input is a product
+			
+		} else {
 			itemP.formatError(2);
 			error = true;
 		}
-
+			
 		if (unitLocation.equals("Unknown"))
 			error = true;
 

@@ -1,0 +1,32 @@
+Main class: Inventory Manager
+
+RUNNING THE APPLICATION
+
+First the authenticator is ran and a session is made
+
+Inventory manager starts off be creating all the views/models/observers/controllers needed (for the authenticated user)
+
+the starting view of the application if the parts view
+
+the menu at the top can toggle between the Inventory view (with parts and items) 
+or template view (product template), if you have permission.
+
+The parts view for a product template is the only view that works a bit oddly than the others, which should be pretty easy to understand.
+
+In the parts view, parts must be added by typing in that parts part number and pressing "add", same with removing
+
+
+HOW MODEL WORKS
+
+model calls the GatewaySQL to deserialize the server data and creates a Map with the data, the items id the key
+
+this was great for the start of this project, as it worked really well, but as the project continues it 
+can get really tricky when we need to search for an item off another paramater, 
+and I am slowly moving the application away from this approach, but for now, that part of the program
+can be very spaghetti code at times.
+
+Product model is much more up to date with most of the new approach (Still some changes to make)
+ and should be pretty easy to understand
+ 
+ 
+

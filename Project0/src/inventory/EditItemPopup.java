@@ -61,7 +61,7 @@ public class EditItemPopup extends JFrame{
 		
 		//set text
 		id.setText(Integer.toString(item.getId()));
-		part.setText(Integer.toString(item.getPart()));
+		part.setText(item.getPart());
 		quantity.setText(Integer.toString(selectedItem.getQuantity()));
 		unitLocation.setSelectedItem(selectedItem.getUnitLocation());
 		
