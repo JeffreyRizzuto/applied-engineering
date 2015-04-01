@@ -22,9 +22,12 @@ public interface Gateway {
 	public boolean checkLock(int id);
 	public void removeProductPart(Product product, Part part);
 	public void lockPart(int id);
+	public Product getProduct(String productNumber);
 	public void unlockPart(int id);
 	public boolean checkPart(String partNum);
 	public boolean checkPartAssociation(int id);
-	public ArrayList<Part> getProductParts(int productId);
+	public boolean checkPartInStock(Part part, String location, int quantity);
+	public void removePartFromStock(Part part, String location, int quantity);
+	public ArrayList<Part> getProductParts(String productNumber);
 	public void close();
 }

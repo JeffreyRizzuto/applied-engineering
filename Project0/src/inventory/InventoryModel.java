@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.Vector;
 
+import javax.management.modelmbean.ModelMBean;
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -104,14 +105,6 @@ public class InventoryModel {
 		}
 	}
 
-	public Part getPart(int partNum) {
-		if (parts.get(partNum) == null) {
-			return null;
-		} else {
-			return parts.get(partNum);
-		}
-	}
-
 	public Item getItem(int id) {
 		return items.get(id);
 	}
@@ -138,10 +131,10 @@ public class InventoryModel {
 		return pdg.checkPartAssociation(id);
 	}
 
-	public String getPartByNumber(int id) {
+	public Part getPartByNumber(String id) {
 		for (Part p : parts.values()) {
-			if (p.getId() == id) {
-				return p.getPartNumber();
+			if (p.getPartNumber().equals(id)) {
+				return p;
 			}
 		}
 		return null;
@@ -209,8 +202,13 @@ public class InventoryModel {
 		}
 
 		for (Item i : items.values()) {
-			itemList.addElement(getPart(i.getPart()).getPartName());
-			itemIdList.addElement(i.getId());
+
+			if (getPartByNumber(i.getPart()) != null) {
+				itemList.addElement(getPartByNumber(i.getPart()).getPartName());
+			} else if (getProductByNumber(i.getPart()) != null) {// product
+				itemList.addElement(getProductByNumber(i.getPart()).getNumber());
+			}
+
 		}
 	}
 
@@ -224,14 +222,29 @@ public class InventoryModel {
 		}
 
 		for (Item i : items.values()) {
-			itemList.addElement(getPart(i.getPart()).getPartName());
-			itemIdList.addElement(i.getId());
+			if (getPartByNumber(i.getPart()) != null) {
+				itemList.addElement(getPartByNumber(i.getPart()).getPartName());
+			} else if (getProductByNumber(i.getPart()) != null) {// product
+				itemList.addElement(getProductByNumber(i.getPart()).getNumber());
+			}
 		}
 		o1.update();
 	}
 
-	public String getProductByNumber(int partId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Product getProductByNumber(String productNumber) {
+		return pdg.getProduct(productNumber);
+	}
+
+	public ArrayList<Part> getProductParts(String productNumber) {
+		return pdg.getProductParts(productNumber);
+	}
+
+	public boolean checkPartInStock(Part part, String location, int quantity) {
+		return pdg.checkPartInStock(part, location, quantity);
+
+	}
+
+	public void removePartFromStock(Part part, String location, int quantity) {
+		pdg.removePartFromStock(part, location, quantity);
 	}
 }

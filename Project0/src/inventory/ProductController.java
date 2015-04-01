@@ -89,7 +89,7 @@ public class ProductController implements ActionListener, MouseListener {
 				return;
 			}
 			ProductPartsPopup parts = new ProductPartsPopup(model,
-					model.getAssociatedParts(selectedProduct.getId()), model.getProductAt(selectedIndex));
+					model.getAssociatedParts(selectedProduct.getNumber()), model.getProductAt(selectedIndex));
 			parts.registerListeners(new ProductPartPopupController(parts,model));
 		}
 		 productList = model.getProductList();

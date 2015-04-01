@@ -274,12 +274,12 @@ public class GatewaySQL implements Gateway {
 	public void addProductPart(Product product, Part part) {
 		statement = null;
 		result = null;
-		int productId = product.getId();
+		String productNumber = product.getNumber();
 		int partId = part.getId();
 		try {
 			statement = connection
 					.prepareStatement("INSERT INTO productParts (product,part) "
-							+ "VALUES ('" + productId + "', '" + partId + "')");
+							+ "VALUES ('" + productNumber + "', '" + partId + "')");
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -289,26 +289,28 @@ public class GatewaySQL implements Gateway {
 	public void removeProductPart(Product product, Part part) {
 		statement = null;
 		result = null;
-		int productId = product.getId();
+		String productNumber = product.getNumber();
 		int partId = part.getId();
 		try {
 			statement = connection
-					.prepareStatement("DELETE FROM productParts WHERE product = "+ productId +" AND part = " + partId + " Limit 1");
+					.prepareStatement("DELETE FROM productParts WHERE product = "
+							+ productNumber + " AND part = " + partId + " Limit 1");
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public boolean checkPart(String partNum) {
 		statement = null;
 		result = null;
 		// remove the part
 		try {
 			statement = connection
-					.prepareStatement("SELECT * FROM `parts` WHERE part_number = '" + partNum +"'");
+					.prepareStatement("SELECT * FROM `parts` WHERE part_number = '"
+							+ partNum + "'");
 			result = statement.executeQuery();
-			if(result.next()) {
+			if (result.next()) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -317,16 +319,17 @@ public class GatewaySQL implements Gateway {
 		}
 		return false;
 	}
-	
+
 	public Part getPart(String partNum) {
 		statement = null;
 		result = null;
 		// remove the part
 		try {
 			statement = connection
-					.prepareStatement("SELECT * FROM `parts` WHERE part_number = '" + partNum +"'");
+					.prepareStatement("SELECT * FROM `parts` WHERE part_number = '"
+							+ partNum + "'");
 			result = statement.executeQuery();
-			if(result.next()) {
+			if (result.next()) {
 				Part part = new Part();
 				part.setId(result.getInt(1));
 				part.setPartNumber(result.getString(2));
@@ -392,8 +395,10 @@ public class GatewaySQL implements Gateway {
 			statement = connection
 					.prepareStatement("DELETE FROM products WHERE id=" + id);
 			statement.executeUpdate();
-			
-			statement = connection.prepareStatement("DELETE FROM productParts WHERE product = "+ id);
+
+			statement = connection
+					.prepareStatement("DELETE FROM productParts WHERE product = "
+							+ id);
 			statement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -464,7 +469,30 @@ public class GatewaySQL implements Gateway {
 		return false;
 	}
 
-	public ArrayList<Part> getProductParts(int productId) {
+	public Product getProduct(String productNumber) {
+		statement = null;
+		result = null;
+		try {
+			statement = connection
+					.prepareStatement("SELECT * FROM products WHERE number = '"
+							+ productNumber + "'");
+			result = statement.executeQuery();
+			if(result.next()) {
+				Product product = new Product();
+				product.setId(result.getInt(1));
+				product.setNumber(result.getString(2));
+				product.setDescription(result.getString(3));
+				return product;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public ArrayList<Part> getProductParts(String productNumber) {
 		ArrayList<Part> parts = new ArrayList<Part>();
 		statement = null;
 		result = null;
@@ -472,7 +500,7 @@ public class GatewaySQL implements Gateway {
 		try {
 			statement = connection
 					.prepareStatement("SELECT * FROM productParts WHERE product = '"
-							+ productId + "'");
+							+ productNumber + "'");
 			matchingParts = statement.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -520,6 +548,46 @@ public class GatewaySQL implements Gateway {
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	public boolean checkPartInStock(Part part, String location, int quantity) {
+		statement = null;
+		result = null;
+		String productNumber = part.getPartNumber();
+		try {
+			statement = connection
+					.prepareStatement("SELECT quantity FROM Inventory WHERE part = '"
+							+ productNumber + "' AND location = '" + location + "'");
+			result = statement.executeQuery();
+			result.next();
+			int stockQuantity = result.getInt(1);
+			
+			System.out.println("In stock: " +stockQuantity);
+			
+			if(stockQuantity >= quantity) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public void removePartFromStock(Part part, String location, int quantity) {
+		statement = null;
+		result = null;
+		String productNumber = part.getPartNumber();
+		System.out.println("UPDATE Inventory set quantity = quantity - " + quantity + " WHERE part = '"
+							+ productNumber + "' AND location = '" + location + "'");
+		try {
+			statement = connection
+					.prepareStatement("UPDATE Inventory set quantity = quantity - " + quantity + " WHERE part = '"
+							+ productNumber + "' AND location = '" + location + "'");
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 

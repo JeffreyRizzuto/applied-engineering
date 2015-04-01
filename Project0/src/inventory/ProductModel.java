@@ -54,8 +54,8 @@ public class ProductModel {
 		pdg.removeProductPart(product, part);
 	}
 	
-	public ArrayList<Part> getAssociatedParts(int id) {
-		return pdg.getProductParts(id);
+	public ArrayList<Part> getAssociatedParts(String productNumber) {
+		return pdg.getProductParts(productNumber);
 	}
 	
 	

@@ -5,6 +5,9 @@ package inventory;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class AddItemPopupController implements ActionListener {
 
@@ -17,7 +20,6 @@ public class AddItemPopupController implements ActionListener {
 	private String part;
 	private String quantity;
 	private int UIquantity;
-	private int partId;
 	private String unitLocation;
 
 	public AddItemPopupController(InventoryModel model,
@@ -50,16 +52,6 @@ public class AddItemPopupController implements ActionListener {
 
 		Item item = new Item();
 
-		
-		if (model.getPartByNumber(partId).isEmpty()) {//see if input is a part
-			
-		} else if(model.getProductByNumber(partId).isEmpty()) {//see if input is a product
-			
-		} else {
-			itemP.formatError(2);
-			error = true;
-		}
-			
 		if (unitLocation.equals("Unknown"))
 			error = true;
 
@@ -79,8 +71,47 @@ public class AddItemPopupController implements ActionListener {
 			error = true;
 		}
 
+		if (model.getPartByNumber(part) != null) {// see if input is a part
+			// we are good, continue
+		} else if (model.getProductByNumber(part) != null) {// see if input
+																// is a product
+			System.out.println("WAS A PRODUCT");
+			Product p = model.getProductByNumber(part);
+			ArrayList<Part> parts = model.getProductParts(p.getNumber());
+			Iterator it = parts.iterator();
+			HashMap<String, Integer> partQuantitys = new HashMap();
+			while (it.hasNext()) {// go over each part
+				Part currentPart = (Part) it.next();
+				String partNumber = currentPart.getPartNumber();
+				int count = partQuantitys.containsKey(partNumber) ? partQuantitys
+						.get(partNumber) : 0;
+				partQuantitys.put(partNumber, count + 1);
+			}
+			for (String partNumber : partQuantitys.keySet()) {
+				if (!model.checkPartInStock(model.getPartByNumber(partNumber),
+						unitLocation, partQuantitys.get(partNumber)
+								* UIquantity)) {
+					error = true;
+					break;
+				}
+			}
+
+			if (!error) {
+				for (String partNumber : partQuantitys.keySet()) {
+					model.removePartFromStock(
+							model.getPartByNumber(partNumber), unitLocation,
+							partQuantitys.get(partNumber) * UIquantity);
+				}
+			}
+			// model.checkPartInStock(it.next(), unitLocation, UIquantity);
+		} else {
+			System.out.println("was neither");
+			itemP.formatError(2);
+			error = true;
+		}
+
 		if (!error) {
-			item.setPart(partId);
+			item.setPart(part);
 			item.setUnitLocation(unitLocation);
 			item.setQuantity(UIquantity);
 
